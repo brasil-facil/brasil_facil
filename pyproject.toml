@@ -1,0 +1,13 @@
+[project]
+name = "brasil_facil"
+version = "0.1.0"
+description = "Brazilian indicators in simple terms/Indicadores brasileiros em termos simples"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+]
