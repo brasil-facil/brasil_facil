@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Brazilian indicators in simple terms/Indicadores brasileiros em termos simples"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "jinja2>=3.1.6",
+]
 
 [dependency-groups]
 dev = [
