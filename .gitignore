@@ -222,3 +222,6 @@ __marimo__/
 # Data
 data/raw/
 dist/
+
+# Claude files
+docs/

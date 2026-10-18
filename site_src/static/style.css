@@ -1,0 +1,95 @@
+/* Brasil Fácil: site styles.
+   Colors and fonts come from docs/design/visual-identity.html. */
+/* 0. Fonts: self-hosted, no third-party requests. */
+@font-face {
+  font-family: "Bitter";
+  src: url("/static/fonts/bitter.woff2") format("woff2");
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inclusive Sans";
+  src: url("/static/fonts/inclusive-sans-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inclusive Sans";
+  src: url("/static/fonts/inclusive-sans-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* 1. Design tokens: every color and font is named once here. */
+:root {
+  --bg: #F7F6FB;
+  --surface: #FFFFFF;
+  --fg: #1D1830;
+  --muted: #5F5A70;
+  --line: #E2DEEC;
+  --brand: #250154;   /* not final: from the mockup */
+  --brand-soft: #EFE9FA;
+  --font-display: "Bitter", Georgia, "Times New Roman", serif;
+  --font-body: "Inclusive Sans", Verdana, sans-serif;
+  color-scheme: light;
+}
+
+/* 2. Dark mode: same names, new values, when the phone or computer is set to dark. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #100E17;
+    --surface: #191622;
+    --fg: #ECE9F4;
+    --muted: #A49FB3;
+    --line: #2E2A3B;
+    --brand: #B9A2F5;   /* not final: from the mockup */
+    --brand-soft: #2A2142;
+    color-scheme: dark;
+  }
+}
+
+/* 3. Base: the whole page. */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* 4. Layout: one calm reading column in the middle of the screen. */
+main {
+  max-width: 68ch;
+  margin: 0 auto;
+  padding: 64px 20px;
+}
+
+/* 5. Text. */
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 5vw, 3.2rem);
+  font-weight: 750;
+  line-height: 1.15;
+  margin: 0 0 16px;
+}
+
+p {
+  margin: 0 0 12px;
+}
+
+a {
+  color: var(--brand);
+}
+
+/* Keyboard users see where they are. */
+:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
