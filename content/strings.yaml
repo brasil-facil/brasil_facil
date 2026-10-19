@@ -26,6 +26,9 @@ pt:
   latest_data: Dado mais recente
   methodology_note: Como medimos as cores
   footer_contact: Correções e sugestões
+  theme_label: Aparência
+  theme_dark: Escuro
+  theme_light: Claro
 en:
   html_lang: en
   other_lang: pt-BR
@@ -53,3 +56,6 @@ en:
   latest_data: Latest data
   methodology_note: How we choose the colours
   footer_contact: Corrections and suggestions
+  theme_label: Appearance
+  theme_dark: Dark
+  theme_light: Light
