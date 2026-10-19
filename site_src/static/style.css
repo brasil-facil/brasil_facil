@@ -31,6 +31,15 @@
   --line: #E2DEEC;
   --brand: #250154;   /* not final: from the mockup */
   --brand-soft: #EFE9FA;
+  /* Zones: meaning only, always shown with a word and an icon. */
+  --good: #1E7A4C;  --good-soft: #E2F2E9;
+  --watch: #8A5A00; --watch-soft: #FCF0C4;
+  --bad: #B23A2E;   --bad-soft: #F9E4E1;
+  /* See-through versions for the bands behind the chart line. */
+  --good-band: rgba(30, 122, 76, 0.14);
+  --watch-band: rgba(212, 160, 23, 0.16);
+  --shadow: 0 18px 40px -28px rgba(40, 20, 100, 0.35);
+  --radius: 14px;
   --font-display: "Bitter", Georgia, "Times New Roman", serif;
   --font-body: "Inclusive Sans", Verdana, sans-serif;
   color-scheme: light;
@@ -46,6 +55,12 @@
     --line: #2E2A3B;
     --brand: #B9A2F5;   /* not final: from the mockup */
     --brand-soft: #2A2142;
+    --good: #52C48D;  --good-soft: #15291F;
+    --watch: #E2A845; --watch-soft: #2C2312;
+    --bad: #F07A6C;   --bad-soft: #321A18;
+    --good-band: rgba(82, 196, 141, 0.14);
+    --watch-band: rgba(226, 168, 69, 0.14);
+    --shadow: 0 18px 40px -26px rgba(0, 0, 0, 0.8);
     color-scheme: dark;
   }
 }
@@ -64,20 +79,69 @@ body {
   line-height: 1.6;
 }
 
-/* 4. Layout: one calm reading column in the middle of the screen. */
-main {
-  max-width: 68ch;
+/* 4. Layout: header, one calm column, footer. */
+.site-header {
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.site-header-inner,
+.page,
+.site-footer {
+  max-width: 880px;
   margin: 0 auto;
-  padding: 64px 20px;
+  padding-inline: 16px;
+}
+
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 12px;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.lang-switch {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.page {
+  display: grid;
+  gap: 20px;
+  padding-block: 32px 56px;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding-block: 24px 40px;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 /* 5. Text. */
-h1 {
+h1,
+h2 {
   font-family: var(--font-display);
-  font-size: clamp(2.1rem, 5vw, 3.2rem);
-  font-weight: 750;
   line-height: 1.15;
-  margin: 0 0 16px;
+  text-wrap: balance;
+  margin: 0 0 12px;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 750;
+}
+
+h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
 p {
@@ -86,6 +150,173 @@ p {
 
 a {
   color: var(--brand);
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.lede {
+  font-size: 1.2rem;
+  color: var(--muted);
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* 6. Panels: white cards with a soft shadow and no outline (from the mockup). */
+.panel {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  min-width: 0;
+}
+
+.link-list {
+  margin: 0;
+  padding-left: 1.1em;
+}
+
+/* 7. "Brasil agora": the big number and its zone. */
+.big-number {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 750;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin: 4px 0 12px;
+}
+
+.big-number small {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+.now-zone {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 10px;
+}
+
+.since {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 8px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.pill.good { background: var(--good-soft); color: var(--good); }
+.pill.watch { background: var(--watch-soft); color: var(--watch); }
+.pill.bad { background: var(--bad-soft); color: var(--bad); }
+.pill.none { background: var(--brand-soft); color: var(--muted); }
+
+/* 8. The chart. */
+.chart {
+  width: 100%;
+  height: 360px;
+  margin-top: 8px;
+}
+
+.periods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.periods button {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.periods button[aria-pressed="true"] {
+  color: var(--brand);
+  background: var(--brand-soft);
+  border-color: var(--brand);
+}
+
+.source {
+  margin: 12px 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* "Ver os números": the same data as a table, for screen readers and no-JS. */
+.numbers {
+  margin-top: 12px;
+}
+
+.numbers summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.table-scroll {
+  max-height: 320px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+}
+
+th {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* 9. The explanation block: four fixed questions. */
+.explain h2 {
+  font-size: 1.1rem;
+  margin: 18px 0 4px;
+}
+
+.explain h2:first-child {
+  margin-top: 0;
+}
+
+.explain p {
+  max-width: 68ch;
 }
 
 /* Keyboard users see where they are. */

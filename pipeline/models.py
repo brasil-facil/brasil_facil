@@ -4,7 +4,14 @@ from pathlib import Path
 from typing import Literal
 
 import yaml
-from pydantic import BaseModel, ConfigDict, HttpUrl, ValidationError, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    HttpUrl,
+    ValidationError,
+    model_validator,
+)
 
 
 class Strict(BaseModel):
@@ -20,6 +27,10 @@ class SeriesRef(Strict):
     source: Literal["sidra"]
     code: str
     geo: str
+
+    @property
+    def series_id(self) -> str:
+        return f"{self.source}.{self.code}.{self.geo}"
 
 
 class Zones(Strict):
@@ -44,16 +55,29 @@ class IndicatorSeries(Strict):
     brazil: SeriesRef
 
 
+class SourceInfo(Strict):
+    name: str
+    table: str
+    url: HttpUrl
+
+
+class ChartSettings(Strict):
+    show_from: str | None = Field(default=None, pattern=r"^\d{4}-\d{2}$")
+
+
 class Indicator(Strict):
     id: str
     section: Literal["economia", "dinheiro-publico", "saude", "educacao", "seguranca"]
     group: Literal["leading", "lagging", "coincident"]
     name: LangText
+    slug: LangText
     technical_name: str
     unit: Literal["percent"]
     series: IndicatorSeries
+    source: SourceInfo
     transform: Literal["none"]
     zones: Zones
+    chart: ChartSettings = ChartSettings()
     release: Release
     content: str
 

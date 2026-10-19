@@ -1,0 +1,55 @@
+# Short interface words, in both languages. build.py fails if a key is missing in one.
+pt:
+  html_lang: pt-BR
+  other_lang: en
+  other_lang_name: English
+  site_tagline: Os números do Brasil, explicados
+  coming_soon: Em breve, o site completo.
+  home_description: >-
+    Aqui você vai ver como o Brasil está: economia, dinheiro público, saúde,
+    educação e segurança. Tudo com dados oficiais e em palavras simples.
+  home_first: "Já disponível:"
+  zone_green: Bom
+  zone_yellow: Atenção
+  zone_red: Preocupante
+  zone_none: Sem meta
+  since: desde
+  now: Brasil agora
+  official_band: "Meta do governo: de {lower} a {upper}"
+  period_label: Período
+  years: anos
+  all: Tudo
+  show_numbers: Ver os números
+  month: Mês
+  value: Valor
+  source: Fonte
+  latest_data: Dado mais recente
+  methodology_note: Como medimos as cores
+  footer_contact: Correções e sugestões
+en:
+  html_lang: en
+  other_lang: pt-BR
+  other_lang_name: Português
+  site_tagline: Brazil's numbers, explained
+  coming_soon: The full site is coming soon.
+  home_description: >-
+    Here you will see how Brazil is doing: economy, public money, health,
+    education and safety. All with official data, in simple words.
+  home_first: "Available now:"
+  zone_green: Good
+  zone_yellow: Watch
+  zone_red: Worrying
+  zone_none: No target
+  since: since
+  now: Brazil now
+  official_band: "Government target: {lower} to {upper}"
+  period_label: Period
+  years: years
+  all: All
+  show_numbers: See the numbers
+  month: Month
+  value: Value
+  source: Source
+  latest_data: Latest data
+  methodology_note: How we choose the colours
+  footer_contact: Corrections and suggestions
