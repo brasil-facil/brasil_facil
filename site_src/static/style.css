@@ -22,15 +22,23 @@
   font-display: swap;
 }
 
-/* 1. Design tokens: every color and font is named once here. */
+/* 1. Design tokens: every color and font is named once here.
+   Light look. The glass values come from docs/design/mockup-resumo.html. */
 :root {
-  --bg: #F7F6FB;
-  --surface: #FFFFFF;
-  --fg: #1D1830;
-  --muted: #5F5A70;
-  --line: #E2DEEC;
+  --ground: #F0EEF7;                       /* the page behind the glass */
+  --glow-a: rgba(70, 30, 170, 0.24);       /* the soft purple light spots */
+  --glow-b: rgba(160, 140, 235, 0.28);
+  --glass: rgba(255, 255, 255, 0.42);      /* see-through panels */
+  --glass-strong: rgba(255, 255, 255, 0.55);
+  --glass-hi: rgba(255, 255, 255, 0.6);    /* the shine at the top of a panel */
+  --glass-edge: rgba(255, 255, 255, 0.85);
+  --shadow: 0 30px 60px -34px rgba(40, 20, 100, 0.22);
+  --surface: #FFFFFF;                      /* solid, for the chart tooltip */
+  --fg: #160F26;
+  --muted: #5B556E;
+  --line: rgba(37, 1, 84, 0.10);
   --brand: #250154;   /* not final: from the mockup */
-  --brand-soft: #EFE9FA;
+  --brand-soft: rgba(37, 1, 84, 0.07);
   /* Zones: meaning only, always shown with a word and an icon. */
   --good: #1E7A4C;  --good-soft: #E2F2E9;
   --watch: #8A5A00; --watch-soft: #FCF0C4;
@@ -38,51 +46,105 @@
   /* See-through versions for the bands behind the chart line. */
   --good-band: rgba(30, 122, 76, 0.14);
   --watch-band: rgba(212, 160, 23, 0.16);
-  --shadow: 0 18px 40px -28px rgba(40, 20, 100, 0.35);
   --radius: 14px;
   --font-display: "Bitter", Georgia, "Times New Roman", serif;
   --font-body: "Inclusive Sans", Verdana, sans-serif;
   color-scheme: light;
 }
 
-/* 2. Dark mode: same names, new values, when the phone or computer is set to dark. */
+/* 2. Dark look. Written twice on purpose:
+   - when the reader picks "Escuro" (data-theme="dark" on <html>);
+   - when the reader picked nothing and the device is in dark mode.
+   Keep the two blocks identical. */
+:root[data-theme="dark"] {
+  --ground: #08060F;
+  --glow-a: rgba(55, 10, 125, 0.85);
+  --glow-b: rgba(80, 50, 170, 0.28);
+  --glass: rgba(255, 255, 255, 0.055);
+  --glass-strong: rgba(14, 9, 28, 0.55);
+  --glass-hi: rgba(255, 255, 255, 0.07);
+  --glass-edge: rgba(255, 255, 255, 0.11);
+  --shadow: 0 30px 60px -34px rgba(0, 0, 0, 0.75);
+  --surface: #191622;
+  --fg: #EEEAF6;
+  --muted: #ADA6C0;
+  --line: rgba(255, 255, 255, 0.10);
+  --brand: #B9A2F5;   /* not final: from the mockup */
+  --brand-soft: rgba(185, 162, 245, 0.14);
+  --good: #52C48D;  --good-soft: rgba(82, 196, 141, 0.14);
+  --watch: #E7B04E; --watch-soft: rgba(231, 176, 78, 0.14);
+  --bad: #F2806F;   --bad-soft: rgba(242, 128, 111, 0.14);
+  --good-band: rgba(82, 196, 141, 0.16);
+  --watch-band: rgba(231, 176, 78, 0.12);
+  color-scheme: dark;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #100E17;
+  :root:not([data-theme="light"]) {
+    --ground: #08060F;
+    --glow-a: rgba(55, 10, 125, 0.85);
+    --glow-b: rgba(80, 50, 170, 0.28);
+    --glass: rgba(255, 255, 255, 0.055);
+    --glass-strong: rgba(14, 9, 28, 0.55);
+    --glass-hi: rgba(255, 255, 255, 0.07);
+    --glass-edge: rgba(255, 255, 255, 0.11);
+    --shadow: 0 30px 60px -34px rgba(0, 0, 0, 0.75);
     --surface: #191622;
-    --fg: #ECE9F4;
-    --muted: #A49FB3;
-    --line: #2E2A3B;
+    --fg: #EEEAF6;
+    --muted: #ADA6C0;
+    --line: rgba(255, 255, 255, 0.10);
     --brand: #B9A2F5;   /* not final: from the mockup */
-    --brand-soft: #2A2142;
-    --good: #52C48D;  --good-soft: #15291F;
-    --watch: #E2A845; --watch-soft: #2C2312;
-    --bad: #F07A6C;   --bad-soft: #321A18;
-    --good-band: rgba(82, 196, 141, 0.14);
-    --watch-band: rgba(226, 168, 69, 0.14);
-    --shadow: 0 18px 40px -26px rgba(0, 0, 0, 0.8);
+    --brand-soft: rgba(185, 162, 245, 0.14);
+    --good: #52C48D;  --good-soft: rgba(82, 196, 141, 0.14);
+    --watch: #E7B04E; --watch-soft: rgba(231, 176, 78, 0.14);
+    --bad: #F2806F;   --bad-soft: rgba(242, 128, 111, 0.14);
+    --good-band: rgba(82, 196, 141, 0.16);
+    --watch-band: rgba(231, 176, 78, 0.12);
     color-scheme: dark;
   }
 }
 
-/* 3. Base: the whole page. */
+/* 3. Base: the whole page, lit by soft purple glows. */
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: var(--bg);
+  min-height: 100vh;
   color: var(--fg);
   font-family: var(--font-body);
   font-size: 17px;
   line-height: 1.6;
+  background:
+    radial-gradient(900px 520px at 12% -8%, var(--glow-a), transparent 65%),
+    radial-gradient(800px 600px at 95% 30%, var(--glow-b), transparent 60%),
+    radial-gradient(700px 500px at 30% 110%, var(--glow-b), transparent 60%),
+    var(--ground);
+  background-attachment: fixed;
 }
 
-/* 4. Layout: header, one calm column, footer. */
+/* Glass: see-through, blurs what is behind it, no outline, soft shadow. */
+.glass,
+.panel {
+  background: linear-gradient(180deg, var(--glass-hi), transparent 40%), var(--glass);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+}
+
+/* 4. Layout: a floating glass header, one calm column, footer. */
 .site-header {
-  border-bottom: 1px solid var(--line);
-  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 12px 16px 0;
+}
+
+.site-header .glass {
+  background: var(--glass-strong);
+  border-radius: 16px;
 }
 
 .site-header-inner,
@@ -95,21 +157,79 @@ body {
 
 .site-header-inner {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding-block: 12px;
+  gap: 8px 16px;
+  padding: 10px 14px 10px 16px;
 }
 
-.wordmark {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  color: var(--fg);
-  text-decoration: none;
+/* The logo: two files, only one shown, matching the light or dark look. */
+.logo {
+  display: flex;
+}
+
+.logo img {
+  height: 36px;
+  width: auto;
+}
+
+.logo .on-dark {
+  display: none;
+}
+
+:root[data-theme="dark"] .logo .on-light {
+  display: none;
+}
+
+:root[data-theme="dark"] .logo .on-dark {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo .on-light {
+    display: none;
+  }
+
+  :root:not([data-theme="light"]) .logo .on-dark {
+    display: block;
+  }
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .lang-switch {
   font-size: 0.9rem;
   font-weight: 700;
+  padding: 6px 10px;
+}
+
+/* A segmented switch: two buttons glued together, the pressed one highlighted. */
+.seg {
+  display: flex;
+  border: 1px solid var(--glass-edge);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.seg button {
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.seg button[aria-pressed="true"] {
+  color: var(--fg);
+  background: var(--brand-soft);
 }
 
 .page {
@@ -171,11 +291,8 @@ a {
   font-size: 0.95rem;
 }
 
-/* 6. Panels: white cards with a soft shadow and no outline (from the mockup). */
+/* 6. Panels: spacing only; the glass look is in section 3. */
 .panel {
-  background: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
   padding: 20px;
   min-width: 0;
 }

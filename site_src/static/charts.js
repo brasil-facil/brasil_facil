@@ -177,7 +177,8 @@
         setupButtons(box, chart, data);
         render();
         window.addEventListener("resize", function () { chart.resize(); });
-        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
+        // theme.js sends "themechange" when the look switches (button or device).
+        document.addEventListener("themechange", render);
       });
   }
 
