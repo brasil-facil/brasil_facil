@@ -1,17 +1,28 @@
 <!doctype html>
-<html lang="{{ lang }}">
+<html lang="{{ s.html_lang }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Brasil Fácil</title>
+    <title>{% block title %}Brasil Fácil{% endblock %}</title>
+    <link rel="alternate" hreflang="{{ s.other_lang }}" href="{{ other_url }}">
     <link rel="stylesheet" href="/static/style.css">
   </head>
   <body>
-    <main>
-      <h1>Brasil Fácil</h1>
-      <p>{{ coming_soon }}</p>
-      <p>{{ description }}</p>
-      <p><a href="{{ other_url }}" hreflang="{{ other_lang }}" lang="{{ other_lang }}">{{ other_name }}</a></p>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <a class="wordmark" href="/{{ lang }}/"><b>Brasil</b> Fácil</a>
+        <a class="lang-switch" href="{{ other_url }}" hreflang="{{ s.other_lang }}" lang="{{ s.other_lang }}">{{ s.other_lang_name }}</a>
+      </div>
+    </header>
+
+    <main class="page">
+      {% block content %}{% endblock %}
     </main>
+
+    <footer class="site-footer">
+      <p>Brasil Fácil · {{ s.site_tagline }}</p>
+      <p>{{ s.footer_contact }}: <a href="mailto:contato@brasilfacil.org">contato@brasilfacil.org</a></p>
+    </footer>
+    {% block scripts %}{% endblock %}
   </body>
 </html>

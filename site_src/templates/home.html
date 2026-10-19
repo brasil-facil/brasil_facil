@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="hero">
+    <h1>Brasil Fácil</h1>
+    <p class="lede">{{ s.coming_soon }}</p>
+    <p>{{ s.home_description }}</p>
+  </section>
+
+  <section class="panel">
+    <p class="eyebrow">{{ s.home_first }}</p>
+    <ul class="link-list">
+      {% for page in metric_pages %}
+        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endblock %}

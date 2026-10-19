@@ -6,23 +6,13 @@ from pathlib import Path
 import pandas as pd
 
 from pipeline import store
-from pipeline.models import (
-    Indicator,
-    SeriesRef,
-    load_indicator,
-    load_indicator_targets,
-)
+from pipeline.export import TARGETS_DIR, zone_table
+from pipeline.models import Indicator, load_indicator
 from pipeline.sources import sidra
-from pipeline.zones import compute_zones
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = ROOT / "config"
-TARGETS_DIR = ROOT / "data" / "targets"
 SOURCES = {"sidra": sidra}
-
-
-def series_id(ref: SeriesRef) -> str:
-    return f"{ref.source}.{ref.code}.{ref.geo}"
 
 
 def load_all_indicators(config_dir: Path = CONFIG_DIR) -> list[Indicator]:
@@ -36,7 +26,7 @@ def update_indicator(
     series_dir: Path = store.SERIES_DIR,
 ) -> tuple[int, int]:
     ref = indicator.series.brazil
-    sid = series_id(ref)
+    sid = ref.series_id
     source = SOURCES[ref.source]
     first_time = not store.series_path(sid, series_dir).exists()
     periods = source.FULL_PERIODS if full or first_time else source.RECENT_PERIODS
@@ -54,13 +44,7 @@ def latest_zone(
     series_dir: Path = store.SERIES_DIR,
     targets_dir: Path = TARGETS_DIR,
 ) -> pd.Series:
-    sid = series_id(indicator.series.brazil)
-    current = store.current_values(
-        store.read_history(store.series_path(sid, series_dir))
-    )
-    values = current.reset_index()
-    targets = load_indicator_targets(targets_dir / f"{indicator.zones.target}.csv")
-    return compute_zones(values, targets, indicator.zones).iloc[-1]
+    return zone_table(indicator, series_dir, targets_dir).iloc[-1]
 
 
 def main(argv: list[str] | None = None) -> int:

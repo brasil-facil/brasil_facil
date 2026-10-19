@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% from "_zone.html" import zone_pill %}
+
+{% block title %}{{ data.title }} · Brasil Fácil{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <p class="eyebrow">{{ data.title }}</p>
+    <h1>{{ text.question }}</h1>
+    <p class="lede">{{ summary }}</p>
+  </section>
+
+  <section class="now panel" aria-label="{{ s.now }}">
+    <p class="eyebrow">{{ s.now }} · {{ data.latest.period | month_short(lang) }}</p>
+    <p class="big-number">{{ data.latest.value | number(lang) }}<small>{{ data.unit }}</small></p>
+    <div class="now-zone">
+      {{ zone_pill(data.latest.zone, s) }}
+      <span class="since">{{ s.since }} {{ data.latest.zone_since | month_short(lang) }}</span>
+    </div>
+    {% if data.latest.lower is not none %}
+      <p class="muted">{{ s.official_band.format(lower=(data.latest.lower | number(lang)) ~ data.unit, upper=(data.latest.upper | number(lang)) ~ data.unit) }}</p>
+    {% endif %}
+  </section>
+
+  <section class="chartbox panel" aria-label="{{ data.title }}">
+    <p class="muted">{{ text.chart_subtitle }}</p>
+
+    <div class="periods" role="group" aria-label="{{ s.period_label }}">
+      {% for years in data.chart.windows %}
+        <button type="button" data-years="{{ years }}" aria-pressed="{{ 'true' if years == data.chart.default_years else 'false' }}">{{ years }} {{ s.years }}</button>
+      {% endfor %}
+      <button type="button" data-years="all" aria-pressed="false">{{ s.all }}</button>
+    </div>
+
+    <div id="chart" class="chart" data-src="{{ json_url }}" role="img" aria-label="{{ data.title }}"></div>
+
+    <details class="numbers">
+      <summary>{{ s.show_numbers }}</summary>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th scope="col">{{ s.month }}</th><th scope="col">{{ s.value }}</th></tr></thead>
+          <tbody>
+            {% for period, value in data.points | reverse %}
+              <tr><td>{{ period | month_short(lang) }}</td><td>{{ value | number(lang) }}{{ data.unit }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <p class="source">
+      {{ s.source }}: <a href="{{ data.source.url }}">{{ data.source.name }}, {{ data.source.table }}</a>.
+      {{ s.latest_data }}: {{ data.latest.period | month_long(lang) }}.
+    </p>
+  </section>
+
+  <section class="explain panel">
+    {{ text.body_html | safe }}
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="/static/echarts.min.js" defer></script>
+  <script src="/static/charts.js" defer></script>
+{% endblock %}
