@@ -8,6 +8,8 @@ from pipeline.http_client import TIMEOUT_SECONDS, make_session
 
 BASE_URL = "https://apisidra.ibge.gov.br/values"
 GEO_LEVELS = {"BRA": "n1/all"}
+FULL_PERIODS = "all"
+RECENT_PERIODS = "last 6"
 RAW_DIR = Path(__file__).resolve().parents[2] / "data" / "raw"
 
 
