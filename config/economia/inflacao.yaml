@@ -1,0 +1,20 @@
+id: inflacao
+section: economia
+group: lagging
+name:
+  pt: Aumento dos preços - Inflação
+  en: Increase in prices - Inflation
+technical_name: IPCA, acumulado em 12 meses
+unit: percent
+series:
+  brazil: {source: sidra, code: "1737-v2265", geo: BRA}
+transform: none
+zones:
+  rule: band
+  target: meta-inflacao   # data/targets/meta-inflacao.csv: green = lower to upper
+  yellow_margin: 1.5      # Brasil Fácil rule: up to 1.5 points outside the official band
+  basis: official_target
+release:
+  expected_day: 10
+  stale_after_days: 45
+content: inflacao

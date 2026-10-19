@@ -54,12 +54,21 @@ in the repository.
 - `config/` one YAML file per indicator, grouped by section
 - `pipeline/` everything that downloads and processes data
 - `data/` processed data, committed (`data/raw/` is not committed)
+- `data/targets/` official targets over time (inflation target, primary
+  balance target, neutral rate), one CSV per target, typed in by hand
 - `content/pt/`, `content/en/` page texts
 - `site_src/templates/`, `site_src/static/` HTML templates, CSS, JS
 - `build.py` renders everything into `dist/` (`dist/` is not committed)
 - `tests/` pytest tests
 
 Rules: only `pipeline/` writes to `data/`; only `build.py` writes to `dist/`.
+One exception: `data/targets/` is edited by hand, because no official source
+publishes targets in a form a program can read. Every row needs a
+`legal_basis` and a `source_url`, and a test checks this.
+
+Official targets are never written as numbers in an indicator YAML. The YAML
+names the target file and holds only Brasil Fácil's own rules (for example
+`yellow_margin`).
 
 ## Writing for readers
 
