@@ -72,3 +72,16 @@ def test_change_text():
     assert build.change_text(-0.3, s, "pt") == "0,3 ponto menor do que um ano antes"
     assert build.change_text(2.4, s, "pt") == "2,4 pontos maior do que um ano antes"
     assert build.change_text(None, s, "pt") is None
+
+
+def test_selic_pages_link_both_ways_without_no_target_pill(tmp_path):
+    build.main(tmp_path)
+    selic = (tmp_path / "pt" / "economia" / "selic" / "index.html").read_text(
+        encoding="utf-8"
+    )
+    real = (tmp_path / "pt" / "economia" / "juro-real" / "index.html").read_text(
+        encoding="utf-8"
+    )
+    assert "Sem meta" not in selic and "Sem meta" not in real
+    assert 'href="/pt/economia/juro-real/"' in selic
+    assert 'href="/pt/economia/selic/"' in real

@@ -1,0 +1,31 @@
+id: juro-real
+section: economia
+group: leading
+name:
+  pt: Juro real - Selic descontada a inflação esperada
+  en: Real interest rate - Selic minus expected inflation
+slug:
+  pt: juro-real
+  en: real-interest-rate
+technical_name: Juro real ex-ante (Meta Selic e expectativa Focus de IPCA 12 meses)
+unit: percent
+series:
+  inputs:
+    selic: {source: sgs, code: "432", geo: BRA}
+    expected_inflation: {source: focus, code: ipca-12m, geo: BRA}
+source:
+  name: Banco Central
+  table: Meta Selic (SGS 432) e boletim Focus, IPCA esperado em 12 meses
+  url: https://www.bcb.gov.br/publicacoes/focus
+transform: real_rate      # (1 + Selic) / (1 + expected inflation) - 1, recomputed every run
+# Zones to come: neutral stance labels (below / near / above the neutral rate)
+# once data/targets/juro-neutro.csv exists (decided 21 Oct 2026). No colour until then.
+chart:
+  compare_with:
+    indicator: selic
+    label: {pt: Selic, en: Selic}
+  no_target_pill: false
+release:
+  expected_day: 1
+  stale_after_days: 60
+content: juro-real

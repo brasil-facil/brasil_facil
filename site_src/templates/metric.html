@@ -5,7 +5,7 @@
 
 {% block content %}
   <section class="hero">
-    <p class="eyebrow">{{ data.title }}</p>
+    <p class="indicator-name">{{ data.title }}</p>
     <h1>{{ text.question }}</h1>
     <p class="lede">{{ summary }}</p>
   </section>
@@ -14,7 +14,9 @@
     <p class="eyebrow">{{ s.now }} · {{ latest_period }}</p>
     <p class="big-number">{{ data.latest.value | number(lang) }}<small>{{ data.unit }}</small></p>
     <div class="now-zone">
-      {{ zone_pill(data.latest.zone, s) }}
+      {% if data.latest.zone is not none or data.chart.no_target_pill %}
+        {{ zone_pill(data.latest.zone, s) }}
+      {% endif %}
       {% if data.latest.zone is not none %}
         <span class="since">{{ s.since }} {{ data.latest.zone_since | month_short(lang) }}</span>
       {% endif %}
@@ -29,7 +31,8 @@
       <p class="now-note">{{ text.now_note }}</p>
     {% endif %}
     {% if data.compare and data.compare.latest is not none %}
-      <p class="muted">{{ s.compare_same_month.format(label=data.compare.label, value=(data.compare.latest | number(lang)) ~ data.unit) }}</p>
+      {% set compare_text = s.compare_same_month.format(label=data.compare.label, value=(data.compare.latest | number(lang)) ~ data.unit) %}
+      <p class="muted related"><a href="{{ compare_url }}">{{ compare_text }} →</a></p>
     {% endif %}
     {% if related %}
       <p class="muted related"><a href="{{ related.url }}">{{ related.text }} →</a></p>

@@ -1,0 +1,28 @@
+id: selic
+section: economia
+group: leading
+name:
+  pt: Taxa básica de juros - Selic
+  en: Basic interest rate - Selic
+slug:
+  pt: selic
+  en: selic
+technical_name: Meta da taxa Selic definida pelo Copom
+unit: percent
+series:
+  # SGS 432 = the table "Histórico das taxas de juros" (Meta Selic per Copom
+  # meeting), as a daily series. Stored as the value in force at month end.
+  brazil: {source: sgs, code: "432", geo: BRA}
+source:
+  name: Banco Central
+  table: Meta Selic, histórico das reuniões do Copom
+  url: https://www.bcb.gov.br/controleinflacao/historicotaxasjuros
+transform: none
+# No zones: the Selic is a policy decision, not a result to colour (decided 21 Oct 2026).
+chart:
+  no_target_pill: false
+related: juro-real
+release:
+  expected_day: 1
+  stale_after_days: 60   # the Copom meets about every 45 days
+content: selic
