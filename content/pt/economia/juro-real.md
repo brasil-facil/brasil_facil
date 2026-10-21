@@ -8,7 +8,7 @@ chart_subtitle: >-
 
 ## O que é?
 
-O juro real é a taxa Selic menos o aumento de preços (inflação) esperada. Se a Selic é 14% e a
+O juro real é a taxa Selic menos o aumento de preços (inflação) esperado. Se a Selic é 14% e a
 inflação esperada é 5%, o juro real é perto de 9%. Ele mostra quanto o
 dinheiro rende ou custa de verdade, depois que os preços sobem.
 
