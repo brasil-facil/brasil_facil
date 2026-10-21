@@ -144,9 +144,9 @@ class Indicator(Strict):
     name: LangText
     slug: LangText
     technical_name: str
-    unit: Literal["percent"]
+    unit: Literal["percent", "usd_ppp"]
     # "rolling_quarter": each value covers 3 months ending in its period (PNAD)
-    period_kind: Literal["month", "rolling_quarter"] = "month"
+    period_kind: Literal["month", "rolling_quarter", "year"] = "month"
     series: IndicatorSeries
     source: SourceInfo
     transform: Literal["none", "real_rate"]

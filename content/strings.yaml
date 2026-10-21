@@ -37,6 +37,8 @@ pt:
   points: pontos
   compare_with: Comparar com
   compare_max: até 3 países ao mesmo tempo
+  growth_up: "{value} a mais do que em {year}"
+  growth_down: "{value} a menos do que em {year}"
 en:
   html_lang: en
   other_lang: pt-BR
@@ -75,3 +77,5 @@ en:
   points: points
   compare_with: Compare with
   compare_max: up to 3 countries at a time
+  growth_up: "{value} more than in {year}"
+  growth_down: "{value} less than in {year}"

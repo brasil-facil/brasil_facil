@@ -1,12 +1,13 @@
 import json
 import shutil
+from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 
 import markdown
 import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
-from pipeline.export import UNIT_SYMBOLS, chart_data, current_table
+from pipeline.export import UNITS, chart_data, current_table
 from pipeline.models import Indicator, load_indicator
 
 ROOT = Path(__file__).parent
@@ -84,7 +85,14 @@ MONTHS_LONG = {
 
 # Formatting helpers, used in templates as filters: {{ 4.58 | number(lang) }}.
 def number(value: float, lang: str) -> str:
-    text = f"{value:,.2f}".rstrip("0").rstrip(".")
+    # Big amounts (US$ 19.968) without decimals; rates (4,58%) with up to two.
+    # Round half up (1234.5 -> 1235): Python's own rounding sends .5 to the
+    # even neighbour (1234), which readers would not expect.
+    step = Decimal(1) if abs(value) >= 1000 else Decimal("0.01")
+    rounded = Decimal(str(value)).quantize(step, rounding=ROUND_HALF_UP)
+    text = f"{rounded:,}"
+    if "." in text:
+        text = text.rstrip("0").rstrip(".")
     if lang == "pt":
         text = text.replace(",", "_").replace(".", ",").replace("_", ".")
     return text
@@ -108,7 +116,14 @@ def months_back(period: str, n: int) -> str:
 
 
 # A rolling quarter (PNAD) ending in 2026-08 covers June to August 2026.
+def amount(value: float, lang: str, data: dict) -> str:
+    """A number with its unit, on the right side: "4,58%" or "US$ 19.968"."""
+    return data["unit_prefix"] + number(value, lang) + data["unit"]
+
+
 def period_short(period: str, lang: str, kind: str = "month") -> str:
+    if kind == "year":
+        return period
     if kind == "month":
         return month_short(period, lang)
     start = months_back(period, 2)
@@ -119,6 +134,8 @@ def period_short(period: str, lang: str, kind: str = "month") -> str:
 
 
 def period_long(period: str, lang: str, kind: str = "month") -> str:
+    if kind == "year":
+        return period
     if kind == "month":
         return month_long(period, lang)
     start = months_back(period, 2)
@@ -181,9 +198,9 @@ def related_link(
         raise ValueError(f"{indicator.id}: content needs a related_note ({lang})")
     other = by_id[indicator.related]
     value = current_table(other)["value"].iloc[-1]
-    unit = UNIT_SYMBOLS[other.unit]
+    prefix, unit = UNITS[other.unit]
     return {
-        "text": text["related_note"].format(value=number(value, lang) + unit),
+        "text": text["related_note"].format(value=prefix + number(value, lang) + unit),
         "url": page_url(other, lang),
     }
 
@@ -209,7 +226,13 @@ def main(dist: Path = DIST) -> None:
         autoescape=True,
         undefined=StrictUndefined,
     )
-    env.filters.update(number=number, month_short=month_short, month_long=month_long)
+    env.filters.update(
+        number=number,
+        amount=amount,
+        month_short=month_short,
+        month_long=month_long,
+        period_short=period_short,
+    )
     strings = load_strings()
     indicators = [load_indicator(p) for p in sorted(CONFIG.glob("*/*.yaml"))]
     by_id = {indicator.id: indicator for indicator in indicators}
@@ -231,7 +254,7 @@ def main(dist: Path = DIST) -> None:
             kind = indicator.period_kind
             summary = text["summary"].format(
                 month=period_long(data["latest"]["period"], lang, kind),
-                value=number(data["latest"]["value"], lang) + data["unit"],
+                value=amount(data["latest"]["value"], lang, data),
             )
             html = env.get_template("metric.html").render(
                 lang=lang,

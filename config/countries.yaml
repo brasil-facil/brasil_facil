@@ -4,6 +4,9 @@
 OECD:
   name: {pt: Média da OCDE, en: OECD average}
   role: reference
+G110:   # IMF group "advanced economies": the yearly stand-in for the OECD average
+  name: {pt: Economias avançadas, en: Advanced economies}
+  role: reference
 MEX:
   name: {pt: México, en: Mexico}
   role: peer

@@ -15,20 +15,24 @@ BASE_URL = "https://api.imf.org/external/sdmx/2.1/data"
 FULL_PERIODS = sdmx.FULL_PERIODS
 RECENT_PERIODS = sdmx.RECENT_PERIODS
 
-# Our code -> (dataflow, key). {geo} is the ISO 3-letter country code.
+# Our code -> (dataflow, key, yearly?). {geo} is the ISO 3-letter country code,
+# or an IMF group such as G110 (advanced economies).
 CODES = {
-    "cpi-yoy": ("IMF.STA,CPI", "{geo}.CPI._T.YOY_PCH_PA_PT.M"),
+    "cpi-yoy": ("IMF.STA,CPI", "{geo}.CPI._T.YOY_PCH_PA_PT.M", False),
+    # World Economic Outlook: real GDP per person, constant 2021 PPP dollars.
+    "gdp-pc-ppp": ("IMF.RES,WEO", "{geo}.NGDPRPPPPC.A", True),
 }
 
 
 def build_url(code: str, geo: str, periods: str, today: date) -> str:
     if code not in CODES:
         raise ValueError(f"IMF: unknown code '{code}'. Known: {list(CODES)}")
-    flow, key = CODES[code]
-    start = sdmx.start_period(periods, today)
-    return (
-        f"{BASE_URL}/{flow}/{key.format(geo=geo)}?startPeriod={start}&detail=dataonly"
-    )
+    flow, key, annual = CODES[code]
+    start = sdmx.start_period(periods, today, annual)
+    url = f"{BASE_URL}/{flow}/{key.format(geo=geo)}?startPeriod={start}"
+    # Yearly WEO data keeps its attributes: LATEST_ACTUAL_ANNUAL_DATA says where
+    # actual data ends and projections begin (about 110 KB per country).
+    return url if annual else url + "&detail=dataonly"
 
 
 def fetch(

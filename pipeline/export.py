@@ -17,7 +17,8 @@ from pipeline.zones import compute_zones
 ROOT = Path(__file__).resolve().parents[1]
 TARGETS_DIR = ROOT / "data" / "targets"
 COUNTRIES_FILE = ROOT / "config" / "countries.yaml"
-UNIT_SYMBOLS = {"percent": "%"}
+# Unit shown (before, after) the number: "4,58%" or "US$ 19.968".
+UNITS = {"percent": ("", "%"), "usd_ppp": ("US$ ", "")}
 DEFAULT_YEARS = 30
 WINDOWS_YEARS = [8, 15, 30]
 
@@ -114,6 +115,17 @@ def bands(table: pd.DataFrame) -> list[dict]:
     return result
 
 
+def growth(table: pd.DataFrame) -> dict | None:
+    """Change of the latest year against the year before, in %."""
+    if len(table) < 2:
+        return None
+    before, latest = table["value"].iloc[-2], table["value"].iloc[-1]
+    return {
+        "from": table["period"].iloc[-2],
+        "percent": round(float((latest / before - 1) * 100), 1),
+    }
+
+
 def zone_since(table: pd.DataFrame) -> str:
     zones = table["zone"].tolist()
     start = len(zones) - 1
@@ -184,7 +196,8 @@ def chart_data(
         "id": indicator.id,
         "lang": lang,
         "title": getattr(indicator.name, lang),
-        "unit": UNIT_SYMBOLS[indicator.unit],
+        "unit_prefix": UNITS[indicator.unit][0],
+        "unit": UNITS[indicator.unit][1],
         "latest": {
             "period": last["period"],
             "value": float(last["value"]),
@@ -199,6 +212,7 @@ def chart_data(
             ),
         },
         "period_kind": indicator.period_kind,
+        "growth": growth(table) if indicator.period_kind == "year" else None,
         "points": [
             [period, float(value)]
             for period, value in zip(table["period"], table["value"])

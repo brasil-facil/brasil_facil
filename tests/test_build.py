@@ -6,7 +6,8 @@ import build
 def test_number_format_per_language():
     assert build.number(4.58, "pt") == "4,58"
     assert build.number(4.58, "en") == "4.58"
-    assert build.number(1234.5, "pt") == "1.234,5"
+    assert build.number(1234.5, "pt") == "1.235"  # big amounts: no decimals
+    assert build.number(19967.59, "en") == "19,968"
     assert build.number(4.5, "pt") == "4,5"
     assert build.number(10.0, "en") == "10"
 

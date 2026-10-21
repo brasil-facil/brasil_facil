@@ -328,6 +328,10 @@ a {
   margin: 4px 0 12px;
 }
 
+.big-number small.prefix {
+  margin: 0 4px 0 0;
+}
+
 .big-number small {
   font-size: 1.2rem;
   font-weight: 400;
