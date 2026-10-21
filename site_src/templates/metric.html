@@ -51,6 +51,17 @@
 
     <div id="chart" class="chart" data-src="{{ json_url }}" role="img" aria-label="{{ data.title }}"></div>
 
+    {% set toggles = data.peers | selectattr("role", "equalto", "peer") | list %}
+    {% if toggles %}
+      <div class="compare-peers" role="group" aria-label="{{ s.compare_with }}">
+        <span>{{ s.compare_with }}:</span>
+        {% for peer in toggles %}
+          <button type="button" data-geo="{{ peer.geo }}" aria-pressed="{{ 'true' if peer.default_on else 'false' }}">{{ peer.name }}</button>
+        {% endfor %}
+        <small>{{ s.compare_max }}</small>
+      </div>
+    {% endif %}
+
     <details class="numbers">
       <summary>{{ s.show_numbers }}</summary>
       <div class="table-scroll">
@@ -68,6 +79,9 @@
     <p class="source">
       {{ s.source }}: <a href="{{ data.source.url }}">{{ data.source.name }}, {{ data.source.table }}</a>.
       {{ s.latest_data }}: {{ latest_period_long }}.
+      {% for source, lines in data.peers | groupby("source") %}
+        {{ source }}: {% for line in lines %}{{ line.name }} ({{ line.latest.period | month_short(lang) }}){{ ", " if not loop.last }}{% endfor %}.
+      {% endfor %}
     </p>
   </section>
 

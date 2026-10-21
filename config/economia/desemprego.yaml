@@ -12,6 +12,8 @@ unit: percent
 period_kind: rolling_quarter   # each value is the average of 3 months ending in that month
 series:
   brazil: {source: sidra, code: "6381-v4099", geo: BRA}
+  peers:   # OECD harmonised rates (15+, seasonally adjusted); no monthly data for South Africa
+    - {source: oecd, code: unemployment, geo: [MEX, COL, USA, OECD], source_name: OCDE}
 source:
   name: IBGE
   table: PNAD Contínua, tabela 6381

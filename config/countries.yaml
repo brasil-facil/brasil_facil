@@ -1,0 +1,20 @@
+# Comparison countries (technical design, "Comparison countries", decided 16 Oct 2026).
+# reference: the grey line that is always shown. peer: a button under the chart;
+# up to three peers can be switched on at once, default_on ones start switched on.
+OECD:
+  name: {pt: Média da OCDE, en: OECD average}
+  role: reference
+MEX:
+  name: {pt: México, en: Mexico}
+  role: peer
+  default_on: true
+COL:
+  name: {pt: Colômbia, en: Colombia}
+  role: peer
+  default_on: true
+ZAF:
+  name: {pt: África do Sul, en: South Africa}
+  role: peer
+USA:
+  name: {pt: EUA, en: USA}
+  role: peer

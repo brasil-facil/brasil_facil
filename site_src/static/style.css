@@ -47,6 +47,7 @@
   --good-band: rgba(30, 122, 76, 0.14);
   --watch-band: rgba(212, 160, 23, 0.16);
   --cmp-line: #857F94;   /* comparison lines: quiet grey */
+  --cmp-peer: #9A94AA;   /* comparison countries: lighter grey, dashed */
   --radius: 14px;
   --font-display: "Bitter", Georgia, "Times New Roman", serif;
   --font-body: "Inclusive Sans", Verdana, sans-serif;
@@ -78,6 +79,7 @@
   --good-band: rgba(82, 196, 141, 0.16);
   --watch-band: rgba(231, 176, 78, 0.12);
   --cmp-line: #938DA3;
+  --cmp-peer: #7E7892;
   color-scheme: dark;
 }
 
@@ -103,6 +105,7 @@
     --good-band: rgba(82, 196, 141, 0.16);
     --watch-band: rgba(231, 176, 78, 0.12);
     --cmp-line: #938DA3;
+    --cmp-peer: #7E7892;
     color-scheme: dark;
   }
 }
@@ -463,4 +466,46 @@ th {
 
 .related a {
   font-weight: 700;
+}
+
+/* "Comparar com": one pill button per comparison country, under the chart. */
+.compare-peers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.compare-peers span {
+  color: var(--muted);
+}
+
+.compare-peers button {
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.compare-peers button[aria-pressed="true"] {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.compare-peers button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.compare-peers small {
+  color: var(--muted);
+  font-size: 0.8rem;
 }

@@ -2,8 +2,8 @@ id: juro-real
 section: economia
 group: leading
 name:
-  pt: Juro real - Selic descontada a inflação esperada
-  en: Real interest rate - Selic minus expected inflation
+  pt: Custo real de pegar empréstimo - Juro real
+  en: Real cost of borrowing - Real interest rate
 slug:
   pt: juro-real
   en: real-interest-rate

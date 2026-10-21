@@ -11,6 +11,9 @@ technical_name: IPCA, acumulado em 12 meses
 unit: percent
 series:
   brazil: {source: sidra, code: "1737-v2265", geo: BRA}
+  peers:   # decided 21 Oct 2026: IMF is the most current for the named countries
+    - {source: imf, code: cpi-yoy, geo: [MEX, COL, ZAF, USA], source_name: FMI}
+    - {source: oecd, code: cpi-yoy, geo: [OECD], source_name: OCDE}
 source:                   # shown under the chart, with a link to the original table
   name: IBGE
   table: IPCA, tabela 1737

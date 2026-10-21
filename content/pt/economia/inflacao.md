@@ -4,7 +4,7 @@ summary: Em {month}, os preços estavam {value} mais altos do que 12 meses antes
 related_note: "Para famílias de menor renda (INPC, usado no reajuste do salário mínimo): {value}"
 chart_subtitle: >-
   Quanto os preços subiram em 12 meses, em %. Faixa verde: a meta do governo,
-  que mudou com o tempo. Faixa amarela: até 1,5 ponto fora da meta.
+  que mudou com o tempo. Faixa amarela: até 1,5 ponto fora da meta. Linhas cinza: outros países e a média da OCDE.
 ---
 
 ## O que é?
@@ -23,6 +23,11 @@ cerca de R$ 105.
 A linha roxa é o Brasil. A faixa verde é a meta que o governo definiu para
 cada ano. Se a linha está dentro da faixa verde, os preços subiram no ritmo
 planejado. A meta começou em 1999. Antes disso, não havia meta para comparar.
+
+As linhas cinza mostram outros países. A linha cinza contínua é a média dos
+países da OCDE, em geral países ricos. Use os botões embaixo do gráfico para
+escolher os países. Cada país tem sua própria meta, por isso a faixa verde
+vale só para o Brasil.
 
 ## De onde vem?
 

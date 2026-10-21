@@ -4,11 +4,19 @@ from typing import Literal
 import pandas as pd
 
 from pipeline import store
-from pipeline.models import Indicator, SeriesRef, load_indicator_targets
+from pipeline.models import (
+    Country,
+    Indicator,
+    SeriesRef,
+    load_countries,
+    load_indicator_targets,
+)
 from pipeline.transforms import real_rate
 from pipeline.zones import compute_zones
 
-TARGETS_DIR = Path(__file__).resolve().parents[1] / "data" / "targets"
+ROOT = Path(__file__).resolve().parents[1]
+TARGETS_DIR = ROOT / "data" / "targets"
+COUNTRIES_FILE = ROOT / "config" / "countries.yaml"
 UNIT_SYMBOLS = {"percent": "%"}
 DEFAULT_YEARS = 30
 WINDOWS_YEARS = [8, 15, 30]
@@ -114,12 +122,58 @@ def zone_since(table: pd.DataFrame) -> str:
     return table["period"].iloc[start]
 
 
+def peer_lines(
+    indicator: Indicator,
+    countries: dict[str, Country],
+    lang: Lang,
+    series_dir: Path = store.SERIES_DIR,
+) -> list[dict]:
+    """The comparison countries, reference line (OECD average) first.
+
+    A country with no stored data yet is left out rather than drawn empty.
+    """
+    lines = []
+    own = current_table(indicator, series_dir)
+    starts_at = visible(own, indicator.chart.show_from)["period"].iloc[0]
+    for group in indicator.series.peers:
+        for ref in group.refs():
+            if ref.geo not in countries:
+                raise ValueError(
+                    f"{indicator.id}: '{ref.geo}' is not in countries.yaml"
+                )
+            # Start where Brazil's line starts, so the chart is not stretched.
+            table = visible(stored_values(ref, series_dir), starts_at)
+            if table.empty:
+                continue
+            country = countries[ref.geo]
+            lines.append(
+                {
+                    "geo": ref.geo,
+                    "name": getattr(country.name, lang),
+                    "role": country.role,
+                    "default_on": country.role == "reference" or country.default_on,
+                    "source": group.source_name,
+                    "latest": {
+                        "period": table["period"].iloc[-1],
+                        "value": float(table["value"].iloc[-1]),
+                    },
+                    "points": [
+                        [period, float(value)]
+                        for period, value in zip(table["period"], table["value"])
+                    ],
+                }
+            )
+    order = list(countries)
+    return sorted(lines, key=lambda line: order.index(line["geo"]))
+
+
 def chart_data(
     indicator: Indicator,
     lang: Lang,
     series_dir: Path = store.SERIES_DIR,
     targets_dir: Path = TARGETS_DIR,
     others: dict[str, Indicator] | None = None,
+    countries: dict[str, Country] | None = None,
 ) -> dict:
     table = visible(
         zone_table(indicator, series_dir, targets_dir), indicator.chart.show_from
@@ -154,6 +208,12 @@ def chart_data(
         "basis": None if zones is None else zones.basis,
         "citation": None if zones is None else zones.citation,
         "compare": compare_line(indicator, others or {}, lang, series_dir),
+        "peers": peer_lines(
+            indicator,
+            countries if countries is not None else load_countries(COUNTRIES_FILE),
+            lang,
+            series_dir,
+        ),
         "chart": {
             "default_years": DEFAULT_YEARS,
             "windows": WINDOWS_YEARS,
