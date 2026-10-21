@@ -1,22 +1,32 @@
 ---
-question: How much does money cost after inflation?
-summary: In {month}, the real interest rate was {value} a year. It is the Selic minus the inflation the market expects for the next 12 months.
+question: How much does it cost to borrow money, after rising prices?
+summary: In {month}, the real interest rate was {value} a year. It is the Selic rate minus the inflation expected for the next 12 months.
 chart_subtitle: >-
   Real interest rate, in % a year, at the end of each month. Purple line: real
-  rate. Grey line: the Selic, before taking out inflation.
+  interest rate. Grey line: the Selic, before taking out inflation.
 ---
 
 ## What is it?
 
-The real interest rate is the Selic minus expected inflation. If the Selic is
-14% and expected inflation is 5%, the real rate is close to 9%. It shows how
-much money really earns or costs once prices go up.
+The real interest rate is the Selic rate minus the expected rise in prices
+(inflation). If the Selic is 14% and expected inflation is 5%, the real rate
+is close to 9%. It shows how much money really earns or costs once prices go
+up.
 
 ## Why does it matter?
 
-People who lend or save money look at the real rate. A high real rate slows
-down spending and investment and helps hold prices back. A low real rate
-stimulates the economy.
+Imagine buying a new phone in instalments. If the interest on those
+instalments is low, the phone becomes more affordable and more people buy it.
+With high interest, the phone becomes less affordable and fewer people buy it.
+Overall, a high (real) interest rate slows down spending and investment and
+helps hold back rising prices. A low real interest rate stimulates the
+economy.
+
+The interest rate is the main tool the Central Bank has to control rising
+prices. If prices rise faster than planned, the Central Bank raises the
+interest rate to hold that rise back and protect the economy. When people are
+not spending money, as during COVID, for example, interest rates go down to
+encourage spending and trade.
 
 ## How to read the chart?
 
