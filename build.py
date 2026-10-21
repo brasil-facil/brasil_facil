@@ -188,6 +188,14 @@ def related_link(
     }
 
 
+def compare_url(
+    indicator: Indicator, by_id: dict[str, Indicator], lang: str
+) -> str | None:
+    """The page of the indicator drawn as the grey comparison line."""
+    compare = indicator.chart.compare_with
+    return None if compare is None else page_url(by_id[compare.indicator], lang)
+
+
 def write(path: Path, text: str, dist: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
@@ -235,6 +243,7 @@ def main(dist: Path = DIST) -> None:
                 latest_period_long=period_long(data["latest"]["period"], lang, kind),
                 change=change_text(data["latest"]["change"], s, lang),
                 related=related_link(indicator, by_id, text, lang),
+                compare_url=compare_url(indicator, by_id, lang),
                 json_url=json_url,
                 other_url=page_url(indicator, other),
             )

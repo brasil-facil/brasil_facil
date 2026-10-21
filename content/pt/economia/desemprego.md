@@ -10,14 +10,14 @@ chart_subtitle: >-
 
 O desemprego conta as pessoas que não trabalharam, estavam prontas para
 começar e procuraram emprego no último mês. A taxa mostra quantas são, a cada
-100 pessoas que querem trabalhar. Quem não procura emprego, como estudantes e
+100 pessoas que querem trabalhar e não encontram emprego. Quem não procura emprego, como estudantes e
 aposentados, não entra na conta.
 
 ## Por que importa?
 
 Quando o desemprego sobe, mais famílias perdem renda, e quem tem emprego tende
 a conseguir aumentos menores. Uma subida rápida costuma aparecer quando a
-economia está desacelerando.
+economia está desacelerando. Quando a taxa do desemprego aumenta consideravelmente comparada ao mesmo mês do ano anterior (por exemplo, Janeiro 2025 em relação a Janeiro de 2026), é um indicador de crise econômica a frente.
 
 ## Como ler o gráfico?
 

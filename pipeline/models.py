@@ -24,7 +24,7 @@ class LangText(Strict):
 
 
 class SeriesRef(Strict):
-    source: Literal["sidra"]
+    source: Literal["sidra", "sgs", "focus"]
     code: str
     geo: str
 
@@ -77,7 +77,19 @@ class Release(Strict):
 
 
 class IndicatorSeries(Strict):
-    brazil: SeriesRef
+    # brazil: the series shown as it is published.
+    # inputs: named series a transform combines (e.g. selic + expected inflation).
+    brazil: SeriesRef | None = None
+    inputs: dict[str, SeriesRef] | None = None
+
+    @model_validator(mode="after")
+    def check_one_kind(self) -> "IndicatorSeries":
+        if (self.brazil is None) == (self.inputs is None):
+            raise ValueError("series needs either 'brazil' or 'inputs', not both")
+        return self
+
+    def all_refs(self) -> list[SeriesRef]:
+        return [self.brazil] if self.brazil else list(self.inputs.values())
 
 
 class SourceInfo(Strict):
@@ -94,6 +106,9 @@ class CompareWith(Strict):
 class ChartSettings(Strict):
     show_from: str | None = Field(default=None, pattern=r"^\d{4}-\d{2}$")
     compare_with: CompareWith | None = None
+    # Show the grey "Sem meta" pill when there is no zone. Turn off where
+    # "no target" would mislead (the Selic is itself a decision).
+    no_target_pill: bool = True
 
 
 class Indicator(Strict):
@@ -108,13 +123,24 @@ class Indicator(Strict):
     period_kind: Literal["month", "rolling_quarter"] = "month"
     series: IndicatorSeries
     source: SourceInfo
-    transform: Literal["none"]
+    transform: Literal["none", "real_rate"]
     zones: Zones | None = None  # None: no official target, so no colour
     chart: ChartSettings = ChartSettings()
     # id of an indicator mentioned, with a link, under the number
     related: str | None = None
     release: Release
     content: str
+
+    @model_validator(mode="after")
+    def check_series_for_transform(self) -> "Indicator":
+        needed = {"real_rate": {"selic", "expected_inflation"}}.get(self.transform)
+        if needed is None and self.series.brazil is None:
+            raise ValueError("transform 'none' needs series.brazil")
+        if needed is not None and set(self.series.inputs or {}) != needed:
+            raise ValueError(
+                f"transform '{self.transform}' needs inputs: {sorted(needed)}"
+            )
+        return self
 
 
 class IndicatorTargetRow(Strict):

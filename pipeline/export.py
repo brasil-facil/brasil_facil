@@ -4,7 +4,8 @@ from typing import Literal
 import pandas as pd
 
 from pipeline import store
-from pipeline.models import Indicator, load_indicator_targets
+from pipeline.models import Indicator, SeriesRef, load_indicator_targets
+from pipeline.transforms import real_rate
 from pipeline.zones import compute_zones
 
 TARGETS_DIR = Path(__file__).resolve().parents[1] / "data" / "targets"
@@ -34,7 +35,17 @@ def zone_table(
 def current_table(
     indicator: Indicator, series_dir: Path = store.SERIES_DIR
 ) -> pd.DataFrame:
-    path = store.series_path(indicator.series.brazil.series_id, series_dir)
+    if indicator.transform == "real_rate":
+        inputs = indicator.series.inputs
+        return real_rate(
+            stored_values(inputs["selic"], series_dir),
+            stored_values(inputs["expected_inflation"], series_dir),
+        )
+    return stored_values(indicator.series.brazil, series_dir)
+
+
+def stored_values(ref: SeriesRef, series_dir: Path = store.SERIES_DIR) -> pd.DataFrame:
+    path = store.series_path(ref.series_id, series_dir)
     return store.current_values(store.read_history(path)).reset_index()
 
 
@@ -143,7 +154,11 @@ def chart_data(
         "basis": None if zones is None else zones.basis,
         "citation": None if zones is None else zones.citation,
         "compare": compare_line(indicator, others or {}, lang, series_dir),
-        "chart": {"default_years": DEFAULT_YEARS, "windows": WINDOWS_YEARS},
+        "chart": {
+            "default_years": DEFAULT_YEARS,
+            "windows": WINDOWS_YEARS,
+            "no_target_pill": indicator.chart.no_target_pill,
+        },
         "source": {
             "name": indicator.source.name,
             "table": indicator.source.table,

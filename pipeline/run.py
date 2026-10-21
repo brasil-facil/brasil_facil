@@ -7,25 +7,21 @@ import pandas as pd
 
 from pipeline import store
 from pipeline.export import TARGETS_DIR, zone_table
-from pipeline.models import Indicator, load_indicator
-from pipeline.sources import sidra
+from pipeline.models import Indicator, SeriesRef, load_indicator
+from pipeline.sources import focus, sgs, sidra
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = ROOT / "config"
-SOURCES = {"sidra": sidra}
+SOURCES = {"sidra": sidra, "sgs": sgs, "focus": focus}
 
 
 def load_all_indicators(config_dir: Path = CONFIG_DIR) -> list[Indicator]:
     return [load_indicator(path) for path in sorted(config_dir.glob("*/*.yaml"))]
 
 
-def update_indicator(
-    indicator: Indicator,
-    full: bool,
-    today: str,
-    series_dir: Path = store.SERIES_DIR,
+def update_series(
+    ref: SeriesRef, full: bool, today: str, series_dir: Path = store.SERIES_DIR
 ) -> tuple[int, int]:
-    ref = indicator.series.brazil
     sid = ref.series_id
     source = SOURCES[ref.source]
     first_time = not store.series_path(sid, series_dir).exists()
@@ -37,6 +33,20 @@ def update_indicator(
         for file in files:
             file.unlink(missing_ok=True)
     return store.update_series(sid, parsed, today, series_dir)
+
+
+def update_indicator(
+    indicator: Indicator,
+    full: bool,
+    today: str,
+    series_dir: Path = store.SERIES_DIR,
+) -> tuple[int, int]:
+    """Update every series the indicator uses; return the total new and revised rows."""
+    new = revised = 0
+    for ref in indicator.series.all_refs():
+        n, r = update_series(ref, full, today, series_dir)
+        new, revised = new + n, revised + r
+    return new, revised
 
 
 def latest_zone(
