@@ -284,6 +284,16 @@ a {
   margin-bottom: 6px;
 }
 
+/* The indicator's plain name, above the question: the page's own label. */
+.indicator-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.6vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--brand);
+  margin-bottom: 8px;
+}
+
 .lede {
   font-size: 1.2rem;
   color: var(--muted);
