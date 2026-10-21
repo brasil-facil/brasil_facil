@@ -1,0 +1,29 @@
+id: inpc
+section: economia
+group: lagging
+name:
+  pt: Aumento dos preços para famílias de menor renda - INPC
+  en: Increase in prices for lower-income families - INPC
+slug:
+  pt: inpc
+  en: inpc
+technical_name: INPC, acumulado em 12 meses
+unit: percent
+series:
+  brazil: {source: sidra, code: "1736-v2292", geo: BRA}
+source:
+  name: IBGE
+  table: INPC, tabela 1736
+  url: https://sidra.ibge.gov.br/tabela/1736
+transform: none
+# No zones: there is no official INPC target, so the page shows no colour
+# (decided 21 Oct 2026). The IPCA line is drawn next to it instead.
+chart:
+  show_from: "1995-06"    # same start as IPCA: first 12-month window after the Plano Real
+  compare_with:
+    indicator: inflacao
+    label: {pt: IPCA, en: IPCA}
+release:
+  expected_day: 10
+  stale_after_days: 45
+content: inpc

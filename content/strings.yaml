@@ -29,6 +29,12 @@ pt:
   theme_label: Aparência
   theme_dark: Escuro
   theme_light: Claro
+  compare_same_month: "{label} no mesmo mês: {value}"
+  change_higher: "{value} maior do que um ano antes"
+  change_lower: "{value} menor do que um ano antes"
+  change_same: Igual a um ano antes
+  point: ponto
+  points: pontos
 en:
   html_lang: en
   other_lang: pt-BR
@@ -59,3 +65,9 @@ en:
   theme_label: Appearance
   theme_dark: Dark
   theme_light: Light
+  compare_same_month: "{label} in the same month: {value}"
+  change_higher: "{value} higher than a year earlier"
+  change_lower: "{value} lower than a year earlier"
+  change_same: The same as a year earlier
+  point: point
+  points: points

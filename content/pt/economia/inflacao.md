@@ -1,6 +1,7 @@
 ---
 question: Os preços estão subindo mais rápido do que a meta?
 summary: Em {month}, os preços estavam {value} mais altos do que 12 meses antes.
+related_note: "Para famílias de menor renda (INPC, usado no reajuste do salário mínimo): {value}"
 chart_subtitle: >-
   Quanto os preços subiram em 12 meses, em %. Faixa verde: a meta do governo,
   que mudou com o tempo. Faixa amarela: até 1,5 ponto fora da meta.

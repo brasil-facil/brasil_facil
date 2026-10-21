@@ -6,7 +6,7 @@ import markdown
 import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
-from pipeline.export import chart_data
+from pipeline.export import UNIT_SYMBOLS, chart_data, current_table
 from pipeline.models import Indicator, load_indicator
 
 ROOT = Path(__file__).parent
@@ -101,6 +101,46 @@ def month_long(period: str, lang: str) -> str:
     return f"{name} de {year}" if lang == "pt" else f"{name} {year}"
 
 
+def months_back(period: str, n: int) -> str:
+    year, month = (int(part) for part in period.split("-"))
+    index = year * 12 + (month - 1) - n
+    return f"{index // 12}-{index % 12 + 1:02d}"
+
+
+# A rolling quarter (PNAD) ending in 2026-08 covers June to August 2026.
+def period_short(period: str, lang: str, kind: str = "month") -> str:
+    if kind == "month":
+        return month_short(period, lang)
+    start = months_back(period, 2)
+    if start[:4] == period[:4]:
+        first = month_short(start, lang).split("/")[0]
+        return f"{first}–{month_short(period, lang)}"
+    return f"{month_short(start, lang)}–{month_short(period, lang)}"
+
+
+def period_long(period: str, lang: str, kind: str = "month") -> str:
+    if kind == "month":
+        return month_long(period, lang)
+    start = months_back(period, 2)
+    link = " a " if lang == "pt" else " to "
+    if start[:4] == period[:4]:
+        first = MONTHS_LONG[lang][int(start[5:]) - 1]
+        return first + link + month_long(period, lang)
+    return month_long(start, lang) + link + month_long(period, lang)
+
+
+def change_text(change: float | None, s: dict[str, str], lang: str) -> str | None:
+    """'0,3 ponto menor do que um ano antes' for the year-on-year rule."""
+    if change is None:
+        return None
+    if change == 0:
+        return s["change_same"]
+    size = abs(change)
+    unit = s["point"] if size < 2 else s["points"]
+    key = "change_higher" if change > 0 else "change_lower"
+    return s[key].format(value=f"{number(size, lang)} {unit}")
+
+
 def load_strings() -> dict[str, dict[str, str]]:
     strings = yaml.safe_load((CONTENT / "strings.yaml").read_text(encoding="utf-8"))
     missing = set(strings["pt"]) ^ set(strings["en"])
@@ -126,6 +166,28 @@ def page_url(indicator: Indicator, lang: str) -> str:
     return f"/{lang}/{section}/{getattr(indicator.slug, lang)}/"
 
 
+def related_link(
+    indicator: Indicator,
+    by_id: dict[str, Indicator],
+    text: dict[str, str],
+    lang: str,
+) -> dict[str, str] | None:
+    """The "see also" line under the number, e.g. the INPC on the IPCA page."""
+    if indicator.related is None:
+        return None
+    if indicator.related not in by_id:
+        raise ValueError(f"{indicator.id}: related names unknown '{indicator.related}'")
+    if "related_note" not in text:
+        raise ValueError(f"{indicator.id}: content needs a related_note ({lang})")
+    other = by_id[indicator.related]
+    value = current_table(other)["value"].iloc[-1]
+    unit = UNIT_SYMBOLS[other.unit]
+    return {
+        "text": text["related_note"].format(value=number(value, lang) + unit),
+        "url": page_url(other, lang),
+    }
+
+
 def write(path: Path, text: str, dist: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
@@ -142,6 +204,7 @@ def main(dist: Path = DIST) -> None:
     env.filters.update(number=number, month_short=month_short, month_long=month_long)
     strings = load_strings()
     indicators = [load_indicator(p) for p in sorted(CONFIG.glob("*/*.yaml"))]
+    by_id = {indicator.id: indicator for indicator in indicators}
 
     for lang in LANGS:
         other = "en" if lang == "pt" else "pt"
@@ -149,7 +212,7 @@ def main(dist: Path = DIST) -> None:
         metric_pages = []
 
         for indicator in indicators:
-            data = chart_data(indicator, lang)
+            data = chart_data(indicator, lang, others=by_id)
             text = load_text(indicator, lang)
             json_url = f"/data/{lang}/{indicator.id}.json"
             write(
@@ -157,8 +220,9 @@ def main(dist: Path = DIST) -> None:
             )
 
             url = page_url(indicator, lang)
+            kind = indicator.period_kind
             summary = text["summary"].format(
-                month=month_long(data["latest"]["period"], lang),
+                month=period_long(data["latest"]["period"], lang, kind),
                 value=number(data["latest"]["value"], lang) + data["unit"],
             )
             html = env.get_template("metric.html").render(
@@ -167,6 +231,10 @@ def main(dist: Path = DIST) -> None:
                 data=data,
                 text=text,
                 summary=summary,
+                latest_period=period_short(data["latest"]["period"], lang, kind),
+                latest_period_long=period_long(data["latest"]["period"], lang, kind),
+                change=change_text(data["latest"]["change"], s, lang),
+                related=related_link(indicator, by_id, text, lang),
                 json_url=json_url,
                 other_url=page_url(indicator, other),
             )

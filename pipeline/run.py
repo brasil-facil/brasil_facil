@@ -64,7 +64,7 @@ def main(argv: list[str] | None = None) -> int:
             latest = latest_zone(indicator)
             print(
                 f"{indicator.id:<14}{new:>6}{revised:>9}  "
-                f"{latest['period']} {latest['value']} ({latest['zone']})"
+                f"{latest['period']} {latest['value']} ({latest['zone'] or 'no zone'})"
             )
         except Exception as error:  # noqa: BLE001 (fail soft: one source must not stop the others)
             failures += 1

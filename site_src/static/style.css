@@ -46,6 +46,7 @@
   /* See-through versions for the bands behind the chart line. */
   --good-band: rgba(30, 122, 76, 0.14);
   --watch-band: rgba(212, 160, 23, 0.16);
+  --cmp-line: #857F94;   /* comparison lines: quiet grey */
   --radius: 14px;
   --font-display: "Bitter", Georgia, "Times New Roman", serif;
   --font-body: "Inclusive Sans", Verdana, sans-serif;
@@ -76,6 +77,7 @@
   --bad: #F2806F;   --bad-soft: rgba(242, 128, 111, 0.14);
   --good-band: rgba(82, 196, 141, 0.16);
   --watch-band: rgba(231, 176, 78, 0.12);
+  --cmp-line: #938DA3;
   color-scheme: dark;
 }
 
@@ -100,6 +102,7 @@
     --bad: #F2806F;   --bad-soft: rgba(242, 128, 111, 0.14);
     --good-band: rgba(82, 196, 141, 0.16);
     --watch-band: rgba(231, 176, 78, 0.12);
+    --cmp-line: #938DA3;
     color-scheme: dark;
   }
 }
@@ -440,4 +443,14 @@ th {
 :focus-visible {
   outline: 3px solid var(--brand);
   outline-offset: 2px;
+}
+
+/* A short fact next to the number, e.g. "used to adjust the minimum wage". */
+.now-note {
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.related a {
+  font-weight: 700;
 }

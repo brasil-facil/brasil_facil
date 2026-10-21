@@ -4,7 +4,12 @@ import pandas as pd
 import pytest
 
 from pipeline.models import Zones, load_indicator_targets
-from pipeline.zones import band_zones, classify
+from pipeline.zones import (
+    band_zones,
+    change_from_year_before_zones,
+    classify,
+    classify_change,
+)
 
 TARGETS = Path(__file__).parents[1] / "data" / "targets" / "meta-inflacao.csv"
 ZONES = Zones(
@@ -60,3 +65,42 @@ def test_revised_target_replaces_the_original():
     result = zones_for({"2003-06": 6.0})
     assert result.loc["2003-06", "target"] == 4.0
     assert result.loc["2003-06", "zone"] == "green"
+
+
+UNEMPLOYMENT = Zones(
+    rule="change_from_year_before",
+    basis="brasilfacil_rule",
+    green_below=0.2,
+    red_from=0.5,
+    citation="Sahm (2019), adapted",
+    checked_on="2026-10-21",
+)
+
+
+@pytest.mark.parametrize(
+    ("change", "expected"),
+    [(-0.3, "green"), (0.19, "green"), (0.2, "yellow"), (0.49, "yellow"), (0.5, "red")],
+)
+def test_classify_change_edges(change, expected):
+    assert classify_change(change, green_below=0.2, red_from=0.5) == expected
+
+
+def test_change_from_year_before_compares_same_months():
+    frame = pd.DataFrame(
+        {
+            "period": ["2025-03", "2025-08", "2026-03", "2026-08"],
+            "value": [7.0, 5.6, 7.1, 5.3],
+        }
+    )
+    result = change_from_year_before_zones(frame, UNEMPLOYMENT).set_index("period")
+    assert pd.isna(result.loc["2025-03", "zone"])
+    assert result.loc["2026-03", "change"] == pytest.approx(0.1)
+    assert result.loc["2026-03", "zone"] == "green"
+    assert result.loc["2026-08", "change"] == pytest.approx(-0.3)
+
+
+def test_zones_rule_needs_its_own_fields():
+    with pytest.raises(ValueError, match="needs: green_below"):
+        Zones(rule="change_from_year_before", basis="brasilfacil_rule", red_from=0.5)
+    with pytest.raises(ValueError, match="needs: target"):
+        Zones(rule="band", basis="official_target", yellow_margin=1.5)

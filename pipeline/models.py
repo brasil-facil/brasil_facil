@@ -38,12 +38,37 @@ class Zones(Strict):
         "band",
         "threshold_plus_trend",
         "distance_from_reference",
-        "sahm_rule",
+        "change_from_year_before",
         "trend",
     ]
-    target: str
-    yellow_margin: float
     basis: Literal["official_target", "imf", "world_bank", "oecd", "brasilfacil_rule"]
+    # band: an official target file plus Brasil Fácil's yellow margin
+    target: str | None = None
+    yellow_margin: float | None = None
+    # change_from_year_before: thresholds in points of the rate
+    green_below: float | None = None
+    red_from: float | None = None
+    # where a Brasil Fácil rule comes from, and when it was last checked
+    citation: str | None = None
+    checked_on: date | None = None
+
+    @model_validator(mode="after")
+    def check_fields_for_rule(self) -> "Zones":
+        needed = {
+            "band": ["target", "yellow_margin"],
+            "change_from_year_before": [
+                "green_below",
+                "red_from",
+                "citation",
+                "checked_on",
+            ],
+        }.get(self.rule, [])
+        missing = [name for name in needed if getattr(self, name) is None]
+        if missing:
+            raise ValueError(f"rule '{self.rule}' needs: {', '.join(missing)}")
+        if self.rule == "change_from_year_before" and self.green_below > self.red_from:
+            raise ValueError("green_below must not be larger than red_from")
+        return self
 
 
 class Release(Strict):
@@ -61,8 +86,14 @@ class SourceInfo(Strict):
     url: HttpUrl
 
 
+class CompareWith(Strict):
+    indicator: str  # the id of another indicator, drawn as a thin grey line
+    label: LangText  # its short name at the end of the line, e.g. "IPCA"
+
+
 class ChartSettings(Strict):
     show_from: str | None = Field(default=None, pattern=r"^\d{4}-\d{2}$")
+    compare_with: CompareWith | None = None
 
 
 class Indicator(Strict):
@@ -73,11 +104,15 @@ class Indicator(Strict):
     slug: LangText
     technical_name: str
     unit: Literal["percent"]
+    # "rolling_quarter": each value covers 3 months ending in its period (PNAD)
+    period_kind: Literal["month", "rolling_quarter"] = "month"
     series: IndicatorSeries
     source: SourceInfo
     transform: Literal["none"]
-    zones: Zones
+    zones: Zones | None = None  # None: no official target, so no colour
     chart: ChartSettings = ChartSettings()
+    # id of an indicator mentioned, with a link, under the number
+    related: str | None = None
     release: Release
     content: str
 
