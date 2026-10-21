@@ -1,0 +1,31 @@
+id: pib-per-capita
+section: economia
+group: lagging
+name:
+  pt: Riqueza produzida por pessoa - PIB per capita
+  en: Wealth produced per person - GDP per capita
+slug:
+  pt: pib-per-capita
+  en: gdp-per-capita
+technical_name: PIB per capita, preços constantes, paridade do poder de compra (dólares internacionais de 2021)
+unit: usd_ppp
+period_kind: year
+series:
+  # Decided 21 Oct 2026: IMF, PPP dollars, so countries can be compared. Constant
+  # 2021 dollars, so the line shows real growth, not inflation. Only years up to
+  # the IMF's LATEST_ACTUAL_ANNUAL_DATA are kept; later years are projections.
+  brazil: {source: imf, code: gdp-pc-ppp, geo: BRA}
+  peers:
+    - {source: imf, code: gdp-pc-ppp, geo: [G110, MEX, COL, ZAF, USA], source_name: FMI}
+source:
+  name: FMI
+  table: World Economic Outlook, PIB per capita em PPC
+  url: https://www.imf.org/en/Publications/WEO
+transform: none
+# No zones: there is no official target for income per person.
+chart:
+  no_target_pill: false
+release:
+  expected_day: 15       # the IMF publishes the WEO in April and October
+  stale_after_days: 400
+content: pib-per-capita

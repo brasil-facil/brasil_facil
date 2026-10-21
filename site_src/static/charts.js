@@ -19,8 +19,9 @@
     return year + "-" + String(month).padStart(2, "0");
   }
 
+  // "2026-09" -> "2026-09-01"; a yearly "2025" -> "2025-01-01".
   function toDate(period) {
-    return period + "-01";
+    return period.length === 4 ? period + "-01-01" : period + "-01";
   }
 
   // One soft rectangle per band: green inside the target, yellow just outside.
@@ -46,6 +47,19 @@
   var DASHES = [[6, 3], [2, 3], [10, 3, 2, 3], [4, 2]];
   var MAX_PEERS = 3;
 
+  // Room on the right for the end labels ("Economias avançadas US$ 63.876"):
+  // about 6.5 px per character of the longest label, between 64 and 230 px.
+  function labelRoom(data, fmt) {
+    var latest = data.points[data.points.length - 1][1];
+    var labels = ["Brasil " + fmt.value(latest)];
+    data.peers.forEach(function (peer) { labels.push(peer.name + " " + fmt.value(peer.latest.value)); });
+    if (data.compare && data.compare.latest !== null) {
+      labels.push(data.compare.label + " " + fmt.value(data.compare.latest));
+    }
+    var longest = Math.max.apply(null, labels.map(function (label) { return label.length; }));
+    return Math.min(230, Math.max(64, Math.round(longest * 6.5) + 16));
+  }
+
   function buildOption(data, colors, fmt, active) {
     var points = data.points.map(function (p) { return [toDate(p[0]), p[1]]; });
     var last = points[points.length - 1];
@@ -53,7 +67,7 @@
     return {
       animation: false,
       textStyle: { fontFamily: "Inclusive Sans, Verdana, sans-serif", color: colors.muted },
-      grid: { left: 8, right: data.peers.length ? 132 : data.compare ? 96 : 64, top: 16, bottom: 8, containLabel: true },
+      grid: { left: 8, right: labelRoom(data, fmt), top: 16, bottom: 8, containLabel: true },
       tooltip: {
         trigger: "axis",
         backgroundColor: colors.surface,
@@ -62,7 +76,7 @@
         formatter: function (items) {
           var lines = items.filter(function (item) { return item.seriesType === "line"; });
           return fmt.month(lines[0].value[0]) + lines.map(function (item) {
-            return "<br>" + item.seriesName + ": <b>" + fmt.number(item.value[1]) + data.unit + "</b>";
+            return "<br>" + item.seriesName + ": <b>" + fmt.value(item.value[1]) + "</b>";
           }).join("");
         }
       },
@@ -79,7 +93,7 @@
         splitNumber: 4,
         axisLabel: {
           color: colors.muted,
-          formatter: function (v) { return fmt.number(v) + data.unit; }
+          formatter: function (v) { return fmt.value(v); }
         },
         splitLine: { lineStyle: { color: colors.line } }
       },
@@ -117,7 +131,7 @@
         endLabel: {
           show: true,
           color: colors.muted,
-          formatter: function (p) { return peer.name + " " + fmt.number(p.value[1]) + data.unit; }
+          formatter: function (p) { return peer.name + " " + fmt.value(p.value[1]); }
         },
         labelLayout: { moveOverlap: "shiftY" }
       });
@@ -136,7 +150,7 @@
         endLabel: {
           show: true,
           color: colors.muted,
-          formatter: function (p) { return data.compare.label + " " + fmt.number(p.value[1]) + data.unit; }
+          formatter: function (p) { return data.compare.label + " " + fmt.value(p.value[1]); }
         },
         labelLayout: { moveOverlap: "shiftY" }
       });
@@ -156,7 +170,7 @@
         fontWeight: 700,
         formatter: function (p) {
           var name = data.peers.length ? brazil + " " : "";
-          return name + fmt.number(p.value[1]) + data.unit;
+          return name + fmt.value(p.value[1]);
         }
       },
       labelLayout: { moveOverlap: "shiftY" }
@@ -243,11 +257,15 @@
       .then(function (data) {
         var box = el.closest(".chartbox");
         var locale = data.lang === "pt" ? "pt-BR" : "en-GB";
-        var numberFormat = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
+        var numberFormat = new Intl.NumberFormat(locale, { maximumFractionDigits: data.unit_prefix ? 0 : 2 });
         var monthFormat = new Intl.DateTimeFormat(locale, { month: "short", year: "numeric", timeZone: "UTC" });
         var fmt = {
           number: function (v) { return numberFormat.format(v); },
-          month: function (date) { return monthFormat.format(new Date(date)); }
+          // A value with its unit: "4,58%" or "US$ 19.968".
+          value: function (v) { return data.unit_prefix + numberFormat.format(v) + data.unit; },
+          month: function (date) {
+            return data.period_kind === "year" ? date.slice(0, 4) : monthFormat.format(new Date(date));
+          }
         };
 
         var chart = echarts.init(el, null, { renderer: "svg" });
