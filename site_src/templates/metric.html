@@ -11,14 +11,28 @@
   </section>
 
   <section class="now panel" aria-label="{{ s.now }}">
-    <p class="eyebrow">{{ s.now }} · {{ data.latest.period | month_short(lang) }}</p>
+    <p class="eyebrow">{{ s.now }} · {{ latest_period }}</p>
     <p class="big-number">{{ data.latest.value | number(lang) }}<small>{{ data.unit }}</small></p>
     <div class="now-zone">
       {{ zone_pill(data.latest.zone, s) }}
-      <span class="since">{{ s.since }} {{ data.latest.zone_since | month_short(lang) }}</span>
+      {% if data.latest.zone is not none %}
+        <span class="since">{{ s.since }} {{ data.latest.zone_since | month_short(lang) }}</span>
+      {% endif %}
     </div>
     {% if data.latest.lower is not none %}
       <p class="muted">{{ s.official_band.format(lower=(data.latest.lower | number(lang)) ~ data.unit, upper=(data.latest.upper | number(lang)) ~ data.unit) }}</p>
+    {% endif %}
+    {% if change %}
+      <p class="muted">{{ change }}</p>
+    {% endif %}
+    {% if text.now_note is defined %}
+      <p class="now-note">{{ text.now_note }}</p>
+    {% endif %}
+    {% if data.compare and data.compare.latest is not none %}
+      <p class="muted">{{ s.compare_same_month.format(label=data.compare.label, value=(data.compare.latest | number(lang)) ~ data.unit) }}</p>
+    {% endif %}
+    {% if related %}
+      <p class="muted related"><a href="{{ related.url }}">{{ related.text }} →</a></p>
     {% endif %}
   </section>
 
@@ -50,7 +64,7 @@
 
     <p class="source">
       {{ s.source }}: <a href="{{ data.source.url }}">{{ data.source.name }}, {{ data.source.table }}</a>.
-      {{ s.latest_data }}: {{ data.latest.period | month_long(lang) }}.
+      {{ s.latest_data }}: {{ latest_period_long }}.
     </p>
   </section>
 

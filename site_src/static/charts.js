@@ -49,15 +49,17 @@
     return {
       animation: false,
       textStyle: { fontFamily: "Inclusive Sans, Verdana, sans-serif", color: colors.muted },
-      grid: { left: 8, right: 64, top: 16, bottom: 8, containLabel: true },
+      grid: { left: 8, right: data.compare ? 96 : 64, top: 16, bottom: 8, containLabel: true },
       tooltip: {
         trigger: "axis",
         backgroundColor: colors.surface,
         borderColor: colors.line,
         textStyle: { color: colors.fg },
         formatter: function (items) {
-          var item = items[0];
-          return fmt.month(item.value[0]) + "<br><b>" + fmt.number(item.value[1]) + data.unit + "</b>";
+          var lines = items.filter(function (item) { return item.seriesType === "line"; });
+          return fmt.month(lines[0].value[0]) + lines.map(function (item) {
+            return "<br>" + item.seriesName + ": <b>" + fmt.number(item.value[1]) + data.unit + "</b>";
+          }).join("");
         }
       },
       xAxis: {
@@ -86,33 +88,59 @@
         moveOnMouseMove: false,
         moveOnMouseWheel: false
       }],
-      series: [
-        {
-          name: data.title,
-          type: "line",
-          data: points,
-          showSymbol: false,
-          lineStyle: { width: 3, color: colors.brand },
-          itemStyle: { color: colors.brand },
-          markArea: { silent: true, data: bandAreas(data, colors) },
-          endLabel: {
-            show: true,
-            color: colors.brand,
-            fontWeight: 700,
-            formatter: function (p) { return fmt.number(p.value[1]) + data.unit; }
-          }
-        },
-        {
-          // The dot on the latest value.
-          type: "scatter",
-          data: [last],
-          symbolSize: 9,
-          itemStyle: { color: colors.brand },
-          tooltip: { show: false },
-          silent: true
-        }
-      ]
+      series: series(data, colors, fmt, points, last)
     };
+  }
+
+  function series(data, colors, fmt, points, last) {
+    var list = [];
+
+    // A comparison (e.g. IPCA next to INPC): thin grey line, drawn first so
+    // Brazil's purple line stays on top. Labelled with its name at the end.
+    if (data.compare) {
+      list.push({
+        name: data.compare.label,
+        type: "line",
+        data: data.compare.points.map(function (p) { return [toDate(p[0]), p[1]]; }),
+        showSymbol: false,
+        lineStyle: { width: 1.5, color: colors.compare },
+        itemStyle: { color: colors.compare },
+        endLabel: {
+          show: true,
+          color: colors.muted,
+          formatter: function (p) { return data.compare.label + " " + fmt.number(p.value[1]) + data.unit; }
+        },
+        labelLayout: { moveOverlap: "shiftY" }
+      });
+    }
+
+    list.push({
+      name: data.title,
+      type: "line",
+      data: points,
+      showSymbol: false,
+      lineStyle: { width: 3, color: colors.brand },
+      itemStyle: { color: colors.brand },
+      markArea: { silent: true, data: bandAreas(data, colors) },
+      endLabel: {
+        show: true,
+        color: colors.brand,
+        fontWeight: 700,
+        formatter: function (p) { return fmt.number(p.value[1]) + data.unit; }
+      },
+      labelLayout: { moveOverlap: "shiftY" }
+    });
+
+    // The dot on the latest value.
+    list.push({
+      type: "scatter",
+      data: [last],
+      symbolSize: 9,
+      itemStyle: { color: colors.brand },
+      tooltip: { show: false },
+      silent: true
+    });
+    return list;
   }
 
   function setWindow(chart, data, years) {
@@ -144,6 +172,15 @@
     });
   }
 
+  // If the default window is hidden (a short series), start on "all" instead.
+  function pressVisibleDefault(box) {
+    var pressed = box.querySelector('.periods button[aria-pressed="true"]');
+    if (pressed && pressed.hidden) {
+      pressed.setAttribute("aria-pressed", "false");
+      box.querySelector('.periods button[data-years="all"]').setAttribute("aria-pressed", "true");
+    }
+  }
+
   function currentYears(box) {
     var pressed = box.querySelector('.periods button[aria-pressed="true"]:not([hidden])');
     return pressed ? pressed.dataset.years : "all";
@@ -168,13 +205,14 @@
           var colors = {
             brand: token("--brand"), fg: token("--fg"), muted: token("--muted"),
             line: token("--line"), surface: token("--surface"),
-            good: token("--good-band"), watch: token("--watch-band")
+            good: token("--good-band"), watch: token("--watch-band"), compare: token("--cmp-line")
           };
           chart.setOption(buildOption(data, colors, fmt), true);
           setWindow(chart, data, currentYears(box));
         }
 
         setupButtons(box, chart, data);
+        pressVisibleDefault(box);
         render();
         window.addEventListener("resize", function () { chart.resize(); });
         // theme.js sends "themechange" when the look switches (button or device).

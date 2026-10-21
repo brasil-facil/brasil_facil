@@ -52,9 +52,47 @@ def band_zones(
     return joined[["period", "value", "target", "lower", "upper", "zone"]]
 
 
+def classify_change(change: float, green_below: float, red_from: float) -> str:
+    if change < green_below:
+        return "green"
+    if change < red_from:
+        return "yellow"
+    return "red"
+
+
+def year_before(period: str) -> str:
+    year, month = period.split("-")
+    return f"{int(year) - 1}-{month}"
+
+
+def change_from_year_before_zones(values: pd.DataFrame, zones: Zones) -> pd.DataFrame:
+    """Colour by how much the rate moved since the same months a year earlier.
+
+    Comparing March with March cancels out the seasons (in Brazil unemployment
+    rises every January to March), which IBGE does not adjust for.
+    """
+    frame = values[["period", "value"]].sort_values("period").reset_index(drop=True)
+    lookup = dict(zip(frame["period"], frame["value"]))
+    frame["change"] = [
+        value - lookup[year_before(period)] if year_before(period) in lookup else None
+        for period, value in zip(frame["period"], frame["value"])
+    ]
+    frame["zone"] = [
+        None
+        if pd.isna(change)
+        else classify_change(change, zones.green_below, zones.red_from)
+        for change in frame["change"]
+    ]
+    return frame.assign(target=None, lower=None, upper=None)[
+        ["period", "value", "target", "lower", "upper", "change", "zone"]
+    ]
+
+
 def compute_zones(
     values: pd.DataFrame, rows: list[IndicatorTargetRow], zones: Zones
 ) -> pd.DataFrame:
     if zones.rule == "band":
         return band_zones(values, rows, zones)
+    if zones.rule == "change_from_year_before":
+        return change_from_year_before_zones(values, zones)
     raise NotImplementedError(f"zone rule '{zones.rule}' is not built yet")

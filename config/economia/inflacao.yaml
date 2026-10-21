@@ -23,6 +23,7 @@ zones:
   basis: official_target
 chart:
   show_from: "1995-06"    # first 12-month window entirely after the Plano Real (Jul 1994)
+related: inpc             # "Brasil agora" also shows the INPC, with a link (text: related_note)
 release:
   expected_day: 10
   stale_after_days: 45

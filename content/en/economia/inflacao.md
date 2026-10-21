@@ -1,6 +1,7 @@
 ---
 question: Are prices rising faster than the target?
 summary: In {month}, prices were {value} higher than 12 months earlier.
+related_note: "For lower-income families (INPC, used to adjust the minimum wage): {value}"
 chart_subtitle: >-
   How much prices rose over 12 months, in %. Green band: the government's
   target, which has changed over time. Yellow band: up to 1.5 points outside it.

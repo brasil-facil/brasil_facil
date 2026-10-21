@@ -34,6 +34,7 @@ def test_latest_is_september_2026_yellow(series_dir):
         "zone_since": "2026-09",
         "lower": 1.5,
         "upper": 4.5,
+        "change": None,
     }
 
 
@@ -55,3 +56,31 @@ def test_output_is_valid_json(series_dir):
     data = chart_data(INDICATOR, "en", series_dir)
     assert data["unit"] == "%"
     json.dumps(data, allow_nan=False)
+
+
+def test_indicator_without_zones_has_no_colour(series_dir):
+    no_zones = INDICATOR.model_copy(update={"zones": None})
+    data = chart_data(no_zones, "pt", series_dir)
+    assert data["latest"]["zone"] is None
+    assert data["latest"]["lower"] is None
+    assert data["bands"] == []
+    assert data["margin"] is None
+    json.dumps(data, allow_nan=False)
+
+
+def test_compare_line_uses_the_other_indicator(series_dir):
+    inpc = load_indicator(ROOT / "config" / "economia" / "inpc.yaml")
+    sid = inpc.series.brazil.series_id
+    store.update_series(sid, parse([FIXTURE], sid), "2026-10-19", series_dir)
+    data = chart_data(inpc, "en", series_dir, others={"inflacao": INDICATOR})
+    assert data["compare"]["label"] == "IPCA"
+    assert data["compare"]["points"][0] == ["1995-06", 33.03]
+    assert data["compare"]["latest"] == 4.58
+
+
+def test_compare_with_unknown_indicator_fails(series_dir):
+    inpc = load_indicator(ROOT / "config" / "economia" / "inpc.yaml")
+    sid = inpc.series.brazil.series_id
+    store.update_series(sid, parse([FIXTURE], sid), "2026-10-19", series_dir)
+    with pytest.raises(ValueError, match="unknown indicator"):
+        chart_data(inpc, "pt", series_dir, others={})

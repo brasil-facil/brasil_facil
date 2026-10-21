@@ -34,3 +34,41 @@ def test_build_writes_both_languages(tmp_path):
     assert data["lang"] == "en"
     assert (tmp_path / "static" / "echarts.min.js").exists()
     assert (tmp_path / "_redirects").read_text(encoding="utf-8") == "/  /pt/  302\n"
+
+
+def test_build_writes_the_inpc_page_with_ipca_next_to_it(tmp_path):
+    build.main(tmp_path)
+    pt = (tmp_path / "pt" / "economia" / "inpc" / "index.html").read_text(
+        encoding="utf-8"
+    )
+    assert "Sem meta" in pt
+    assert "IPCA no mesmo mês" in pt
+    home = (tmp_path / "pt" / "index.html").read_text(encoding="utf-8")
+    assert "/pt/economia/inpc/" in home and "/pt/economia/inflacao/" in home
+
+
+def test_ipca_page_links_to_inpc_with_its_value(tmp_path):
+    build.main(tmp_path)
+    pt = (tmp_path / "pt" / "economia" / "inflacao" / "index.html").read_text(
+        encoding="utf-8"
+    )
+    assert 'href="/pt/economia/inpc/"' in pt
+    assert "usado no reajuste do salário mínimo" in pt
+
+
+def test_rolling_quarter_periods():
+    assert build.period_short("2026-08", "pt", "rolling_quarter") == "jun–ago/2026"
+    assert build.period_long("2026-08", "pt", "rolling_quarter") == (
+        "junho a agosto de 2026"
+    )
+    assert build.period_long("2026-01", "en", "rolling_quarter") == (
+        "November 2025 to January 2026"
+    )
+    assert build.period_short("2026-09", "pt") == "set/2026"
+
+
+def test_change_text():
+    s = build.load_strings()["pt"]
+    assert build.change_text(-0.3, s, "pt") == "0,3 ponto menor do que um ano antes"
+    assert build.change_text(2.4, s, "pt") == "2,4 pontos maior do que um ano antes"
+    assert build.change_text(None, s, "pt") is None
