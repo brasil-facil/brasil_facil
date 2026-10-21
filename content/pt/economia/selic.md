@@ -5,7 +5,7 @@ now_note: Ela é decidida pelo Copom, um comitê do Banco Central, cerca de 8 ve
 related_note: "Descontando a inflação esperada (juro real): {value}"
 chart_subtitle: >-
   Meta da taxa Selic, em % ao ano, no fim de cada mês. Cada degrau é uma
-  decisão do Copom.
+  decisão do Copom. Linhas cinza: a taxa básica de juros de outros países.
 ---
 
 ## O que é?
@@ -26,6 +26,11 @@ manter a inflação dentro da meta.
 A linha roxa é a Selic. Ela anda em degraus: cada degrau é uma reunião do Copom
 que subiu, baixou ou manteve a taxa. Para saber o custo do dinheiro já
 descontando a inflação, veja a página do juro real.
+
+As linhas cinza são a taxa básica de juros de outros países, decidida pelo
+banco central de cada um. Cada país tem sua própria inflação e sua própria
+economia, por isso os juros são diferentes. Um juro maior ou menor não quer
+dizer, sozinho, que um país está melhor ou pior.
 
 ## De onde vem?
 

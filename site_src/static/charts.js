@@ -42,14 +42,18 @@
     return areas;
   }
 
-  function buildOption(data, colors, fmt) {
+  // One dash pattern per comparison country, so lines differ without colour.
+  var DASHES = [[6, 3], [2, 3], [10, 3, 2, 3], [4, 2]];
+  var MAX_PEERS = 3;
+
+  function buildOption(data, colors, fmt, active) {
     var points = data.points.map(function (p) { return [toDate(p[0]), p[1]]; });
     var last = points[points.length - 1];
 
     return {
       animation: false,
       textStyle: { fontFamily: "Inclusive Sans, Verdana, sans-serif", color: colors.muted },
-      grid: { left: 8, right: data.compare ? 96 : 64, top: 16, bottom: 8, containLabel: true },
+      grid: { left: 8, right: data.peers.length ? 132 : data.compare ? 96 : 64, top: 16, bottom: 8, containLabel: true },
       tooltip: {
         trigger: "axis",
         backgroundColor: colors.surface,
@@ -88,12 +92,36 @@
         moveOnMouseMove: false,
         moveOnMouseWheel: false
       }],
-      series: series(data, colors, fmt, points, last)
+      series: series(data, colors, fmt, points, last, active)
     };
   }
 
-  function series(data, colors, fmt, points, last) {
+  function series(data, colors, fmt, points, last, active) {
     var list = [];
+    var brazil = data.lang === "pt" ? "Brasil" : "Brazil";
+
+    // Comparison countries: thin grey lines, labelled at their end. The OECD
+    // average (reference) is solid and always on; the others are dashed.
+    var peerIndex = 0;
+    data.peers.forEach(function (peer) {
+      var isReference = peer.role === "reference";
+      var dash = isReference ? "solid" : DASHES[peerIndex++ % DASHES.length];
+      if (!isReference && !active.has(peer.geo)) { return; }
+      list.push({
+        name: peer.name,
+        type: "line",
+        data: peer.points.map(function (p) { return [toDate(p[0]), p[1]]; }),
+        showSymbol: false,
+        lineStyle: { width: 1.5, color: isReference ? colors.compare : colors.peer, type: dash },
+        itemStyle: { color: isReference ? colors.compare : colors.peer },
+        endLabel: {
+          show: true,
+          color: colors.muted,
+          formatter: function (p) { return peer.name + " " + fmt.number(p.value[1]) + data.unit; }
+        },
+        labelLayout: { moveOverlap: "shiftY" }
+      });
+    });
 
     // A comparison (e.g. IPCA next to INPC): thin grey line, drawn first so
     // Brazil's purple line stays on top. Labelled with its name at the end.
@@ -115,7 +143,7 @@
     }
 
     list.push({
-      name: data.title,
+      name: data.peers.length ? brazil : data.title,
       type: "line",
       data: points,
       showSymbol: false,
@@ -126,7 +154,10 @@
         show: true,
         color: colors.brand,
         fontWeight: 700,
-        formatter: function (p) { return fmt.number(p.value[1]) + data.unit; }
+        formatter: function (p) {
+          var name = data.peers.length ? brazil + " " : "";
+          return name + fmt.number(p.value[1]) + data.unit;
+        }
       },
       labelLayout: { moveOverlap: "shiftY" }
     });
@@ -181,6 +212,26 @@
     }
   }
 
+  function setupPeerButtons(box, active, render) {
+    var buttons = box.querySelectorAll(".compare-peers button");
+    function refresh() {
+      buttons.forEach(function (button) {
+        var on = active.has(button.dataset.geo);
+        button.setAttribute("aria-pressed", String(on));
+        button.disabled = !on && active.size >= MAX_PEERS;
+      });
+    }
+    buttons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        var geo = button.dataset.geo;
+        if (active.has(geo)) { active.delete(geo); } else if (active.size < MAX_PEERS) { active.add(geo); }
+        refresh();
+        render();
+      });
+    });
+    refresh();
+  }
+
   function currentYears(box) {
     var pressed = box.querySelector('.periods button[aria-pressed="true"]:not([hidden])');
     return pressed ? pressed.dataset.years : "all";
@@ -205,14 +256,21 @@
           var colors = {
             brand: token("--brand"), fg: token("--fg"), muted: token("--muted"),
             line: token("--line"), surface: token("--surface"),
-            good: token("--good-band"), watch: token("--watch-band"), compare: token("--cmp-line")
+            good: token("--good-band"), watch: token("--watch-band"), compare: token("--cmp-line"),
+            peer: token("--cmp-peer")
           };
-          chart.setOption(buildOption(data, colors, fmt), true);
+          chart.setOption(buildOption(data, colors, fmt, active), true);
           setWindow(chart, data, currentYears(box));
         }
 
+        // The comparison countries switched on, starting with the default ones.
+        var active = new Set(data.peers.filter(function (p) {
+          return p.role === "peer" && p.default_on;
+        }).map(function (p) { return p.geo; }));
+
         setupButtons(box, chart, data);
         pressVisibleDefault(box);
+        setupPeerButtons(box, active, render);
         render();
         window.addEventListener("resize", function () { chart.resize(); });
         // theme.js sends "themechange" when the look switches (button or device).

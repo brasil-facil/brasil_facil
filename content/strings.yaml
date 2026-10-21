@@ -35,6 +35,8 @@ pt:
   change_same: Igual a um ano antes
   point: ponto
   points: pontos
+  compare_with: Comparar com
+  compare_max: até 3 países ao mesmo tempo
 en:
   html_lang: en
   other_lang: pt-BR
@@ -71,3 +73,5 @@ en:
   change_same: The same as a year earlier
   point: point
   points: points
+  compare_with: Compare with
+  compare_max: up to 3 countries at a time

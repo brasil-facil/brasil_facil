@@ -4,7 +4,7 @@ summary: In {month}, prices were {value} higher than 12 months earlier.
 related_note: "For lower-income families (INPC, used to adjust the minimum wage): {value}"
 chart_subtitle: >-
   How much prices rose over 12 months, in %. Green band: the government's
-  target, which has changed over time. Yellow band: up to 1.5 points outside it.
+  target, which has changed over time. Yellow band: up to 1.5 points outside it. Grey lines: other countries and the OECD average.
 ---
 
 ## What is it?
@@ -23,6 +23,11 @@ The purple line is Brazil. The green band is the target the government set for
 each year. If the line is inside the green band, prices rose at the planned
 pace. The target started in 1999. Before that, there was no target to compare
 with.
+
+The grey lines show other countries. The solid grey line is the average of
+the OECD countries, mostly rich countries. Use the buttons under the chart to
+choose the countries. Each country has its own target, so the green band is
+for Brazil only.
 
 ## Where does it come from?
 

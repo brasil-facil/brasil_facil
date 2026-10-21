@@ -4,7 +4,7 @@ summary: From {month}, {value} of the people who wanted to work could not find a
 chart_subtitle: >-
   People looking for work without finding it, in % of those who want to work.
   Each point is a 3-month average. The colour compares with the same months a
-  year earlier.
+  year earlier. Grey lines: other countries, from the OECD.
 ---
 
 ## What is it?
@@ -27,6 +27,14 @@ year, when temporary end-of-year jobs end. That is why the colour compares
 each period with the same period a year earlier. Green: it rose less than 0.2
 point or fell. Yellow: it rose 0.2 to 0.5 point. Red: it rose 0.5 point or
 more.
+
+The grey lines are other countries, calculated by the OECD with the same
+definition of unemployment. There are small differences: in Brazil, the
+survey counts people aged 14 and over and does not remove the effect of the
+seasons. For the other countries, the OECD counts people aged 15 and over and
+removes that effect. So compare the direction of the lines more than the
+exact number. South Africa is not shown because it does not publish
+unemployment every month.
 
 ## Where does it come from?
 

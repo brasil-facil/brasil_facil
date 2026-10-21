@@ -2,7 +2,7 @@ id: selic
 section: economia
 group: leading
 name:
-  pt: Taxa básica de juros - Selic
+  pt: Taxa básica de juros - Taxa Selic
   en: Basic interest rate - Selic
 slug:
   pt: selic
@@ -13,6 +13,8 @@ series:
   # SGS 432 = the table "Histórico das taxas de juros" (Meta Selic per Copom
   # meeting), as a daily series. Stored as the value in force at month end.
   brazil: {source: sgs, code: "432", geo: BRA}
+  peers:   # each country's central bank policy rate
+    - {source: bis, code: policy-rate, geo: [MEX, COL, ZAF, USA], source_name: BIS}
 source:
   name: Banco Central
   table: Meta Selic, histórico das reuniões do Copom

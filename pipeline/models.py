@@ -24,7 +24,7 @@ class LangText(Strict):
 
 
 class SeriesRef(Strict):
-    source: Literal["sidra", "sgs", "focus"]
+    source: Literal["sidra", "sgs", "focus", "imf", "oecd", "bis"]
     code: str
     geo: str
 
@@ -76,11 +76,25 @@ class Release(Strict):
     stale_after_days: int
 
 
+class PeerGroup(Strict):
+    """Comparison countries that come from one source, e.g. IMF inflation."""
+
+    source: Literal["imf", "oecd", "bis"]
+    code: str
+    geo: list[str]  # country codes from config/countries.yaml
+    source_name: str  # shown under the chart, e.g. "FMI"
+
+    def refs(self) -> list[SeriesRef]:
+        return [SeriesRef(source=self.source, code=self.code, geo=g) for g in self.geo]
+
+
 class IndicatorSeries(Strict):
     # brazil: the series shown as it is published.
     # inputs: named series a transform combines (e.g. selic + expected inflation).
+    # peers: the comparison countries, drawn as thin grey lines.
     brazil: SeriesRef | None = None
     inputs: dict[str, SeriesRef] | None = None
+    peers: list[PeerGroup] = []
 
     @model_validator(mode="after")
     def check_one_kind(self) -> "IndicatorSeries":
@@ -89,7 +103,19 @@ class IndicatorSeries(Strict):
         return self
 
     def all_refs(self) -> list[SeriesRef]:
-        return [self.brazil] if self.brazil else list(self.inputs.values())
+        own = [self.brazil] if self.brazil else list(self.inputs.values())
+        return own + [ref for group in self.peers for ref in group.refs()]
+
+
+class Country(Strict):
+    name: LangText
+    role: Literal["reference", "peer"]
+    default_on: bool = False
+
+
+def load_countries(file_path: Path) -> dict[str, Country]:
+    data = yaml.safe_load(file_path.read_text(encoding="utf-8"))
+    return {code: Country.model_validate(value) for code, value in data.items()}
 
 
 class SourceInfo(Strict):

@@ -8,11 +8,18 @@ import pandas as pd
 from pipeline import store
 from pipeline.export import TARGETS_DIR, zone_table
 from pipeline.models import Indicator, SeriesRef, load_indicator
-from pipeline.sources import focus, sgs, sidra
+from pipeline.sources import bis, focus, imf, oecd, sgs, sidra
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = ROOT / "config"
-SOURCES = {"sidra": sidra, "sgs": sgs, "focus": focus}
+SOURCES = {
+    "sidra": sidra,
+    "sgs": sgs,
+    "focus": focus,
+    "imf": imf,
+    "oecd": oecd,
+    "bis": bis,
+}
 
 
 def load_all_indicators(config_dir: Path = CONFIG_DIR) -> list[Indicator]:
@@ -41,11 +48,22 @@ def update_indicator(
     today: str,
     series_dir: Path = store.SERIES_DIR,
 ) -> tuple[int, int]:
-    """Update every series the indicator uses; return the total new and revised rows."""
+    """Update every series the indicator uses; return the total new and revised rows.
+
+    One failing series (a blocked host) does not stop the others; the first
+    error is raised at the end, so the indicator is still reported as failed.
+    """
     new = revised = 0
+    errors = []
     for ref in indicator.series.all_refs():
-        n, r = update_series(ref, full, today, series_dir)
+        try:
+            n, r = update_series(ref, full, today, series_dir)
+        except Exception as error:  # noqa: BLE001 (fail soft, report below)
+            errors.append(f"{ref.series_id}: {error}")
+            continue
         new, revised = new + n, revised + r
+    if errors:
+        raise RuntimeError("; ".join(errors))
     return new, revised
 
 

@@ -85,3 +85,14 @@ def test_selic_pages_link_both_ways_without_no_target_pill(tmp_path):
     assert "Sem meta" not in selic and "Sem meta" not in real
     assert 'href="/pt/economia/juro-real/"' in selic
     assert 'href="/pt/economia/selic/"' in real
+
+
+def test_inflation_page_has_country_buttons(tmp_path):
+    build.main(tmp_path)
+    pt = (tmp_path / "pt" / "economia" / "inflacao" / "index.html").read_text(
+        encoding="utf-8"
+    )
+    assert "Comparar com" in pt
+    assert 'data-geo="MEX" aria-pressed="true"' in pt
+    assert 'data-geo="USA" aria-pressed="false"' in pt
+    assert "FMI:" in pt and "OCDE:" in pt
