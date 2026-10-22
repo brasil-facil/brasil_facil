@@ -106,16 +106,24 @@ class IndicatorSeries(Strict):
     # expected: what was expected for each period before it happened (e.g. the
     # Focus survey in January), shown next to the result, never coloured.
     expected: SeriesRef | None = None
+    # band: two series drawn as a shaded band around the main line (a fan
+    # chart), e.g. the income of the poorest and richest 10%. Same transform.
+    band: dict[Literal["lower", "upper"], SeriesRef] | None = None
 
     @model_validator(mode="after")
     def check_one_kind(self) -> "IndicatorSeries":
         if (self.brazil is None) == (self.inputs is None):
             raise ValueError("series needs either 'brazil' or 'inputs', not both")
+        if self.band is not None and set(self.band) != {"lower", "upper"}:
+            raise ValueError("band needs both 'lower' and 'upper'")
         return self
 
     def all_refs(self) -> list[SeriesRef]:
         own = [self.brazil] if self.brazil else list(self.inputs.values())
-        extra = [ref for ref in (self.forecast, self.expected) if ref is not None]
+        band = list(self.band.values()) if self.band else []
+        extra = [
+            ref for ref in (self.forecast, self.expected) if ref is not None
+        ] + band
         return own + extra + [ref for group in self.peers for ref in group.refs()]
 
 
@@ -150,7 +158,8 @@ class ChartSettings(Strict):
     # "no target" would mislead (the Selic is itself a decision).
     no_target_pill: bool = True
     # "bar": one bar per period, coloured by its zone (yearly growth rates).
-    kind: Literal["line", "bar"] = "line"
+    # "fan": the main line inside a shaded band (series.band), e.g. income.
+    kind: Literal["line", "bar", "fan"] = "line"
 
 
 class Indicator(Strict):
