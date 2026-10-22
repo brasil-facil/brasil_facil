@@ -39,8 +39,8 @@ pt:
   points: pontos
   compare_with: Comparar com
   compare_max: até 3 países ao mesmo tempo
-  growth_up: "{value} a mais do que no ano anterior ({year})"
-  growth_down: "{value} a menos do que no ano anterior ({year})"
+  growth_up: "{value} a mais do que um ano antes ({year})"
+  growth_down: "{value} a menos do que um ano antes ({year})"
   peer_average: "Média de {names} no mesmo ano: {value}"
   forecast: "Previsão do FMI: {items}"
   expected: "Em janeiro de {year}, os economistas esperavam {value} para o ano (pesquisa Focus, do Banco Central)"
@@ -84,8 +84,8 @@ en:
   points: points
   compare_with: Compare with
   compare_max: up to 3 countries at a time
-  growth_up: "{value} more than the year before ({year})"
-  growth_down: "{value} less than the year before ({year})"
+  growth_up: "{value} more than a year earlier ({year})"
+  growth_down: "{value} less than a year earlier ({year})"
   peer_average: "Average of {names} in the same year: {value}"
   forecast: "IMF forecast: {items}"
   expected: "In January {year}, economists expected {value} for the year (Focus survey, Banco Central)"

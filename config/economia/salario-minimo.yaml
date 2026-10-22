@@ -1,0 +1,33 @@
+id: salario-minimo
+section: economia
+group: lagging
+name:
+  pt: Salário mínimo, descontada a inflação
+  en: Minimum wage, after inflation
+slug:
+  pt: salario-minimo
+  en: minimum-wage
+technical_name: Salário mínimo real (SGS 1619 deflacionado pelo INPC, IBGE tabela 1736)
+unit: brl
+series:
+  # Decided 22 Oct 2026: the real value, in money of the latest month, so the line
+  # shows what the minimum wage buys. Both inputs are stored as published; the
+  # real value is recomputed on every run, so INPC revisions flow through.
+  inputs:
+    nominal: {source: sgs, code: "1619", geo: BRA}          # R$ per month
+    price_index: {source: sidra, code: "1736-v2289", geo: BRA}  # INPC, Dec 1993 = 100
+source:
+  name: Banco Central e IBGE
+  table: Salário mínimo (SGS 1619), corrigido pelo INPC (tabela 1736)
+  url: https://www3.bcb.gov.br/sgspub/
+transform: real_value    # nominal x (INPC of the latest month / INPC of that month)
+# No zones: there is no official target, and a higher or lower minimum wage is
+# not, on its own, good or bad (decided 22 Oct 2026).
+chart:
+  show_from: "1994-07"    # the first month of the Real; before it, other currencies
+  no_target_pill: false
+related: inpc            # "Brasil agora" links to the INPC page (text: related_note)
+release:
+  expected_day: 10       # the INPC comes out around the 10th
+  stale_after_days: 45
+content: salario-minimo

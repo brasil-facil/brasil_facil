@@ -84,11 +84,12 @@ MONTHS_LONG = {
 
 
 # Formatting helpers, used in templates as filters: {{ 4.58 | number(lang) }}.
-def number(value: float, lang: str) -> str:
+def number(value: float, lang: str, whole: bool = False) -> str:
     # Big amounts (US$ 19.968) without decimals; rates (4,58%) with up to two.
+    # whole=True: no decimals at all (money: R$ 845, not R$ 845,12).
     # Round half up (1234.5 -> 1235): Python's own rounding sends .5 to the
     # even neighbour (1234), which readers would not expect.
-    step = Decimal(1) if abs(value) >= 1000 else Decimal("0.01")
+    step = Decimal(1) if whole or abs(value) >= 1000 else Decimal("0.01")
     rounded = Decimal(str(value)).quantize(step, rounding=ROUND_HALF_UP)
     text = f"{rounded:,}"
     if "." in text:
@@ -117,8 +118,12 @@ def months_back(period: str, n: int) -> str:
 
 # A rolling quarter (PNAD) ending in 2026-08 covers June to August 2026.
 def amount(value: float, lang: str, data: dict) -> str:
-    """A number with its unit, on the right side: "4,58%" or "US$ 19.968"."""
-    return data["unit_prefix"] + number(value, lang) + data["unit"]
+    """A number with its unit, on the right side: "4,58%" or "US$ 19.968".
+
+    Money (a unit before the number) has no decimals, like the chart's labels.
+    """
+    money = bool(data["unit_prefix"])
+    return data["unit_prefix"] + number(value, lang, whole=money) + data["unit"]
 
 
 def period_short(period: str, lang: str, kind: str = "month") -> str:
