@@ -21,6 +21,8 @@ pt:
   all: Tudo
   show_numbers: Ver os números
   month: Mês
+  year: Ano
+  year_of: "ano de {year}"
   value: Valor
   source: Fonte
   latest_data: Dado mais recente
@@ -37,8 +39,8 @@ pt:
   points: pontos
   compare_with: Comparar com
   compare_max: até 3 países ao mesmo tempo
-  growth_up: "{value} a mais do que em {year}"
-  growth_down: "{value} a menos do que em {year}"
+  growth_up: "{value} a mais do que no ano anterior ({year})"
+  growth_down: "{value} a menos do que no ano anterior ({year})"
 en:
   html_lang: en
   other_lang: pt-BR
@@ -61,6 +63,8 @@ en:
   all: All
   show_numbers: See the numbers
   month: Month
+  year: Year
+  year_of: "year {year}"
   value: Value
   source: Source
   latest_data: Latest data
@@ -77,5 +81,5 @@ en:
   points: points
   compare_with: Compare with
   compare_max: up to 3 countries at a time
-  growth_up: "{value} more than in {year}"
-  growth_down: "{value} less than in {year}"
+  growth_up: "{value} more than the year before ({year})"
+  growth_down: "{value} less than the year before ({year})"

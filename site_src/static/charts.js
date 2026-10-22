@@ -47,27 +47,42 @@
   var DASHES = [[6, 3], [2, 3], [10, 3, 2, 3], [4, 2]];
   var MAX_PEERS = 3;
 
-  // Room on the right for the end labels ("Economias avançadas US$ 63.876"):
-  // about 6.5 px per character of the longest label, between 64 and 230 px.
-  function labelRoom(data, fmt) {
+  // Below this width (a phone) the chart switches to its narrow layout:
+  // shorter names and shorter numbers at the end of each line.
+  var NARROW_PX = 500;
+
+  // An end label: "Economias avançadas US$ 63.876" on a wide screen,
+  // "Avançadas 63,9 mil" on a narrow one. The name always comes first: it says
+  // which line is which. With no name (a single line), just the value.
+  function endText(name, shortName, value, fmt, narrow) {
+    var number = narrow ? fmt.short(value) : fmt.value(value);
+    var label = narrow ? shortName : name;
+    return label ? label + " " + number : number;
+  }
+
+  // Room on the right for the end labels: about 6.5 px per character of the
+  // longest label, between 64 and 230 px.
+  function labelRoom(data, fmt, narrow) {
     var latest = data.points[data.points.length - 1][1];
-    var labels = ["Brasil " + fmt.value(latest)];
-    data.peers.forEach(function (peer) { labels.push(peer.name + " " + fmt.value(peer.latest.value)); });
+    var labels = [endText("Brasil", "Brasil", latest, fmt, narrow)];
+    data.peers.forEach(function (peer) {
+      labels.push(endText(peer.name, peer.short_name, peer.latest.value, fmt, narrow));
+    });
     if (data.compare && data.compare.latest !== null) {
-      labels.push(data.compare.label + " " + fmt.value(data.compare.latest));
+      labels.push(endText(data.compare.label, data.compare.label, data.compare.latest, fmt, narrow));
     }
     var longest = Math.max.apply(null, labels.map(function (label) { return label.length; }));
     return Math.min(230, Math.max(64, Math.round(longest * 6.5) + 16));
   }
 
-  function buildOption(data, colors, fmt, active) {
+  function buildOption(data, colors, fmt, active, narrow) {
     var points = data.points.map(function (p) { return [toDate(p[0]), p[1]]; });
     var last = points[points.length - 1];
 
     return {
       animation: false,
       textStyle: { fontFamily: "Inclusive Sans, Verdana, sans-serif", color: colors.muted },
-      grid: { left: 8, right: labelRoom(data, fmt), top: 16, bottom: 8, containLabel: true },
+      grid: { left: 8, right: labelRoom(data, fmt, narrow), top: 16, bottom: 8, containLabel: true },
       tooltip: {
         trigger: "axis",
         backgroundColor: colors.surface,
@@ -82,6 +97,7 @@
       },
       xAxis: {
         type: "time",
+        splitNumber: narrow ? 4 : 5,      // fewer year labels on a phone, so they don't touch
         axisLine: { lineStyle: { color: colors.line } },
         axisTick: { show: false },
         splitLine: { show: false },
@@ -93,7 +109,8 @@
         splitNumber: 4,
         axisLabel: {
           color: colors.muted,
-          formatter: function (v) { return fmt.value(v); }
+          // Narrow: "60 mil" instead of "US$ 60.000" (the subtitle names the unit).
+          formatter: function (v) { return narrow ? fmt.short(v) : fmt.value(v); }
         },
         splitLine: { lineStyle: { color: colors.line } }
       },
@@ -106,11 +123,11 @@
         moveOnMouseMove: false,
         moveOnMouseWheel: false
       }],
-      series: series(data, colors, fmt, points, last, active)
+      series: series(data, colors, fmt, points, last, active, narrow)
     };
   }
 
-  function series(data, colors, fmt, points, last, active) {
+  function series(data, colors, fmt, points, last, active, narrow) {
     var list = [];
     var brazil = data.lang === "pt" ? "Brasil" : "Brazil";
 
@@ -131,7 +148,7 @@
         endLabel: {
           show: true,
           color: colors.muted,
-          formatter: function (p) { return peer.name + " " + fmt.value(p.value[1]); }
+          formatter: function (p) { return endText(peer.name, peer.short_name, p.value[1], fmt, narrow); }
         },
         labelLayout: { moveOverlap: "shiftY" }
       });
@@ -150,7 +167,9 @@
         endLabel: {
           show: true,
           color: colors.muted,
-          formatter: function (p) { return data.compare.label + " " + fmt.value(p.value[1]); }
+          formatter: function (p) {
+            return endText(data.compare.label, data.compare.label, p.value[1], fmt, narrow);
+          }
         },
         labelLayout: { moveOverlap: "shiftY" }
       });
@@ -169,8 +188,8 @@
         color: colors.brand,
         fontWeight: 700,
         formatter: function (p) {
-          var name = data.peers.length ? brazil + " " : "";
-          return name + fmt.value(p.value[1]);
+          var name = data.peers.length ? brazil : "";
+          return endText(name, name, p.value[1], fmt, narrow);
         }
       },
       labelLayout: { moveOverlap: "shiftY" }
@@ -259,10 +278,16 @@
         var locale = data.lang === "pt" ? "pt-BR" : "en-GB";
         var numberFormat = new Intl.NumberFormat(locale, { maximumFractionDigits: data.unit_prefix ? 0 : 2 });
         var monthFormat = new Intl.DateTimeFormat(locale, { month: "short", year: "numeric", timeZone: "UTC" });
+        // "compact" writes 60000 as "60 mil" (pt) or "60K" (en).
+        var compactFormat = new Intl.NumberFormat(locale, { notation: "compact", maximumFractionDigits: 1 });
         var fmt = {
           number: function (v) { return numberFormat.format(v); },
           // A value with its unit: "4,58%" or "US$ 19.968".
           value: function (v) { return data.unit_prefix + numberFormat.format(v) + data.unit; },
+          // On a phone: money as "63,9 mil" (no "US$ "); percentages stay "4,58%".
+          short: function (v) {
+            return data.unit_prefix ? compactFormat.format(v) : fmt.value(v);
+          },
           month: function (date) {
             return data.period_kind === "year" ? date.slice(0, 4) : monthFormat.format(new Date(date));
           }
@@ -277,7 +302,9 @@
             good: token("--good-band"), watch: token("--watch-band"), compare: token("--cmp-line"),
             peer: token("--cmp-peer")
           };
-          chart.setOption(buildOption(data, colors, fmt, active), true);
+          // Measure the chart's own box, not the window: that's the space we have.
+          var width = el.clientWidth;
+          chart.setOption(buildOption(data, colors, fmt, active, width < NARROW_PX), true);
           setWindow(chart, data, currentYears(box));
         }
 
@@ -290,7 +317,8 @@
         pressVisibleDefault(box);
         setupPeerButtons(box, active, render);
         render();
-        window.addEventListener("resize", function () { chart.resize(); });
+        // On resize (a phone turned sideways), redraw: the layout may change.
+        window.addEventListener("resize", function () { chart.resize(); render(); });
         // theme.js sends "themechange" when the look switches (button or device).
         document.addEventListener("themechange", render);
       });

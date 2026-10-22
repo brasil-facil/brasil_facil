@@ -20,6 +20,21 @@ The INPC measures how much the prices of the things lower-income families buy
 went up. It covers families earning 1 to 5 minimum wages. The official
 inflation rate, the IPCA, covers families earning 1 to 40 minimum wages.
 
+## How is it calculated?
+
+IBGE uses the same prices it collects for official inflation (IPCA): the same
+goods, in the same cities, every month. The difference is how much each item
+counts. In the INPC, the weights come from what families earning 1 to 5
+minimum wages spend. So food and transport count more in the INPC than in the
+IPCA.
+
+The number shown compares one month's prices with prices in the same month a
+year earlier.
+
+This page does not show the Good, Watch or Worrying colours. The government
+sets no target for the INPC, and Brasil Fácil only uses colours when there is
+a clear reference to compare with.
+
 ## How to read the chart?
 
 The purple line is the INPC. The grey line is the IPCA. When the purple line

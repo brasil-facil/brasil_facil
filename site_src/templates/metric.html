@@ -11,7 +11,8 @@
   </section>
 
   <section class="now panel" aria-label="{{ s.now }}">
-    <p class="eyebrow">{{ s.now }} · {{ latest_period }}</p>
+    {% set is_yearly = data.period_kind == "year" %}
+    <p class="eyebrow">{{ s.now }} · {{ s.year_of.format(year=latest_period) if is_yearly else latest_period }}</p>
     <p class="big-number">{% if data.unit_prefix %}<small class="prefix">{{ data.unit_prefix }}</small>{% endif %}{{ data.latest.value | number(lang) }}<small>{{ data.unit }}</small></p>
     <div class="now-zone">
       {% if data.latest.zone is not none or data.chart.no_target_pill %}
@@ -69,7 +70,7 @@
       <summary>{{ s.show_numbers }}</summary>
       <div class="table-scroll">
         <table>
-          <thead><tr><th scope="col">{{ s.month }}</th><th scope="col">{{ s.value }}</th></tr></thead>
+          <thead><tr><th scope="col">{{ s.year if is_yearly else s.month }}</th><th scope="col">{{ s.value }}</th></tr></thead>
           <tbody>
             {% for period, value in data.points | reverse %}
               <tr><td>{{ period | period_short(lang, data.period_kind) }}</td><td>{{ value | amount(lang, data) }}</td></tr>

@@ -18,6 +18,28 @@ Quando os preços sobem mais rápido do que os salários, o mesmo dinheiro compr
 menos no fim do mês. Se a inflação é de 5%, R$ 100 de compras passam a custar
 cerca de R$ 105.
 
+## Como é calculado?
+
+Todo mês, o IBGE anota os preços de centenas de produtos e serviços em várias
+cidades do país. Cada produto pesa de acordo com quanto as famílias gastam com
+ele: comida e aluguel pesam mais do que, por exemplo, um ingresso de cinema.
+Entram as famílias que ganham de 1 a 40 salários mínimos.
+
+O número mostrado compara os preços de um mês com os preços do mesmo mês um
+ano antes. Por isso se fala em inflação "em 12 meses".
+
+As cores comparam a inflação com a meta do governo para aquele ano:
+
+- **Bom** (verde): a inflação está dentro da meta.
+- **Atenção** (amarelo): está fora da meta, mas a até {yellow_margin} ponto
+  dela, para cima ou para baixo. Por exemplo, se a meta vai até 4,5%, uma
+  inflação de 5,5% fica no amarelo.
+- **Preocupante** (vermelho): está mais de {yellow_margin} ponto fora da meta.
+
+A meta é oficial, definida pelo Conselho Monetário Nacional. A faixa amarela
+de {yellow_margin} ponto é uma regra do Brasil Fácil, não do governo. Antes de
+1999 não havia meta, por isso esses anos não têm cor.
+
 ## Como ler o gráfico?
 
 A linha roxa é o Brasil. A faixa verde é a meta que o governo definiu para

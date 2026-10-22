@@ -19,12 +19,28 @@ baixo estimula a economia.
 
 A taxa de juro é a principal ferramenta que o Banco Central tem para controlar o aumento dos preços, se os preços aumentam mais rápido do que o planejado, o Banco Central aumenta a taxa de juro para conter esse aumento. Quando as pessoas não estão gastando dinheiro, durante o COVID, por exemplo, o juro abaixa para incentivar as compras e o comércio.
 
+## Como é calculado?
+
+O Brasil Fácil faz a conta com dois números do Banco Central:
+
+- a Selic no fim do mês;
+- a inflação que os economistas esperam para os 12 meses seguintes, segundo o
+  boletim Focus.
+
+A conta é: (1 + Selic) ÷ (1 + inflação esperada) − 1. Com Selic de 14% e
+inflação esperada de 5%: 1,14 ÷ 1,05 − 1 = 8,6%. O resultado fica um pouco
+abaixo da subtração simples (14 − 5 = 9), porque a inflação também diminui o
+valor dos juros recebidos. Usamos a inflação esperada, e não a passada, porque
+quem pega dinheiro emprestado hoje vai pagar nos próximos meses.
+
+Esta página ainda não mostra as cores Bom, Atenção ou Preocupante. Para isso,
+precisamos da taxa neutra: o nível de juro que nem freia nem estimula a
+economia. Estamos reunindo as estimativas do Banco Central para ela.
+
 ## Como ler o gráfico?
 
 A linha roxa é o juro real. A linha cinza é a Selic. A distância entre as duas
-é a inflação que o mercado espera. Ainda não mostramos uma cor para o juro
-real: estamos reunindo as estimativas do Banco Central para a taxa neutra, o
-nível que nem freia nem estimula a economia.
+é a inflação que o mercado espera.
 
 ## De onde vem?
 
