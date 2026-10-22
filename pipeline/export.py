@@ -116,12 +116,38 @@ def current_table(
             stored_values(inputs["expected_inflation"], series_dir),
         )
     if indicator.transform == "real_value":
-        inputs = indicator.series.inputs
-        return real_value(
-            stored_values(inputs["nominal"], series_dir),
-            stored_values(inputs["price_index"], series_dir),
-        )
+        return transformed(indicator, indicator.series.inputs["nominal"], series_dir)
     return stored_values(indicator.series.brazil, series_dir)
+
+
+def transformed(
+    indicator: Indicator, ref: SeriesRef, series_dir: Path = store.SERIES_DIR
+) -> pd.DataFrame:
+    """A series with the indicator's transform applied, e.g. in today's money.
+
+    real_value: ref plays the part of "nominal" (the main line or a band edge).
+    """
+    values = stored_values(ref, series_dir)
+    if indicator.transform == "real_value":
+        prices = stored_values(indicator.series.inputs["price_index"], series_dir)
+        return real_value(values, prices)
+    return values
+
+
+def band_lines(
+    indicator: Indicator, first_period: str, series_dir: Path = store.SERIES_DIR
+) -> dict | None:
+    """The band's lower and upper edges, from the chart's first period on."""
+    if indicator.series.band is None:
+        return None
+    result = {}
+    for side, ref in indicator.series.band.items():
+        table = visible(transformed(indicator, ref, series_dir), first_period)
+        result[side] = [
+            [period, float(value)]
+            for period, value in zip(table["period"], table["value"])
+        ]
+    return result
 
 
 def stored_values(ref: SeriesRef, series_dir: Path = store.SERIES_DIR) -> pd.DataFrame:
@@ -142,10 +168,15 @@ def compare_line(
         raise ValueError(
             f"{indicator.id}: compare_with names unknown indicator '{compare.indicator}'"
         )
+    own = current_table(indicator, series_dir)
+    own_first, own_latest = own["period"].iloc[0], own["period"].iloc[-1]
     table = visible(
         current_table(others[compare.indicator], series_dir), indicator.chart.show_from
     )
-    own_latest = current_table(indicator, series_dir)["period"].iloc[-1]
+    # Only the years the chart itself covers: a monthly line next to yearly
+    # data ("2012" to "2025") runs from January 2012 to December 2025.
+    covered = table["period"].str[: len(own_first)]
+    table = table[(covered >= own_first) & (covered <= own_latest)]
     same_month = table.loc[table["period"] == own_latest, "value"]
     return {
         "label": getattr(compare.label, lang),
@@ -314,6 +345,7 @@ def chart_data(
         "point_zones": [zone_or_none(zone) for zone in table["zone"]],
         "forecast": forecast_points(indicator, last["period"], series_dir),
         "expected": expected_points(indicator, table["period"].iloc[0], series_dir),
+        "band": band_lines(indicator, table["period"].iloc[0], series_dir),
         "bands": bands(table),
         "margin": None if zones is None else zones.yellow_margin,
         "basis": None if zones is None else zones.basis,

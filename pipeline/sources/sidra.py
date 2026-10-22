@@ -1,3 +1,10 @@
+"""IBGE SIDRA API.
+
+Codes are "<table>-v<variable>", e.g. "1736-v2292" (INPC, 12 months), or with
+one classification category, "<table>-v<variable>-c<classification>-<category>",
+e.g. "7536-v10841-c1043-49304" (income from work, the median P50).
+"""
+
 import json
 from pathlib import Path
 from urllib.parse import quote
@@ -23,10 +30,13 @@ def read_rows(files: list[Path]) -> list[dict]:
 
 def parse(files: list[Path], series_id: str) -> pd.DataFrame:
     table = pd.DataFrame(read_rows(files))
+    # "202609" -> "2026-09" (monthly); "2025" stays "2025" (yearly tables).
+    code = table["D3C"].astype(str)
+    period = code.where(code.str.len() == 4, code.str[:4] + "-" + code.str[4:])
     result = pd.DataFrame(
         {
             "series_id": series_id,
-            "period": table["D3C"].str[:4] + "-" + table["D3C"].str[4:],
+            "period": period,
             "value": pd.to_numeric(table["V"], errors="coerce"),
         }
     )
@@ -35,11 +45,15 @@ def parse(files: list[Path], series_id: str) -> pd.DataFrame:
 
 
 def build_url(code: str, geo: str, periods: str) -> str:
-    table, variable = code.split("-v")
+    parts = code.split("-")  # "7536-v10841-c1043-49304" -> 4 parts
+    table, variable = parts[0], parts[1].removeprefix("v")
     if geo not in GEO_LEVELS:
         raise ValueError(f"SIDRA: unknown geo '{geo}'. Known: {list(GEO_LEVELS)}")
     level = GEO_LEVELS[geo]
-    return f"{BASE_URL}/t/{table}/{level}/v/{variable}/p/{quote(periods)}?formato=json"
+    url = f"{BASE_URL}/t/{table}/{level}/v/{variable}/p/{quote(periods)}"
+    if len(parts) == 4:  # one category of a classification, e.g. c1043/49304
+        url += f"/{parts[2]}/{parts[3]}"
+    return url + "?formato=json"
 
 
 def fetch(code: str, geo: str, periods: str, raw_dir: Path = RAW_DIR) -> list[Path]:

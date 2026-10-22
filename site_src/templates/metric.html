@@ -79,12 +79,24 @@
       <summary>{{ s.show_numbers }}</summary>
       <div class="table-scroll">
         <table>
-          <thead><tr><th scope="col">{{ s.year if is_yearly else s.month }}</th><th scope="col">{{ s.value }}</th></tr></thead>
-          <tbody>
-            {% for period, value in data.points | reverse %}
-              <tr><td>{{ period | period_short(lang, data.period_kind) }}</td><td>{{ value | amount(lang, data) }}</td></tr>
-            {% endfor %}
-          </tbody>
+          {% if data.band %}
+            {# A fan chart: one column per line, e.g. P10, median, P90. #}
+            {% set lower = dict(data.band.lower) %}
+            {% set upper = dict(data.band.upper) %}
+            <thead><tr><th scope="col">{{ s.year if is_yearly else s.month }}</th><th scope="col">{{ data.fan_labels.lower }}</th><th scope="col">{{ data.fan_labels.median }}</th><th scope="col">{{ data.fan_labels.upper }}</th></tr></thead>
+            <tbody>
+              {% for period, value in data.points | reverse %}
+                <tr><td>{{ period | period_short(lang, data.period_kind) }}</td><td>{{ lower[period] | amount(lang, data) }}</td><td>{{ value | amount(lang, data) }}</td><td>{{ upper[period] | amount(lang, data) }}</td></tr>
+              {% endfor %}
+            </tbody>
+          {% else %}
+            <thead><tr><th scope="col">{{ s.year if is_yearly else s.month }}</th><th scope="col">{{ s.value }}</th></tr></thead>
+            <tbody>
+              {% for period, value in data.points | reverse %}
+                <tr><td>{{ period | period_short(lang, data.period_kind) }}</td><td>{{ value | amount(lang, data) }}</td></tr>
+              {% endfor %}
+            </tbody>
+          {% endif %}
         </table>
       </div>
     </details>

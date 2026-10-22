@@ -1,0 +1,42 @@
+id: renda
+section: economia
+group: lagging
+name:
+  pt: Renda do trabalho, descontada a inflação
+  en: Income from work, after inflation
+slug:
+  pt: renda
+  en: income
+technical_name: >-
+  Rendimento habitualmente recebido de todos os trabalhos, pessoas ocupadas de
+  14 anos ou mais, limites superiores dos percentis (PNAD Contínua anual, tabela
+  7536), corrigido pelo INPC
+unit: brl
+period_kind: year
+series:
+  # Decided 22 Oct 2026: a fan chart with the median (P50) inside the band from
+  # P10 to P90, all in money of the latest month (yearly average INPC per year).
+  # Table 7536 also has P5, P20-P40, P60-P80, P95 and P99; P20 and P30 sit on
+  # the minimum wage, so an inner band would repeat the minimum wage line.
+  inputs:
+    nominal: {source: sidra, code: "7536-v10841-c1043-49304", geo: BRA}   # P50
+    price_index: {source: sidra, code: "1736-v2289", geo: BRA}            # INPC
+  band:
+    lower: {source: sidra, code: "7536-v10841-c1043-49300", geo: BRA}     # P10
+    upper: {source: sidra, code: "7536-v10841-c1043-49308", geo: BRA}     # P90
+source:
+  name: IBGE
+  table: PNAD Contínua anual, tabela 7536, corrigida pelo INPC (tabela 1736)
+  url: https://sidra.ibge.gov.br/tabela/7536
+transform: real_value    # yearly amounts: x (INPC of the latest month / INPC average of the year)
+# No zones: there is no official target for income.
+chart:
+  kind: fan
+  no_target_pill: false
+  compare_with:
+    indicator: salario-minimo
+    label: {pt: Salário mínimo, en: Minimum wage}
+release:
+  expected_day: 15       # IBGE publishes the yearly income release around May
+  stale_after_days: 400
+content: renda

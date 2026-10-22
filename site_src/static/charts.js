@@ -19,9 +19,11 @@
     return year + "-" + String(month).padStart(2, "0");
   }
 
-  // "2026-09" -> "2026-09-01"; a yearly "2025" -> "2025-01-01".
+  // "2026-09" -> "2026-09-01"; a yearly "2025" -> "2025-07-01": a yearly value
+  // (an average or a total) belongs in the middle of its year, which matters
+  // when a monthly line (the minimum wage) is drawn next to it.
   function toDate(period) {
-    return period.length === 4 ? period + "-01-01" : period + "-01";
+    return period.length === 4 ? period + "-07-01" : period + "-01";
   }
 
   // One soft rectangle per band: green inside the target, yellow just outside.
@@ -105,9 +107,12 @@
     var points = data.points.map(function (p) { return [toDate(p[0]), p[1]]; });
     var last = points[points.length - 1];
     var isBar = data.chart.kind === "bar";
+    var isFan = data.chart.kind === "fan";
     var list = isBar
       ? barSeries(data, colors, points, active, narrow)
-      : series(data, colors, fmt, points, last, active, narrow);
+      : isFan
+        ? fanSeries(data, colors, fmt, points, last, narrow)
+        : series(data, colors, fmt, points, last, active, narrow);
     var legend = isBar
       ? topLegend(list.filter(function (s) { return s.inLegend; })
           .map(function (s) { return s.name; }), width, colors)
@@ -119,7 +124,7 @@
       legend: legend ? legend.legend : { show: false },
       grid: {
         left: 8,
-        right: isBar ? 16 : labelRoom(data, fmt, narrow),
+        right: isBar ? 16 : isFan ? fanLabelRoom(data, fmt, narrow) : labelRoom(data, fmt, narrow),
         top: legend ? legend.height + 12 : 16,
         bottom: 8,
         containLabel: true
@@ -130,7 +135,10 @@
         borderColor: colors.line,
         textStyle: { color: colors.fg },
         formatter: function (items) {
-          var shown = items.filter(function (item) { return item.seriesName && item.value; });
+          // Series named "_..." are drawing helpers (the band's fill): not shown.
+          var shown = items.filter(function (item) {
+            return item.seriesName && item.seriesName.charAt(0) !== "_" && item.value;
+          });
           if (!shown.length) { return ""; }
           return fmt.month(shown[0].value[0]) + shown.map(function (item) {
             return "<br>" + item.seriesName + ": <b>" + fmt.value(item.value[1]) + "</b>";
@@ -147,7 +155,7 @@
       },
       yAxis: {
         type: "value",
-        scale: !isBar,        // bars always start from zero
+        scale: !isBar && !isFan,   // bars and incomes start from zero
 
         splitNumber: 4,
         axisLabel: {
@@ -168,6 +176,121 @@
       }],
       series: list
     };
+  }
+
+  // The fan chart's line labels: "10% ganham mais de R$ 7.256", or on a phone
+  // "10% acima de 7,3 mil". The words come from the page's text (front matter).
+  function fanText(side, value, data, fmt, narrow) {
+    var labels = narrow ? data.fan_short : data.fan_labels;
+    return labels[side] + " " + (narrow ? fmt.short(value) : fmt.value(value));
+  }
+
+  function fanLabelRoom(data, fmt, narrow) {
+    var last = function (points) { return points[points.length - 1][1]; };
+    var labels = [
+      fanText("median", last(data.points), data, fmt, narrow),
+      fanText("lower", last(data.band.lower), data, fmt, narrow),
+      fanText("upper", last(data.band.upper), data, fmt, narrow)
+    ];
+    if (data.compare && data.compare.points.length) {
+      labels.push(data.compare.label + " " + fmt.value(last(data.compare.points)));
+    }
+    var longest = Math.max.apply(null, labels.map(function (label) { return label.length; }));
+    return Math.min(230, Math.max(64, Math.round(longest * 6.5) + 16));
+  }
+
+  // The fan chart (income): the median as the main line, inside a shaded band
+  // from the lower to the upper edge, with the minimum wage as a dashed line.
+  function fanSeries(data, colors, fmt, points, last, narrow) {
+    var dated = function (list) { return list.map(function (p) { return [toDate(p[0]), p[1]]; }); };
+    var upper = {};
+    data.band.upper.forEach(function (p) { upper[p[0]] = p[1]; });
+    var edge = function (side, list) {
+      return {
+        name: data.fan_labels[side],
+        type: "line",
+        data: dated(list),
+        showSymbol: false,
+        lineStyle: { width: 1.5, color: colors.brand, opacity: 0.55 },
+        itemStyle: { color: colors.brand },
+        endLabel: {
+          show: true,
+          color: colors.muted,
+          formatter: function (p) { return fanText(side, p.value[1], data, fmt, narrow); }
+        },
+        labelLayout: { moveOverlap: "shiftY" }
+      };
+    };
+    var list = [
+      // The band: an invisible line at the lower edge, then the gap up to the
+      // upper edge stacked on top of it and filled. Helpers, so named "_...".
+      {
+        name: "_band_base",
+        type: "line",
+        stack: "band",
+        data: dated(data.band.lower),
+        showSymbol: false,
+        silent: true,
+        lineStyle: { opacity: 0 }
+      },
+      {
+        name: "_band_fill",
+        type: "line",
+        stack: "band",
+        data: data.band.lower.map(function (p) { return [toDate(p[0]), upper[p[0]] - p[1]]; }),
+        showSymbol: false,
+        silent: true,
+        lineStyle: { opacity: 0 },
+        areaStyle: { color: colors.brandSoft, opacity: 1 }
+      },
+      edge("lower", data.band.lower),
+      edge("upper", data.band.upper)
+    ];
+
+    if (data.compare) {
+      list.push({
+        name: data.compare.label,
+        type: "line",
+        data: dated(data.compare.points),
+        showSymbol: false,
+        lineStyle: { width: 1.5, color: colors.compare, type: [6, 3] },
+        itemStyle: { color: colors.compare },
+        endLabel: {
+          show: true,
+          color: colors.muted,
+          formatter: function (p) {
+            return data.compare.label + " " + (narrow ? fmt.short(p.value[1]) : fmt.value(p.value[1]));
+          }
+        },
+        labelLayout: { moveOverlap: "shiftY" }
+      });
+    }
+
+    list.push({
+      name: data.fan_labels.median,
+      type: "line",
+      z: 4,
+      data: points,
+      showSymbol: false,
+      lineStyle: { width: 3, color: colors.brand },
+      itemStyle: { color: colors.brand },
+      endLabel: {
+        show: true,
+        color: colors.brand,
+        fontWeight: 700,
+        formatter: function (p) { return fanText("median", p.value[1], data, fmt, narrow); }
+      },
+      labelLayout: { moveOverlap: "shiftY" }
+    });
+    list.push({
+      type: "scatter",
+      data: [last],
+      symbolSize: 9,
+      itemStyle: { color: colors.brand },
+      tooltip: { show: false },
+      silent: true
+    });
+    return list;
   }
 
   // The bar chart (yearly growth): one bar per year in its zone colour, the
@@ -395,7 +518,9 @@
           value: function (v) { return data.unit_prefix + numberFormat.format(v) + data.unit; },
           // On a phone: money as "63,9 mil" (no "US$ "); percentages stay "4,58%".
           short: function (v) {
-            return data.unit_prefix ? compactFormat.format(v) : fmt.value(v);
+            if (!data.unit_prefix) { return fmt.value(v); }
+            // "7,3 mil" for thousands; whole reais below that ("842", not "842,4").
+            return Math.abs(v) >= 1000 ? compactFormat.format(v) : numberFormat.format(v);
           },
           month: function (date) {
             return data.period_kind === "year" ? date.slice(0, 4) : monthFormat.format(new Date(date));
@@ -412,7 +537,7 @@
             peer: token("--cmp-peer"),
             // Solid colours for bars (the "band" ones above are see-through).
             goodSolid: token("--good"), watchSolid: token("--watch-bar"), bad: token("--bad"),
-            surfaceSolid: token("--surface")
+            surfaceSolid: token("--surface"), brandSoft: token("--brand-soft")
           };
           // Measure the chart's own box, not the window: that's the space we have.
           var width = el.clientWidth;

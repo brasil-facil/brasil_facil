@@ -312,6 +312,11 @@ def main(dist: Path = DIST) -> None:
         for indicator in indicators:
             data = chart_data(indicator, lang, others=by_id)
             text = load_text(indicator, lang)
+            # A fan chart's line labels are text for readers: they live in the
+            # page's front matter and travel to the chart inside its JSON.
+            for key in ("fan_labels", "fan_short"):
+                if key in text:
+                    data[key] = text[key]
             json_url = f"/data/{lang}/{indicator.id}.json"
             write(
                 dist / json_url.lstrip("/"), json.dumps(data, ensure_ascii=False), dist
