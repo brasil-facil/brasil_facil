@@ -18,7 +18,7 @@ em relação ao ano anterior, descontando o aumento dos preços.
 
 Quando a economia cresce, as empresas vendem mais, contratam mais e o governo
 arrecada mais impostos para pagar escolas, saúde e estradas. Quando a economia
-encolhe, o desemprego costuma subir e a renda das famílias cai. O crescimento do PIB e a inflação são usados para ajustar o salário mínimo.
+encolhe, o desemprego costuma subir e a renda das famílias cai. O crescimento do PIB de dois anos antes e a inflação (INPC) são usados para ajustar o salário mínimo.
 
 ## Como é calculado?
 

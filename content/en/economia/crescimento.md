@@ -18,8 +18,8 @@ up or down compared with the year before, after taking out the rise in prices.
 
 When the economy grows, companies sell more, hire more, and the government
 collects more taxes to pay for schools, health and roads. When the economy
-shrinks, unemployment usually rises and family income falls. GDP growth and
-inflation are used to adjust the minimum wage.
+shrinks, unemployment usually rises and family income falls. GDP growth from two
+years earlier and inflation (INPC) are used to adjust the minimum wage.
 
 ## How is it calculated?
 
