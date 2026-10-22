@@ -1,0 +1,34 @@
+id: conta-corrente
+section: economia
+group: lagging
+name:
+  pt: Saldo com o resto do mundo - Conta corrente
+  en: Balance with the rest of the world - Current account
+slug:
+  pt: conta-corrente
+  en: current-account
+technical_name: Saldo em transações correntes, % do PIB (FMI, World Economic Outlook)
+unit: percent
+period_kind: year
+series:
+  # Decided 22 Oct 2026: the current account rather than the trade balance (it
+  # adds services, income and transfers to goods), as % of GDP so it compares
+  # over time and across countries. IMF, so Brazil and the others match.
+  brazil: {source: imf, code: current-account, geo: BRA}
+  forecast: {source: imf, code: current-account-forecast, geo: BRA}
+  peers:
+    - {source: imf, code: current-account, geo: [G205, MEX, COL, ZAF, USA], source_name: FMI}
+source:
+  name: FMI
+  table: World Economic Outlook, saldo em transações correntes (% do PIB)
+  url: https://www.imf.org/en/Publications/WEO
+transform: none
+# No zones: a surplus is not good and a deficit is not bad on their own; it
+# depends on why (decided 22 Oct 2026).
+chart:
+  kind: bar   # bars above and below zero; IMF forecast as dashed bars
+  no_target_pill: false
+release:
+  expected_day: 15       # the IMF publishes the WEO in April and October
+  stale_after_days: 400
+content: conta-corrente
