@@ -75,22 +75,64 @@
     return Math.min(230, Math.max(64, Math.round(longest * 6.5) + 16));
   }
 
-  function buildOption(data, colors, fmt, active, narrow) {
+  // Bar charts name their lines in a legend above the chart instead of at the
+  // end of each line: the forecast bars sit where those labels would go.
+  // Returns the legend and the height it needs, guessing how many rows it wraps to.
+  function topLegend(names, width, colors) {
+    var rowWidth = 0;
+    var rows = 1;
+    names.forEach(function (name) {
+      var itemWidth = 18 + 5 + name.length * 6.5 + 14;   // sample + gap + text + space
+      if (rowWidth + itemWidth > width && rowWidth > 0) { rows += 1; rowWidth = 0; }
+      rowWidth += itemWidth;
+    });
+    return {
+      height: rows * 22,
+      legend: {
+        data: names,
+        top: 0,
+        left: 0,
+        selectedMode: false,          // clicking a name does nothing
+        itemWidth: 18,
+        itemHeight: 10,
+        itemGap: 14,
+        textStyle: { color: colors.muted, fontSize: 12 }
+      }
+    };
+  }
+
+  function buildOption(data, colors, fmt, active, narrow, width) {
     var points = data.points.map(function (p) { return [toDate(p[0]), p[1]]; });
     var last = points[points.length - 1];
+    var isBar = data.chart.kind === "bar";
+    var list = isBar
+      ? barSeries(data, colors, points, active, narrow)
+      : series(data, colors, fmt, points, last, active, narrow);
+    var legend = isBar
+      ? topLegend(list.filter(function (s) { return s.inLegend; })
+          .map(function (s) { return s.name; }), width, colors)
+      : null;
 
     return {
       animation: false,
       textStyle: { fontFamily: "Inclusive Sans, Verdana, sans-serif", color: colors.muted },
-      grid: { left: 8, right: labelRoom(data, fmt, narrow), top: 16, bottom: 8, containLabel: true },
+      legend: legend ? legend.legend : { show: false },
+      grid: {
+        left: 8,
+        right: isBar ? 16 : labelRoom(data, fmt, narrow),
+        top: legend ? legend.height + 12 : 16,
+        bottom: 8,
+        containLabel: true
+      },
       tooltip: {
         trigger: "axis",
         backgroundColor: colors.surface,
         borderColor: colors.line,
         textStyle: { color: colors.fg },
         formatter: function (items) {
-          var lines = items.filter(function (item) { return item.seriesType === "line"; });
-          return fmt.month(lines[0].value[0]) + lines.map(function (item) {
+          var shown = items.filter(function (item) { return item.seriesName && item.value; });
+          if (!shown.length) { return ""; }
+          return fmt.month(shown[0].value[0]) + shown.map(function (item) {
             return "<br>" + item.seriesName + ": <b>" + fmt.value(item.value[1]) + "</b>";
           }).join("");
         }
@@ -105,7 +147,8 @@
       },
       yAxis: {
         type: "value",
-        scale: true,
+        scale: !isBar,        // bars always start from zero
+
         splitNumber: 4,
         axisLabel: {
           color: colors.muted,
@@ -123,8 +166,71 @@
         moveOnMouseMove: false,
         moveOnMouseWheel: false
       }],
-      series: series(data, colors, fmt, points, last, active, narrow)
+      series: list
     };
+  }
+
+  // The bar chart (yearly growth): one bar per year in its zone colour, the
+  // IMF forecast as hollow dashed bars, what was expected in January as
+  // hollow circles, and the comparison countries as thin grey lines.
+  function barSeries(data, colors, points, active, narrow) {
+    var pt = data.lang === "pt";
+    var zoneColor = { green: colors.goodSolid, yellow: colors.watchSolid, red: colors.bad };
+    var list = [];
+
+    var peerIndex = 0;
+    data.peers.forEach(function (peer) {
+      var isReference = peer.role === "reference";
+      var dash = isReference ? "solid" : DASHES[peerIndex++ % DASHES.length];
+      if (!isReference && !active.has(peer.geo)) { return; }
+      list.push({
+        name: peer.name,
+        inLegend: true,
+        type: "line",
+        z: 3,
+        data: peer.points.map(function (p) { return [toDate(p[0]), p[1]]; }),
+        showSymbol: false,
+        lineStyle: { width: 1.5, color: isReference ? colors.compare : colors.peer, type: dash },
+        itemStyle: { color: isReference ? colors.compare : colors.peer }
+      });
+    });
+
+    list.push({
+      name: pt ? "Brasil" : "Brazil",
+      type: "bar",
+      barMaxWidth: 18,
+      barGap: "-100%",            // forecast bars share the same slot, not side by side
+      data: points.map(function (point, i) {
+        var zone = data.point_zones[i];
+        return { value: point, itemStyle: { color: zoneColor[zone] || colors.brand } };
+      })
+    });
+
+    if (data.forecast && data.forecast.length) {
+      list.push({
+        name: pt ? "Previsão do FMI" : "IMF forecast",
+        inLegend: true,
+        type: "bar",
+        barMaxWidth: 18,
+        barGap: "-100%",
+        data: data.forecast.map(function (p) { return [toDate(p[0]), p[1]]; }),
+        itemStyle: { color: "transparent", borderColor: colors.muted, borderWidth: 1.5, borderType: "dashed" }
+      });
+    }
+
+    if (data.expected && data.expected.length) {
+      list.push({
+        name: pt ? "Esperado em janeiro" : "Expected in January",
+        inLegend: true,
+        type: "scatter",
+        z: 4,
+        symbol: "circle",
+        symbolSize: narrow ? 5 : 8,   // thin bars on a phone: smaller circles
+        data: data.expected.map(function (p) { return [toDate(p[0]), p[1]]; }),
+        itemStyle: { color: colors.surfaceSolid, borderColor: colors.fg, borderWidth: 1.5 }
+      });
+    }
+    return list;
   }
 
   function series(data, colors, fmt, points, last, active, narrow) {
@@ -216,7 +322,10 @@
       d.setFullYear(d.getFullYear() - Number(years));
       start = d.toISOString().slice(0, 10);
     }
-    chart.dispatchAction({ type: "dataZoom", startValue: start, endValue: toDate(lastPeriod) });
+    // A forecast reaches past the last result: keep its years in view.
+    var forecast = data.forecast && data.forecast.length ? data.forecast : null;
+    var end = forecast ? forecast[forecast.length - 1][0] : lastPeriod;
+    chart.dispatchAction({ type: "dataZoom", startValue: start, endValue: toDate(end) });
   }
 
   function setupButtons(box, chart, data) {
@@ -300,11 +409,14 @@
             brand: token("--brand"), fg: token("--fg"), muted: token("--muted"),
             line: token("--line"), surface: token("--surface"),
             good: token("--good-band"), watch: token("--watch-band"), compare: token("--cmp-line"),
-            peer: token("--cmp-peer")
+            peer: token("--cmp-peer"),
+            // Solid colours for bars (the "band" ones above are see-through).
+            goodSolid: token("--good"), watchSolid: token("--watch-bar"), bad: token("--bad"),
+            surfaceSolid: token("--surface")
           };
           // Measure the chart's own box, not the window: that's the space we have.
           var width = el.clientWidth;
-          chart.setOption(buildOption(data, colors, fmt, active, width < NARROW_PX), true);
+          chart.setOption(buildOption(data, colors, fmt, active, width < NARROW_PX, width), true);
           setWindow(chart, data, currentYears(box));
         }
 

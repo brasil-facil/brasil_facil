@@ -46,8 +46,13 @@ def download(url: str, out: Path, accept: str = CSV) -> list[Path]:
 
 
 def parse_csv(
-    files: list[Path], series_id: str, today: date | None = None
+    files: list[Path],
+    series_id: str,
+    today: date | None = None,
+    projections: bool = False,
 ) -> pd.DataFrame:
+    """One row per period. Yearly IMF data: actual years only, or, with
+    projections=True, only the years after them (the IMF's forecasts)."""
     frames = [
         pd.read_csv(file, dtype={"TIME_PERIOD": str}, low_memory=False)
         for file in files
@@ -65,7 +70,8 @@ def parse_csv(
         year = pd.to_numeric(rows["TIME_PERIOD"].str[:4], errors="coerce")
         yearly = rows["TIME_PERIOD"].str.fullmatch(r"\d{4}")
         last_actual = last_actual.where(last_actual.notna() | ~yearly, today.year - 1)
-        rows = rows[last_actual.isna() | (year <= last_actual)]
+        actual = last_actual.isna() | (year <= last_actual)
+        rows = rows[~actual] if projections else rows[actual]
     periods, values = [], []
     for period, value in zip(rows["TIME_PERIOD"], rows["OBS_VALUE"]):
         month, year = MONTH.match(str(period)), YEAR.match(str(period))

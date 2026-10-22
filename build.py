@@ -7,8 +7,8 @@ import markdown
 import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
-from pipeline.export import UNITS, chart_data, current_table
-from pipeline.models import Indicator, load_indicator
+from pipeline.export import COUNTRIES_FILE, UNITS, chart_data, current_table
+from pipeline.models import Indicator, load_countries, load_indicator
 
 ROOT = Path(__file__).parent
 TEMPLATES = ROOT / "site_src" / "templates"
@@ -191,9 +191,53 @@ def zone_numbers(indicator: Indicator, lang: str) -> dict[str, str]:
         "green_below": indicator.zones.green_below,
         "red_from": indicator.zones.red_from,
     }
-    return {
+    numbers = {
         name: number(value, lang) for name, value in limits.items() if value is not None
     }
+    if indicator.zones.peers:
+        numbers["peers"] = country_names(indicator.zones.peers, lang)
+    return numbers
+
+
+def country_names(geos: list[str], lang: str) -> str:
+    """["MEX", "COL", "ZAF"] -> "México, Colômbia e África do Sul"."""
+    countries = load_countries(COUNTRIES_FILE)
+    names = [getattr(countries[geo].name, lang) for geo in geos]
+    if len(names) == 1:
+        return names[0]
+    return ", ".join(names[:-1]) + (" e " if lang == "pt" else " and ") + names[-1]
+
+
+def peer_average_text(
+    indicator: Indicator, data: dict, s: dict[str, str], lang: str
+) -> str | None:
+    """'Média de México, Colômbia e África do Sul no mesmo ano: 1,4%'."""
+    reference = data["latest"]["reference"]
+    if reference is None:
+        return None
+    names = country_names(indicator.zones.peers, lang)
+    return s["peer_average"].format(names=names, value=amount(reference, lang, data))
+
+
+def forecast_text(data: dict, s: dict[str, str], lang: str) -> str | None:
+    """'Previsão do FMI: 2,18% em 2026 e 1,86% em 2027'."""
+    if not data["forecast"]:
+        return None
+    link = " em " if lang == "pt" else " in "
+    items = [
+        amount(value, lang, data) + link + period for period, value in data["forecast"]
+    ]
+    joined = ", ".join(items[:-1]) + (" e " if lang == "pt" else " and ") + items[-1]
+    return s["forecast"].format(items=joined if len(items) > 1 else items[0])
+
+
+def expected_text(data: dict, s: dict[str, str], lang: str) -> str | None:
+    """'Em janeiro de 2025, os economistas esperavam 2,02% para o ano...'."""
+    year = data["latest"]["period"]
+    expected = dict(data["expected"] or [])
+    if year not in expected:
+        return None
+    return s["expected"].format(year=year, value=amount(expected[year], lang, data))
 
 
 def page_url(indicator: Indicator, lang: str) -> str:
@@ -283,6 +327,9 @@ def main(dist: Path = DIST) -> None:
                 latest_period=period_short(data["latest"]["period"], lang, kind),
                 latest_period_long=period_long(data["latest"]["period"], lang, kind),
                 change=change_text(data["latest"]["change"], s, lang),
+                peer_average=peer_average_text(indicator, data, s, lang),
+                forecast=forecast_text(data, s, lang),
+                expected=expected_text(data, s, lang),
                 related=related_link(indicator, by_id, text, lang),
                 compare_url=compare_url(indicator, by_id, lang),
                 json_url=json_url,

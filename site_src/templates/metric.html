@@ -31,6 +31,15 @@
     {% if change %}
       <p class="muted">{{ change }}</p>
     {% endif %}
+    {% if peer_average %}
+      <p class="muted">{{ peer_average }}</p>
+    {% endif %}
+    {% if expected %}
+      <p class="muted">{{ expected }}</p>
+    {% endif %}
+    {% if forecast %}
+      <p class="muted">{{ forecast }}</p>
+    {% endif %}
     {% if text.now_note is defined %}
       <p class="now-note">{{ text.now_note }}</p>
     {% endif %}

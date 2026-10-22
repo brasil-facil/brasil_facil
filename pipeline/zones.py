@@ -88,11 +88,47 @@ def change_from_year_before_zones(values: pd.DataFrame, zones: Zones) -> pd.Data
     ]
 
 
+def classify_vs_peers(value: float, peer_average: float | None) -> str | None:
+    """Red if the economy shrank, whatever the others did; otherwise green when
+    Brazil grew more than the peers' average, yellow when it grew less (or the same).
+    """
+    if value < 0:
+        return "red"
+    if peer_average is None:
+        return None  # no average for that year: no colour
+    return "green" if value > peer_average else "yellow"
+
+
+def vs_peer_average_zones(
+    values: pd.DataFrame, peer_average: pd.DataFrame
+) -> pd.DataFrame:
+    """Colour each year against the average of the comparison countries.
+
+    peer_average has one row per year (period, value), only for years where
+    every comparison country has data.
+    """
+    frame = values[["period", "value"]].sort_values("period").reset_index(drop=True)
+    lookup = dict(zip(peer_average["period"], peer_average["value"]))
+    frame["reference"] = [lookup.get(period) for period in frame["period"]]
+    frame["zone"] = [
+        classify_vs_peers(value, reference)
+        for value, reference in zip(frame["value"], frame["reference"])
+    ]
+    return frame.assign(target=None, lower=None, upper=None, change=None)[
+        ["period", "value", "target", "lower", "upper", "change", "reference", "zone"]
+    ]
+
+
 def compute_zones(
-    values: pd.DataFrame, rows: list[IndicatorTargetRow], zones: Zones
+    values: pd.DataFrame,
+    rows: list[IndicatorTargetRow],
+    zones: Zones,
+    peer_average: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     if zones.rule == "band":
         return band_zones(values, rows, zones)
     if zones.rule == "change_from_year_before":
         return change_from_year_before_zones(values, zones)
+    if zones.rule == "vs_peer_average":
+        return vs_peer_average_zones(values, peer_average)
     raise NotImplementedError(f"zone rule '{zones.rule}' is not built yet")

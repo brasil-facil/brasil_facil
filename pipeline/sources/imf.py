@@ -21,7 +21,14 @@ CODES = {
     "cpi-yoy": ("IMF.STA,CPI", "{geo}.CPI._T.YOY_PCH_PA_PT.M", False),
     # World Economic Outlook: real GDP per person, constant 2021 PPP dollars.
     "gdp-pc-ppp": ("IMF.RES,WEO", "{geo}.NGDPRPPPPC.A", True),
+    # World Economic Outlook: real GDP growth, % change on the year before.
+    "gdp-growth": ("IMF.RES,WEO", "{geo}.NGDP_RPCH.A", True),
+    # The same series, but only the years after the last actual one: the IMF's
+    # forecasts. Kept in their own file so forecasts never mix with results.
+    "gdp-growth-forecast": ("IMF.RES,WEO", "{geo}.NGDP_RPCH.A", True),
 }
+# Codes whose parse keeps the forecast years instead of the actual ones.
+PROJECTIONS = {"gdp-growth-forecast"}
 
 
 def build_url(code: str, geo: str, periods: str, today: date) -> str:
@@ -47,4 +54,5 @@ def fetch(
 
 
 def parse(files: list[Path], series_id: str) -> pd.DataFrame:
-    return sdmx.parse_csv(files, series_id)
+    code = series_id.split(".")[1]  # "imf.gdp-growth-forecast.BRA" -> the code
+    return sdmx.parse_csv(files, series_id, projections=code in PROJECTIONS)

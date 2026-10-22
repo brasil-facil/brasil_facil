@@ -21,6 +21,9 @@ COUNTRIES_FILE = ROOT / "config" / "countries.yaml"
 UNITS = {"percent": ("", "%"), "usd_ppp": ("US$ ", "")}
 DEFAULT_YEARS = 30
 WINDOWS_YEARS = [8, 15, 30]
+# The IMF forecasts five years ahead, but only the next two are real forecasts
+# (its own headline tables show two); later years are long-run assumptions.
+FORECAST_YEARS = 2
 
 Lang = Literal["pt", "en"]
 
@@ -38,7 +41,69 @@ def zone_table(
         if indicator.zones.target is None
         else load_indicator_targets(targets_dir / f"{indicator.zones.target}.csv")
     )
-    return compute_zones(values, targets, indicator.zones)
+    average = (
+        None
+        if indicator.zones.peers is None
+        else peer_average(indicator, indicator.zones.peers, series_dir)
+    )
+    return compute_zones(values, targets, indicator.zones, average)
+
+
+def forecast_points(
+    indicator: Indicator, last_period: str, series_dir: Path = store.SERIES_DIR
+) -> list[list] | None:
+    """The forecast years after the last actual result: [["2026", 2.18], ...].
+
+    Once a year has its actual result, the forecast file keeps the IMF's last
+    forecast for it (useful later to compare); the chart shows only later years.
+    """
+    ref = indicator.series.forecast
+    if ref is None or not store.series_path(ref.series_id, series_dir).exists():
+        return None
+    table = stored_values(ref, series_dir)
+    table = table[table["period"] > last_period].head(FORECAST_YEARS)
+    return [
+        [period, float(value)] for period, value in zip(table["period"], table["value"])
+    ]
+
+
+def expected_points(
+    indicator: Indicator, first_period: str, series_dir: Path = store.SERIES_DIR
+) -> list[list] | None:
+    """What was expected for each period, from the chart's first period on.
+
+    Can include the current year, which has an expectation but no result yet.
+    """
+    ref = indicator.series.expected
+    if ref is None or not store.series_path(ref.series_id, series_dir).exists():
+        return None
+    table = stored_values(ref, series_dir)
+    table = table[table["period"] >= first_period]
+    return [
+        [period, float(value)] for period, value in zip(table["period"], table["value"])
+    ]
+
+
+def peer_average(
+    indicator: Indicator, geos: list[str], series_dir: Path = store.SERIES_DIR
+) -> pd.DataFrame:
+    """The simple average of the comparison countries, year by year.
+
+    Uses the same series as Brazil's (e.g. IMF GDP growth) for each country.
+    Only years where every country has data: a year with one country missing
+    would quietly become a different average.
+    """
+    brazil = indicator.series.brazil
+    tables = [
+        stored_values(
+            SeriesRef(source=brazil.source, code=brazil.code, geo=geo), series_dir
+        )
+        for geo in geos
+    ]
+    rows = pd.concat(tables)
+    summary = rows.groupby("period")["value"].agg(["mean", "count"]).reset_index()
+    complete = summary[summary["count"] == len(geos)]
+    return complete.rename(columns={"mean": "value"})[["period", "value"]]
 
 
 def current_table(
@@ -211,13 +276,29 @@ def chart_data(
                 if "change" not in table or pd.isna(last["change"])
                 else round(float(last["change"]), 2)
             ),
+            # vs_peer_average: the comparison countries' average that same year
+            "reference": (
+                None
+                if "reference" not in table or pd.isna(last["reference"])
+                else round(float(last["reference"]), 2)
+            ),
         },
         "period_kind": indicator.period_kind,
-        "growth": growth(table) if indicator.period_kind == "year" else None,
+        # "1,9% more than the year before" is for amounts (GDP per person). For a
+        # rate that is already a yearly change (GDP growth), it would be nonsense.
+        "growth": (
+            growth(table)
+            if indicator.period_kind == "year" and indicator.unit != "percent"
+            else None
+        ),
         "points": [
             [period, float(value)]
             for period, value in zip(table["period"], table["value"])
         ],
+        # The colour of each point, for bar charts: "green", "yellow", "red" or None.
+        "point_zones": [zone_or_none(zone) for zone in table["zone"]],
+        "forecast": forecast_points(indicator, last["period"], series_dir),
+        "expected": expected_points(indicator, table["period"].iloc[0], series_dir),
         "bands": bands(table),
         "margin": None if zones is None else zones.yellow_margin,
         "basis": None if zones is None else zones.basis,
@@ -233,6 +314,7 @@ def chart_data(
             "default_years": DEFAULT_YEARS,
             "windows": WINDOWS_YEARS,
             "no_target_pill": indicator.chart.no_target_pill,
+            "kind": indicator.chart.kind,
         },
         "source": {
             "name": indicator.source.name,

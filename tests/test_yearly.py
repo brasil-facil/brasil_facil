@@ -32,6 +32,8 @@ def test_weo_url_keeps_attributes_and_starts_in_1980():
     assert url.endswith("/IMF.RES,WEO/BRA.NGDPRPPPPC.A?startPeriod=1980")
     recent = imf.build_url("gdp-pc-ppp", "BRA", imf.RECENT_PERIODS, TODAY)
     assert recent.endswith("startPeriod=2023")
+    growth_url = imf.build_url("gdp-growth", "G205", imf.FULL_PERIODS, TODAY)
+    assert growth_url.endswith("/IMF.RES,WEO/G205.NGDP_RPCH.A?startPeriod=1980")
 
 
 def test_growth_against_the_year_before():
