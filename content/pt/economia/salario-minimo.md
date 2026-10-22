@@ -34,9 +34,10 @@ em duas etapas, uma aplicada sobre a outra:
    ano, não há essa parte. Desde 2025, ela tem um limite de 2,5% ao ano,
    pelas regras de controle dos gastos do governo.
 
-Por exemplo, com inflação de 4% e crescimento de 3%, o salário mínimo sobe
-1,04 × 1,03 = 7,1%, e não só 7%. Com crescimento de 3,5%, o ganho real
-ficaria limitado a 2,5%.
+Por exemplo, com inflação de 4% e crescimento de 2%, o salário mínimo sobe
+1,04 × 1,02 = 1,0608, ou seja, 6,08%, e não só 6%. Com crescimento de 3,5%, o
+ganho real ficaria limitado a 2,5%, então o aumento seria de
+1,04 × 1,025 = 1,066, ou seja, 6,6%.
 
 Para o gráfico, o Brasil Fácil corrige cada valor antigo pela inflação
 (INPC) até o mês mais recente. Por exemplo, os R$ 64,79 de julho de 1994

@@ -32,9 +32,10 @@ January in two steps, one applied on top of the other:
    is no such part. Since 2025, it is capped at 2.5% a year, under the rules
    that control government spending.
 
-For example, with inflation of 4% and growth of 3%, the minimum wage rises
-1.04 × 1.03 = 7.1%, not just 7%. With growth of 3.5%, the real gain would be
-capped at 2.5%.
+For example, with inflation of 4% and growth of 2%, the minimum wage rises
+1.04 × 1.02 = 1.0608, that is 6.08%, not just 6%. With growth of 3.5%, the
+real gain would be capped at 2.5%, so the rise would be
+1.04 × 1.025 = 1.066, that is 6.6%.
 
 For the chart, Brasil Fácil adjusts each older value for inflation (INPC) up
 to the latest month. For example, the R$ 64.79 of July 1994 would be worth
