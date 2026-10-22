@@ -22,12 +22,19 @@ spending.
 
 ## How is it calculated?
 
-Under the current rule, each year's minimum wage is the previous year's plus
-two parts:
+Under the current rule (Law 14,663 of 2023), the minimum wage rises in
+January in two steps, one applied on top of the other:
 
-1. inflation for lower-income families (INPC) over the 12 months to November;
-2. the growth of the economy (GDP) two years earlier. Since 2025, this part
-   is capped at 2.5% a year.
+1. **inflation**: the rise in prices for lower-income families (INPC) over
+   the 12 months to November. This part makes up for what prices took away;
+2. **the growth of the economy** (GDP) two years earlier. This part is the
+   real gain, above inflation. If the economy did not grow that year, there
+   is no such part. Since 2025, it is capped at 2.5% a year, under the rules
+   that control government spending.
+
+For example, with inflation of 4% and growth of 3%, the minimum wage rises
+1.04 × 1.03 = 7.1%, not just 7%. With growth of 3.5%, the real gain would be
+capped at 2.5%.
 
 For the chart, Brasil Fácil adjusts each older value for inflation (INPC) up
 to the latest month. For example, the R$ 64.79 of July 1994 would be worth

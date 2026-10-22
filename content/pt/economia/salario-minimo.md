@@ -23,12 +23,20 @@ do governo também.
 
 ## Como é calculado?
 
-Pela regra atual, o salário mínimo de cada ano é o do ano anterior mais
-duas partes:
+Pela regra atual (Lei 14.663, de 2023), o salário mínimo sobe em janeiro
+em duas etapas, uma aplicada sobre a outra:
 
-1. a inflação das famílias de menor renda (INPC) nos 12 meses até novembro;
-2. o crescimento da economia (PIB) de dois anos antes. Desde 2025, essa
-   parte tem um limite de 2,5% ao ano.
+1. **a inflação**: o aumento dos preços para as famílias de menor renda
+   (INPC) nos 12 meses até novembro. Essa parte repõe o que os preços
+   comeram;
+2. **o crescimento da economia** (PIB) de dois anos antes. Essa parte é o
+   ganho de verdade, acima da inflação. Se a economia não cresceu naquele
+   ano, não há essa parte. Desde 2025, ela tem um limite de 2,5% ao ano,
+   pelas regras de controle dos gastos do governo.
+
+Por exemplo, com inflação de 4% e crescimento de 3%, o salário mínimo sobe
+1,04 × 1,03 = 7,1%, e não só 7%. Com crescimento de 3,5%, o ganho real
+ficaria limitado a 2,5%.
 
 Para o gráfico, o Brasil Fácil corrige cada valor antigo pela inflação
 (INPC) até o mês mais recente. Por exemplo, os R$ 64,79 de julho de 1994
