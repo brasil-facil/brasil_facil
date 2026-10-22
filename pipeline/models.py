@@ -160,12 +160,12 @@ class Indicator(Strict):
     name: LangText
     slug: LangText
     technical_name: str
-    unit: Literal["percent", "usd_ppp"]
+    unit: Literal["percent", "usd_ppp", "brl"]
     # "rolling_quarter": each value covers 3 months ending in its period (PNAD)
     period_kind: Literal["month", "rolling_quarter", "year"] = "month"
     series: IndicatorSeries
     source: SourceInfo
-    transform: Literal["none", "real_rate"]
+    transform: Literal["none", "real_rate", "real_value"]
     zones: Zones | None = None  # None: no official target, so no colour
     chart: ChartSettings = ChartSettings()
     # id of an indicator mentioned, with a link, under the number
@@ -175,7 +175,10 @@ class Indicator(Strict):
 
     @model_validator(mode="after")
     def check_series_for_transform(self) -> "Indicator":
-        needed = {"real_rate": {"selic", "expected_inflation"}}.get(self.transform)
+        needed = {
+            "real_rate": {"selic", "expected_inflation"},
+            "real_value": {"nominal", "price_index"},
+        }.get(self.transform)
         if needed is None and self.series.brazil is None:
             raise ValueError("transform 'none' needs series.brazil")
         if needed is not None and set(self.series.inputs or {}) != needed:

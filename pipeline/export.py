@@ -11,14 +11,14 @@ from pipeline.models import (
     load_countries,
     load_indicator_targets,
 )
-from pipeline.transforms import real_rate
+from pipeline.transforms import real_rate, real_value
 from pipeline.zones import compute_zones
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGETS_DIR = ROOT / "data" / "targets"
 COUNTRIES_FILE = ROOT / "config" / "countries.yaml"
 # Unit shown (before, after) the number: "4,58%" or "US$ 19.968".
-UNITS = {"percent": ("", "%"), "usd_ppp": ("US$ ", "")}
+UNITS = {"percent": ("", "%"), "usd_ppp": ("US$ ", ""), "brl": ("R$ ", "")}
 DEFAULT_YEARS = 30
 WINDOWS_YEARS = [8, 15, 30]
 # The IMF forecasts five years ahead, but only the next two are real forecasts
@@ -115,6 +115,12 @@ def current_table(
             stored_values(inputs["selic"], series_dir),
             stored_values(inputs["expected_inflation"], series_dir),
         )
+    if indicator.transform == "real_value":
+        inputs = indicator.series.inputs
+        return real_value(
+            stored_values(inputs["nominal"], series_dir),
+            stored_values(inputs["price_index"], series_dir),
+        )
     return stored_values(indicator.series.brazil, series_dir)
 
 
@@ -180,14 +186,27 @@ def bands(table: pd.DataFrame) -> list[dict]:
     return result
 
 
+def year_earlier(period: str) -> str:
+    """ "2025" -> "2024"; "2026-09" -> "2025-09"."""
+    if len(period) == 4:
+        return str(int(period) - 1)
+    return f"{int(period[:4]) - 1}{period[4:]}"
+
+
 def growth(table: pd.DataFrame) -> dict | None:
-    """Change of the latest year against the year before, in %."""
-    if len(table) < 2:
+    """Change of the latest value against the same period a year earlier, in %.
+
+    For amounts (GDP per person, the real minimum wage): yearly data compares
+    with the year before, monthly data with the same month a year before.
+    """
+    values = dict(zip(table["period"], table["value"]))
+    latest_period = table["period"].iloc[-1]
+    earlier = year_earlier(latest_period)
+    if earlier not in values:
         return None
-    before, latest = table["value"].iloc[-2], table["value"].iloc[-1]
     return {
-        "from": table["period"].iloc[-2],
-        "percent": round(float((latest / before - 1) * 100), 1),
+        "from": earlier,
+        "percent": round(float((values[latest_period] / values[earlier] - 1) * 100), 1),
     }
 
 
@@ -284,13 +303,9 @@ def chart_data(
             ),
         },
         "period_kind": indicator.period_kind,
-        # "1,9% more than the year before" is for amounts (GDP per person). For a
-        # rate that is already a yearly change (GDP growth), it would be nonsense.
-        "growth": (
-            growth(table)
-            if indicator.period_kind == "year" and indicator.unit != "percent"
-            else None
-        ),
+        # "1,9% more than a year earlier" is for amounts (GDP per person, the
+        # minimum wage). For a rate (GDP growth, inflation) it would be nonsense.
+        "growth": growth(table) if indicator.unit != "percent" else None,
         "points": [
             [period, float(value)]
             for period, value in zip(table["period"], table["value"])
