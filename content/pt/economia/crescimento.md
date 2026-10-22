@@ -1,6 +1,6 @@
 ---
 question: A economia do Brasil está crescendo?
-summary: No ano de {month}, o PIB do Brasil mudou em {value} em relação ao ano anterior. Um número positivo quer dizer que a economia cresceu; negativo, que encolheu. Este número sai uma vez por ano.
+summary: No ano de {month}, a produção de riquezas do Brasil mudou em {value} em relação ao ano anterior. Um número positivo quer dizer que a economia cresceu; negativo, que encolheu. Este número sai uma vez por ano.
 chart_subtitle: >-
   Quanto a economia cresceu a cada ano, em %. Barras coloridas: Brasil, na
   cor da regra. Barras tracejadas: previsão do FMI. Círculos: o que os
@@ -10,15 +10,15 @@ chart_subtitle: >-
 
 ## O que é?
 
-O PIB é o valor de tudo o que um país produz em um ano: comida, carros, casas,
+O Produto Interno Bruto (PIB) é o valor de tudo o que um país produz em um ano: comida, carros, casas,
 serviços. O crescimento do PIB mostra quanto esse valor aumentou ou diminuiu
-em relação ao ano anterior, sem contar o aumento dos preços.
+em relação ao ano anterior, descontando o aumento dos preços.
 
 ## Por que importa?
 
 Quando a economia cresce, as empresas vendem mais, contratam mais e o governo
 arrecada mais impostos para pagar escolas, saúde e estradas. Quando a economia
-encolhe, o desemprego costuma subir e a renda das famílias cai.
+encolhe, o desemprego costuma subir e a renda das famílias cai. O crescimento no PIB, junto com a inflação, são usados para ajustar o salário mínimo. 
 
 ## Como é calculado?
 
