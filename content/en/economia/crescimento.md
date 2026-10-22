@@ -1,6 +1,6 @@
 ---
 question: Is Brazil's economy growing?
-summary: In the year {month}, Brazil's GDP changed by {value} compared with the year before. A positive number means the economy grew; a negative one, that it shrank. This figure comes out once a year.
+summary: In the year {month}, the wealth Brazil produced changed by {value} compared with the year before. A positive number means the economy grew; a negative one, that it shrank. This figure comes out once a year.
 chart_subtitle: >-
   How much the economy grew each year, in %. Coloured bars: Brazil, in the
   colour of the rule. Dashed bars: the IMF's forecast. Circles: what
@@ -10,15 +10,16 @@ chart_subtitle: >-
 
 ## What is it?
 
-GDP is the value of everything a country produces in a year: food, cars,
-houses, services. GDP growth shows how much that value went up or down
-compared with the year before, leaving out the rise in prices.
+Gross Domestic Product (GDP) is the value of everything a country produces in
+a year: food, cars, houses, services. GDP growth shows how much that value went
+up or down compared with the year before, after taking out the rise in prices.
 
 ## Why does it matter?
 
 When the economy grows, companies sell more, hire more, and the government
 collects more taxes to pay for schools, health and roads. When the economy
-shrinks, unemployment usually rises and family income falls.
+shrinks, unemployment usually rises and family income falls. GDP growth and
+inflation are used to adjust the minimum wage.
 
 ## How is it calculated?
 

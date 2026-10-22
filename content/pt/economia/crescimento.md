@@ -18,7 +18,7 @@ em relação ao ano anterior, descontando o aumento dos preços.
 
 Quando a economia cresce, as empresas vendem mais, contratam mais e o governo
 arrecada mais impostos para pagar escolas, saúde e estradas. Quando a economia
-encolhe, o desemprego costuma subir e a renda das famílias cai. O crescimento no PIB, junto com a inflação, são usados para ajustar o salário mínimo. 
+encolhe, o desemprego costuma subir e a renda das famílias cai. O crescimento do PIB e a inflação são usados para ajustar o salário mínimo.
 
 ## Como é calculado?
 
@@ -43,7 +43,7 @@ menos empregos e menos renda.
 
 ## Como ler o gráfico?
 
-Cada barra é um ano do Brasil, na cor da regra acima. Barra para baixo de
+Cada barra é um ano do Brasil, na cor da regra acima. Barra abaixo de
 zero: a economia encolheu naquele ano. As duas barras tracejadas no fim são a
 previsão do FMI para os próximos anos; elas não têm cor, porque ainda não
 aconteceram.
