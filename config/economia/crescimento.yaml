@@ -1,0 +1,46 @@
+id: crescimento
+section: economia
+group: coincident
+name:
+  pt: Crescimento da economia - PIB
+  en: Economic growth - GDP
+slug:
+  pt: crescimento
+  en: growth
+technical_name: PIB, variação real anual (%), World Economic Outlook
+unit: percent
+period_kind: year
+series:
+  # Decided 22 Oct 2026: total GDP growth (not per person), from the IMF, so
+  # Brazil and the comparison countries come from the same source. Only years up
+  # to the IMF's LATEST_ACTUAL_ANNUAL_DATA are kept; later years are projections.
+  brazil: {source: imf, code: gdp-growth, geo: BRA}
+  # The IMF's forecast for the next years, in its own file. Each new edition
+  # (April, October) is stored as a revision, so the history of forecasts builds up.
+  forecast: {source: imf, code: gdp-growth-forecast, geo: BRA}
+  # What economists expected for each year in the first Focus survey of its
+  # January (Banco Central), to compare with the result. History since 2000.
+  expected: {source: focus, code: pib-janeiro, geo: BRA}
+  peers:
+    - {source: imf, code: gdp-growth, geo: [G205, MEX, COL, ZAF, USA], source_name: FMI}
+source:
+  name: FMI
+  table: World Economic Outlook, crescimento real do PIB
+  url: https://www.imf.org/en/Publications/WEO
+transform: none
+zones:
+  # Decided 22 Oct 2026. No official body sets a target for growth, so this is
+  # Brasil Fácil's rule: red if the economy shrank, whatever the others did;
+  # green if it grew more than the average of Mexico, Colombia and South Africa
+  # (the comparison countries used across the site); yellow if it grew less.
+  # On 1996-2025 data: 13 green, 13 yellow, 4 red (2009, 2015, 2016, 2020).
+  rule: vs_peer_average
+  basis: brasilfacil_rule
+  peers: [MEX, COL, ZAF]
+  checked_on: 2026-10-22
+chart:
+  kind: bar   # one bar per year, in its colour; IMF forecast bars in grey
+release:
+  expected_day: 15       # the IMF publishes the WEO in April and October
+  stale_after_days: 400
+content: crescimento

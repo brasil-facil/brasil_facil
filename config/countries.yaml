@@ -10,6 +10,10 @@ G110:   # IMF group "advanced economies": the yearly stand-in for the OECD avera
   name: {pt: Economias avançadas, en: Advanced economies}
   short: {pt: Avançadas, en: Advanced}
   role: reference
+G205:   # IMF group "Latin America and the Caribbean": the regional average for growth
+  name: {pt: América Latina e Caribe, en: Latin America and the Caribbean}
+  short: {pt: Am. Latina, en: Latin America}
+  role: reference
 MEX:
   name: {pt: México, en: Mexico}
   role: peer

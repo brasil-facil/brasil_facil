@@ -39,6 +39,7 @@ class Zones(Strict):
         "threshold_plus_trend",
         "distance_from_reference",
         "change_from_year_before",
+        "vs_peer_average",
         "trend",
     ]
     basis: Literal["official_target", "imf", "world_bank", "oecd", "brasilfacil_rule"]
@@ -48,6 +49,9 @@ class Zones(Strict):
     # change_from_year_before: thresholds in points of the rate
     green_below: float | None = None
     red_from: float | None = None
+    # vs_peer_average: the countries whose average Brazil is compared with.
+    # Fixed here, so the colour does not change when readers switch lines on/off.
+    peers: list[str] | None = None
     # where a Brasil Fácil rule comes from, and when it was last checked
     citation: str | None = None
     checked_on: date | None = None
@@ -62,6 +66,7 @@ class Zones(Strict):
                 "citation",
                 "checked_on",
             ],
+            "vs_peer_average": ["peers", "checked_on"],
         }.get(self.rule, [])
         missing = [name for name in needed if getattr(self, name) is None]
         if missing:
@@ -95,6 +100,12 @@ class IndicatorSeries(Strict):
     brazil: SeriesRef | None = None
     inputs: dict[str, SeriesRef] | None = None
     peers: list[PeerGroup] = []
+    # forecast: an official forecast of the next years (e.g. the IMF's), drawn
+    # apart from the results and never coloured.
+    forecast: SeriesRef | None = None
+    # expected: what was expected for each period before it happened (e.g. the
+    # Focus survey in January), shown next to the result, never coloured.
+    expected: SeriesRef | None = None
 
     @model_validator(mode="after")
     def check_one_kind(self) -> "IndicatorSeries":
@@ -104,7 +115,8 @@ class IndicatorSeries(Strict):
 
     def all_refs(self) -> list[SeriesRef]:
         own = [self.brazil] if self.brazil else list(self.inputs.values())
-        return own + [ref for group in self.peers for ref in group.refs()]
+        extra = [ref for ref in (self.forecast, self.expected) if ref is not None]
+        return own + extra + [ref for group in self.peers for ref in group.refs()]
 
 
 class Country(Strict):
@@ -137,6 +149,8 @@ class ChartSettings(Strict):
     # Show the grey "Sem meta" pill when there is no zone. Turn off where
     # "no target" would mislead (the Selic is itself a decision).
     no_target_pill: bool = True
+    # "bar": one bar per period, coloured by its zone (yearly growth rates).
+    kind: Literal["line", "bar"] = "line"
 
 
 class Indicator(Strict):

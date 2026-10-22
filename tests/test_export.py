@@ -35,6 +35,7 @@ def test_latest_is_september_2026_yellow(series_dir):
         "lower": 1.5,
         "upper": 4.5,
         "change": None,
+        "reference": None,  # only for the vs_peer_average rule
     }
 
 
