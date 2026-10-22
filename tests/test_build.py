@@ -1,6 +1,7 @@
 import json
 
 import build
+from pipeline.models import load_indicator
 
 
 def test_number_format_per_language():
@@ -97,3 +98,29 @@ def test_inflation_page_has_country_buttons(tmp_path):
     assert 'data-geo="MEX" aria-pressed="true"' in pt
     assert 'data-geo="USA" aria-pressed="false"' in pt
     assert "FMI:" in pt and "OCDE:" in pt
+
+
+def all_indicators():
+    return [load_indicator(p) for p in sorted(build.CONFIG.glob("*/*.yaml"))]
+
+
+def test_every_page_explains_how_it_is_calculated():
+    headings = {
+        "pt": "<h2>Como é calculado?</h2>",
+        "en": "<h2>How is it calculated?</h2>",
+    }
+    for indicator in all_indicators():
+        for lang, heading in headings.items():
+            body = build.load_text(indicator, lang)["body_html"]
+            assert heading in body, (indicator.id, lang)
+            assert "{" not in body, (indicator.id, lang)  # every placeholder filled
+
+
+def test_colour_limits_come_from_the_yaml():
+    indicators = {i.id: i for i in all_indicators()}
+    assert build.zone_numbers(indicators["inflacao"], "pt") == {"yellow_margin": "1,5"}
+    unemployment = build.zone_numbers(indicators["desemprego"], "en")
+    assert unemployment == {"green_below": "0.2", "red_from": "0.5"}
+    body = build.load_text(indicators["desemprego"], "pt")["body_html"]
+    assert "subiu 0,5 ponto ou mais" in body
+    assert build.zone_numbers(indicators["selic"], "pt") == {}

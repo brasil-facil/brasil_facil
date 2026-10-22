@@ -162,6 +162,7 @@ def peer_lines(
                 {
                     "geo": ref.geo,
                     "name": getattr(country.name, lang),
+                    "short_name": getattr(country.short or country.name, lang),
                     "role": country.role,
                     "default_on": country.role == "reference" or country.default_on,
                     "source": group.source_name,

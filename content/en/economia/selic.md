@@ -21,6 +21,16 @@ and invest less, and prices tend to rise more slowly. When the Selic is low,
 the opposite happens. The Central Bank uses the Selic to try to keep inflation
 within the target.
 
+## How is it calculated?
+
+The Selic is not measured: it is decided. The Copom, a committee of the
+Central Bank's governor and directors, meets about 8 times a year. It looks at
+inflation, forecasts and the state of the economy and votes on the new rate.
+The chart shows the rate in force on the last day of each month, in % a year.
+
+This page does not show the Good, Watch or Worrying colours. The Selic is a
+decision, not a result: a high or low rate is not, on its own, good or bad.
+
 ## How to read the chart?
 
 The purple line is the Selic. It moves in steps: each step is a Copom meeting

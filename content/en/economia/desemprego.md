@@ -20,13 +20,32 @@ When unemployment rises, more families lose income, and people with jobs tend
 to get smaller pay rises. A fast rise often shows up when the economy is
 slowing down.
 
+## How is it calculated?
+
+IBGE visits about 200,000 homes across the country every 3 months and asks who
+worked and who looked for a job. A person aged 14 or over counts as unemployed
+if they did not work, looked for a job in the last month and could start soon.
+
+The rate is the number of unemployed people divided by the number of people
+who want to work (those working plus those unemployed), times 100. Each point
+on the chart is the average of 3 months in a row.
+
+The colours compare the rate with the same 3 months a year earlier:
+
+- **Good** (green): unemployment fell, or rose by less than {green_below} point.
+- **Watch** (yellow): it rose by {green_below} to less than {red_from} point.
+- **Worrying** (red): it rose by {red_from} point or more. For example, from
+  7% to 7.5%.
+
+This is a Brasil Fácil rule: no official body sets a limit for unemployment.
+We chose {red_from} point because, in other countries, a rise of that size
+often shows up at the start of an economic crisis.
+
 ## How to read the chart?
 
 The purple line is the unemployment rate. It goes up at the start of every
 year, when temporary end-of-year jobs end. That is why the colour compares
-each period with the same period a year earlier. Green: it rose less than 0.2
-point or fell. Yellow: it rose 0.2 to 0.5 point. Red: it rose 0.5 point or
-more.
+each period with the same period a year earlier. The colours are explained in "How is it calculated?".
 
 The grey lines are other countries, calculated by the OECD with the same
 definition of unemployment. There are small differences: in Brazil, the

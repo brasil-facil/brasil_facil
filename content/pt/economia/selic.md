@@ -21,6 +21,16 @@ empresas compram e investem menos, e os preços tendem a subir mais devagar. Com
 a Selic baixa, acontece o contrário. O Banco Central usa a Selic para tentar
 manter a inflação dentro da meta.
 
+## Como é calculado?
+
+A Selic não é medida: ela é decidida. O Copom, um comitê formado pelo
+presidente e pelos diretores do Banco Central, se reúne cerca de 8 vezes por
+ano. Ele olha a inflação, as previsões e a situação da economia e vota a nova
+taxa. O gráfico mostra a taxa que valia no último dia de cada mês, em % ao ano.
+
+Esta página não mostra as cores Bom, Atenção ou Preocupante. A Selic é uma
+decisão, não um resultado: uma taxa alta ou baixa não é, sozinha, boa ou ruim.
+
 ## Como ler o gráfico?
 
 A linha roxa é a Selic. Ela anda em degraus: cada degrau é uma reunião do Copom

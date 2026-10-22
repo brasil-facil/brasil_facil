@@ -19,6 +19,21 @@ O aumento nos preços de produtos essenciais (INPC) é usado para ajustar o sal�
 que ganham entra 1 a 5 salários mínimos gastam uma parte maior com comida, aluguel e
 transporte. Quando esses preços sobem mais, o INPC fica acima da inflação geral (IPCA).
 
+## Como é calculado?
+
+O IBGE usa os mesmos preços que coleta para a inflação oficial (IPCA): os
+mesmos produtos, nas mesmas cidades, todo mês. A diferença está no peso de cada
+produto. No INPC, os pesos vêm do que gastam as famílias que ganham de 1 a 5
+salários mínimos. Por isso comida e transporte pesam mais no INPC do que no
+IPCA.
+
+O número mostrado compara os preços de um mês com os preços do mesmo mês um
+ano antes.
+
+Esta página não mostra as cores Bom, Atenção ou Preocupante. O governo não
+define uma meta para o INPC, e o Brasil Fácil só usa cores quando há uma
+referência clara para comparar.
+
 ## Como ler o gráfico?
 
 A linha roxa é o aumento nos preços de produtos essenciais. A linha cinza é a inflação oficial. Quando a roxa está acima da

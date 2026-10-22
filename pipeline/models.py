@@ -109,6 +109,8 @@ class IndicatorSeries(Strict):
 
 class Country(Strict):
     name: LangText
+    # A shorter name for the chart's end labels on a phone; defaults to name.
+    short: LangText | None = None
     role: Literal["reference", "peer"]
     default_on: bool = False
 

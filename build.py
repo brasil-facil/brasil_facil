@@ -174,8 +174,26 @@ def load_text(indicator: Indicator, lang: str) -> dict[str, str]:
         raise FileNotFoundError(f"missing translation: {path.relative_to(ROOT)}")
     _, front, body = path.read_text(encoding="utf-8").split("---", 2)
     text = yaml.safe_load(front)
-    text["body_html"] = markdown.markdown(body)
+    # "{yellow_margin}" in the text becomes "1,5", read from the indicator's
+    # YAML, so the colour rules on the page never drift from the real ones.
+    text["body_html"] = markdown.markdown(
+        body.format_map(zone_numbers(indicator, lang))
+    )
     return text
+
+
+def zone_numbers(indicator: Indicator, lang: str) -> dict[str, str]:
+    """The colour limits of an indicator, written for readers: {"red_from": "0,5"}."""
+    if indicator.zones is None:
+        return {}
+    limits = {
+        "yellow_margin": indicator.zones.yellow_margin,
+        "green_below": indicator.zones.green_below,
+        "red_from": indicator.zones.red_from,
+    }
+    return {
+        name: number(value, lang) for name, value in limits.items() if value is not None
+    }
 
 
 def page_url(indicator: Indicator, lang: str) -> str:

@@ -17,6 +17,28 @@ one year. It includes food, rent, transport, medicine and much more.
 When prices rise faster than wages, the same money buys less at the end of the
 month. With 5% inflation, R$ 100 of shopping costs about R$ 105.
 
+## How is it calculated?
+
+Every month, IBGE records the prices of hundreds of goods and services in
+several cities. Each item counts according to how much families spend on it:
+food and rent count more than, say, a cinema ticket. It covers families
+earning 1 to 40 minimum wages.
+
+The number shown compares one month's prices with prices in the same month a
+year earlier. That is why it is called inflation "over 12 months".
+
+The colours compare inflation with the government's target for that year:
+
+- **Good** (green): inflation is inside the target.
+- **Watch** (yellow): it is outside the target, but within {yellow_margin}
+  points of it, above or below. For example, if the target goes up to 4.5%,
+  inflation of 5.5% is yellow.
+- **Worrying** (red): it is more than {yellow_margin} points outside the target.
+
+The target is official, set by the National Monetary Council. The yellow band
+of {yellow_margin} points is a Brasil Fácil rule, not the government's. There
+was no target before 1999, so those years have no colour.
+
 ## How to read the chart?
 
 The purple line is Brazil. The green band is the target the government set for

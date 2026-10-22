@@ -1,3 +1,4 @@
+import json
 from datetime import date
 from pathlib import Path
 
@@ -53,7 +54,21 @@ def test_gdp_page_builds_with_dollars_and_growth(tmp_path):
     page = (tmp_path / "pt" / "economia" / "pib-per-capita" / "index.html").read_text(
         encoding="utf-8"
     )
-    assert "US$" in page and "a mais do que em" in page
+    assert "US$" in page and "a mais do que no ano anterior" in page
     assert "Sem meta" not in page
-    en = tmp_path / "en" / "economy" / "gdp-per-capita" / "index.html"
-    assert "more than in" in en.read_text(encoding="utf-8")
+    # Yearly data says so: "ano de 2025" next to the number, "Ano" over the table.
+    assert "Brasil agora · ano de" in page and '<th scope="col">Ano</th>' in page
+    en = (tmp_path / "en" / "economy" / "gdp-per-capita" / "index.html").read_text(
+        encoding="utf-8"
+    )
+    assert "more than the year before" in en and '<th scope="col">Year</th>' in en
+
+
+def test_peers_carry_a_short_name_for_phones(tmp_path):
+    build.main(tmp_path)
+    data = json.loads(
+        (tmp_path / "data" / "pt" / "pib-per-capita.json").read_text("utf-8")
+    )
+    short = {peer["geo"]: peer["short_name"] for peer in data["peers"]}
+    assert short["G110"] == "Avançadas"
+    assert short["MEX"] == "México"  # no short name given: the full name
