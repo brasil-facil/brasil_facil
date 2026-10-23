@@ -299,7 +299,9 @@ a {
   font-size: clamp(1.2rem, 2.6vw, 1.5rem);
   font-weight: 700;
   line-height: 1.25;
-  color: var(--accent);   /* same purple as the selected tab */
+  /* Between the deep brand purple and the brighter accent (light look);
+     in the dark look both are the same light purple. */
+  color: color-mix(in srgb, var(--accent) 60%, var(--brand));
   margin-bottom: 8px;
 }
 
