@@ -36,7 +36,7 @@ def test_every_indicator_is_in_one_group_of_the_section_page():
 def test_section_page(tmp_path):
     build.main(tmp_path)
     page = (tmp_path / "pt" / "economia" / "index.html").read_text("utf-8")
-    assert "Como está a economia do Brasil?" in page
+    assert 'Como está a <span class="accent">economia</span> do Brasil?' in page
     for name in ("Trabalho", "Preços e juros", "Produção"):
         assert f">{name}</h2>" in page
     assert 'href="/pt/economia/inflacao/"' in page  # a tile opens its own page
@@ -53,7 +53,10 @@ def test_section_page(tmp_path):
     assert "Subiu em relação a um ano antes" in page or "Caiu em relação" in page
     assert '<a href="/pt/economia/" aria-current="page">Economia</a>' in page
     en = (tmp_path / "en" / "economy" / "index.html").read_text("utf-8")
-    assert "How is Brazil&#39;s economy doing?" in en and ">Work</h2>" in en
+    assert (
+        'How is Brazil&#39;s <span class="accent">economy</span> doing?' in en
+        and ">Work</h2>" in en
+    )
     indicator = (tmp_path / "pt" / "economia" / "inflacao" / "index.html").read_text(
         "utf-8"
     )
@@ -88,3 +91,35 @@ def test_unknown_heading_stops_the_build():
         build.split_sections(
             "\n## O que é isso?\nTexto.\n", "pt", build.CONTENT / "x.md"
         )
+
+
+def test_home_page_shows_the_sections_and_how_we_work(tmp_path):
+    build.main(tmp_path)
+    home = (tmp_path / "pt" / "index.html").read_text("utf-8")
+    assert 'href="/pt/economia/"' in home and "10 números" in home  # live section
+    assert home.count('<span class="pill soon">Em breve</span>') == 4
+    assert "Como trabalhamos" in home and "Sem opinião" in home
+    assert build.REPO_URL in home
+    assert '<a href="/pt/" aria-current="page">Início</a>' in home
+    en = (tmp_path / "en" / "index.html").read_text("utf-8")
+    assert "How we work" in en and "Coming soon" in en
+
+
+def test_economia_tab_has_a_dropdown_with_every_indicator(tmp_path):
+    build.main(tmp_path)
+    page = (tmp_path / "pt" / "index.html").read_text("utf-8")
+    menu = page.split('<div class="nav-menu">', 1)[1].split("</nav>", 1)[0]
+    assert menu.count('<div class="nav-menu-group">') == 3  # the three groups
+    assert '<a href="/pt/economia/desemprego/">Desemprego</a>' in menu
+    assert menu.count("<a href=") == 10  # every indicator, by its tile name
+
+
+def test_accent_marks_one_word_and_still_escapes():
+    assert str(build.accent("a *b* c")) == 'a <span class="accent">b</span> c'
+    assert str(build.accent("<i>")) == "&lt;i&gt;"
+
+
+def test_home_and_section_pages_say_the_picture_is_not_complete(tmp_path):
+    build.main(tmp_path)
+    for page in ("pt/index.html", "pt/economia/index.html", "en/economy/index.html"):
+        assert 'class="note-wip"' in (tmp_path / page).read_text("utf-8"), page

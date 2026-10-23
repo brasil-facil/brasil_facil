@@ -103,7 +103,7 @@
     };
   }
 
-  function buildOption(data, colors, fmt, active, narrow, width) {
+  function buildOption(data, colors, fmt, active, narrow, width, range, animate) {
     var points = data.points.map(function (p) { return [toDate(p[0]), p[1]]; });
     var last = points[points.length - 1];
     var isBar = data.chart.kind === "bar";
@@ -119,7 +119,11 @@
       : null;
 
     return {
-      animation: false,
+      // The entrance: lines draw from left to right, bars grow from zero.
+      // Only when the page opens (animate); later redraws are instant.
+      animation: animate,
+      animationDuration: 900,
+      animationEasing: "cubicOut",
       textStyle: { fontFamily: "Inclusive Sans, Verdana, sans-serif", color: colors.muted },
       legend: legend ? legend.legend : { show: false },
       grid: {
@@ -170,6 +174,10 @@
       dataZoom: [{
         type: "inside",
         filterMode: "filter",
+        // The starting window is set here, not afterwards, so the entrance
+        // animation is not cut short by a second redraw.
+        startValue: range.startValue,
+        endValue: range.endValue,
         zoomOnMouseWheel: false,
         moveOnMouseMove: false,
         moveOnMouseWheel: false
@@ -436,7 +444,8 @@
     return list;
   }
 
-  function setWindow(chart, data, years) {
+  // The dates the chart shows for a period button ("30" years, or "all").
+  function windowRange(data, years) {
     var first = toDate(data.points[0][0]);
     var lastPeriod = data.points[data.points.length - 1][0];
     var start = first;
@@ -448,7 +457,12 @@
     // A forecast reaches past the last result: keep its years in view.
     var forecast = data.forecast && data.forecast.length ? data.forecast : null;
     var end = forecast ? forecast[forecast.length - 1][0] : lastPeriod;
-    chart.dispatchAction({ type: "dataZoom", startValue: start, endValue: toDate(end) });
+    return { startValue: start, endValue: toDate(end) };
+  }
+
+  function setWindow(chart, data, years) {
+    var range = windowRange(data, years);
+    chart.dispatchAction({ type: "dataZoom", startValue: range.startValue, endValue: range.endValue });
   }
 
   function setupButtons(box, chart, data) {
@@ -529,7 +543,10 @@
 
         var chart = echarts.init(el, null, { renderer: "svg" });
 
-        function render() {
+        // Readers who ask their device for less motion get no entrance animation.
+        var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        function render(animate) {
           var colors = {
             brand: token("--brand"), fg: token("--fg"), muted: token("--muted"),
             line: token("--line"), surface: token("--surface"),
@@ -541,8 +558,11 @@
           };
           // Measure the chart's own box, not the window: that's the space we have.
           var width = el.clientWidth;
-          chart.setOption(buildOption(data, colors, fmt, active, width < NARROW_PX, width), true);
-          setWindow(chart, data, currentYears(box));
+          var range = windowRange(data, currentYears(box));
+          var option = buildOption(
+            data, colors, fmt, active, width < NARROW_PX, width, range, animate === true
+          );
+          chart.setOption(option, true);
         }
 
         // The comparison countries switched on, starting with the default ones.
@@ -552,12 +572,12 @@
 
         setupButtons(box, chart, data);
         pressVisibleDefault(box);
-        setupPeerButtons(box, active, render);
-        render();
+        setupPeerButtons(box, active, function () { render(false); });
+        render(!calm);
         // On resize (a phone turned sideways), redraw: the layout may change.
-        window.addEventListener("resize", function () { chart.resize(); render(); });
+        window.addEventListener("resize", function () { chart.resize(); render(false); });
         // theme.js sends "themechange" when the look switches (button or device).
-        document.addEventListener("themechange", render);
+        document.addEventListener("themechange", function () { render(false); });
       });
   }
 

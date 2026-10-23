@@ -47,6 +47,7 @@
   --good-band: rgba(30, 122, 76, 0.14);
   --watch-band: rgba(212, 160, 23, 0.16);
   --watch-bar: #D4A017;   /* yellow bars in charts (--watch is for text) */
+  --accent: #4E2590;   /* highlights: the selected tab, live cards, a word in a title */
   --cmp-line: #857F94;   /* comparison lines: quiet grey */
   --cmp-peer: #9A94AA;   /* comparison countries: lighter grey, dashed */
   --radius: 14px;
@@ -80,6 +81,7 @@
   --good-band: rgba(82, 196, 141, 0.16);
   --watch-band: rgba(231, 176, 78, 0.12);
   --watch-bar: #E7B04E;
+  --accent: #B9A2F5;
   --cmp-line: #938DA3;
   --cmp-peer: #7E7892;
   color-scheme: dark;
@@ -107,6 +109,7 @@
     --good-band: rgba(82, 196, 141, 0.16);
     --watch-band: rgba(231, 176, 78, 0.12);
     --watch-bar: #E7B04E;
+    --accent: #B9A2F5;
     --cmp-line: #938DA3;
     --cmp-peer: #7E7892;
     color-scheme: dark;
@@ -296,7 +299,7 @@ a {
   font-size: clamp(1.2rem, 2.6vw, 1.5rem);
   font-weight: 700;
   line-height: 1.25;
-  color: var(--brand);
+  color: var(--accent);
   margin-bottom: 8px;
 }
 
@@ -537,14 +540,18 @@ th {
   border-radius: 10px;
 }
 
-.tabs a:hover,
-.tabs a[aria-current="page"] {
+.tabs a:hover {
   color: var(--fg);
   background: var(--brand-soft);
 }
 
-.tabs a[aria-current="page"] {
-  box-shadow: inset 0 -2px 0 var(--brand);
+/* The page you are on: a solid purple block, no edge. Light purple with dark
+   text in the dark look, deep purple with light text in the light look
+   (--ground is the page colour, so it is always the opposite of --brand). */
+.tabs a[aria-current="page"],
+.tabs a[aria-current="page"]:hover {
+  color: var(--ground);
+  background: var(--accent);   /* the same purple as the word in the title */
 }
 
 @media (max-width: 700px) {
@@ -691,7 +698,8 @@ th {
 }
 
 .tile-name {
-  font-size: 1.1rem;
+  font-family: var(--font-display);   /* Bitter, like the page titles */
+  font-size: 1.15rem;
   line-height: 1.2;
   margin: 0;
 }
@@ -777,4 +785,191 @@ th {
 
 .explain-more p {
   max-width: none;
+}
+
+/* 13. Home page: section cards ("Em breve" ones dashed), principles, next steps. */
+.home-hero .lede {
+  max-width: 64ch;
+}
+
+.section-card-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.section-card-soon {
+  background: transparent;
+  border: 1.5px dashed color-mix(in srgb, var(--muted) 45%, transparent);
+}
+
+.section-card-soon:hover {
+  transform: none;
+  border-color: color-mix(in srgb, var(--muted) 45%, transparent);
+}
+
+.pill.soon {
+  color: var(--muted);
+  border: 1px solid currentColor;
+}
+
+.principles {
+  display: grid;
+  gap: 14px 24px;
+  margin-top: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+
+.principle h3 {
+  font-size: 1.05rem;
+  margin: 0 0 4px;
+}
+
+.principle p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.coming {
+  margin: 10px 0 14px;
+  padding-left: 1.3em;
+  display: grid;
+  gap: 6px;
+}
+
+.principles + .related {
+  margin-top: 18px;
+}
+
+/* Every row as tall as the tallest one: all section cards the same size. */
+.tiles-even {
+  grid-auto-rows: 1fr;
+}
+
+/* A section that already exists: tinted purple, so it stands out from the
+   dashed "Em breve" cards. */
+.section-card-live {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 65%, transparent);
+}
+
+.section-card-live:hover {
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+  border-color: var(--accent);
+}
+
+/* The same purple as the selected tab and the word in the titles. */
+.section-card-live .tile-name,
+.section-card-live .tile-line,
+.section-card-live .tile-foot {
+  color: var(--accent);
+}
+
+/* Section names a little larger than indicator names. */
+.section-card .tile-name {
+  font-size: 1.25rem;
+}
+
+/* 14. Dropdown under a section tab: its indicators, by group. Not on
+   phones: there the tab just opens the section page. */
+.nav-item {
+  position: relative;
+  flex: none;
+}
+
+.nav-item > a {
+  display: block;
+}
+
+.nav-menu {
+  display: none;
+}
+
+/* By width only: some laptops (with a touchscreen) tell the browser they
+   cannot hover, even with a mouse. Phones are narrower, so they never get it. */
+@media (min-width: 701px) {
+  .tabs {
+    overflow: visible;   /* or the dropdown would be cut off */
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 20;
+    margin-top: 6px;
+    padding: 16px 18px;
+    gap: 18px 28px;
+    grid-template-columns: repeat(3, max-content);
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: var(--surface);   /* solid: glass inside the glass header does not blur */
+    box-shadow: var(--shadow);
+  }
+
+  /* An invisible bridge over the gap, so the menu stays open on the way down. */
+  .nav-menu::before {
+    content: "";
+    position: absolute;
+    inset: -8px 0 auto 0;
+    height: 8px;
+  }
+
+  .nav-item:hover .nav-menu,
+  .nav-item:focus-within .nav-menu {
+    display: grid;
+  }
+}
+
+.nav-menu-group {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+}
+
+.nav-menu-group .eyebrow {
+  margin: 0 0 4px;
+}
+
+.nav-menu-group a {
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 0.92rem;
+  padding: 5px 8px;
+  margin: 0 -8px;
+  border-radius: 8px;
+}
+
+.nav-menu-group a:hover,
+.nav-menu-group a:focus-visible {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+/* A word picked out in a title: "Como está a economia do Brasil?". */
+.accent {
+  color: var(--accent);
+}
+
+/* "This is not the whole picture yet": a soft purple note under the intro. */
+/* The hero is as wide as its title or intro, whichever is wider... */
+.home-hero,
+.section-hero > div {
+  width: fit-content;
+  max-width: 100%;
+}
+
+/* ...and the note fills exactly that width: "width: 0" keeps it from making
+   the hero wider, "min-width: 100%" stretches it to the hero's width. */
+.note-wip {
+  width: 0;
+  min-width: 100%;
+  box-sizing: border-box;
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: var(--brand-soft);
+  color: var(--fg);
+  font-size: 0.95rem;
 }

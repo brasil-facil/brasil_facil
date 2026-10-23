@@ -1,18 +1,62 @@
 {% extends "base.html" %}
 
+{% block title %}Brasil Fácil · {{ s.site_tagline }}{% endblock %}
+
 {% block content %}
-  <section class="hero">
-    <h1>Brasil Fácil</h1>
-    <p class="lede">{{ s.coming_soon }}</p>
-    <p>{{ s.home_description }}</p>
+  <section class="hero home-hero">
+    <h1>{{ text.title }}</h1>
+    <p class="lede">{{ text.intro }}</p>
+    {% if text.work_in_progress is defined %}
+      <p class="note-wip">{{ text.work_in_progress }}</p>
+    {% endif %}
   </section>
 
-  <section class="panel">
-    <p class="eyebrow">{{ s.home_first }}</p>
-    <ul class="link-list">
-      {% for page in metric_pages %}
-        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+  {# One card per section: the live ones link to their page, the others are
+     dashed "Em breve" cards that say what they will show. #}
+  <section class="group panel" aria-labelledby="home-sections">
+    <h2 id="home-sections">{{ text.sections_title }}</h2>
+    <div class="tiles tiles-even">
+      {% for card in cards %}
+        {% if card.url %}
+          <a class="tile section-card section-card-live" href="{{ card.url }}">
+            <h3 class="tile-name">{{ card.name }}</h3>
+            <p class="section-card-text">{{ card.text }}</p>
+            <p class="tile-line trend">{{ s.numbers_count.format(count=card.count) }}</p>
+            <p class="tile-foot">{{ s.see_section }} →</p>
+          </a>
+        {% else %}
+          <div class="tile section-card section-card-soon">
+            <div class="tile-top">
+              <h3 class="tile-name">{{ card.name }}</h3>
+              <span class="pill soon">{{ s.soon }}</span>
+            </div>
+            <p class="section-card-text">{{ card.text }}</p>
+          </div>
+        {% endif %}
       {% endfor %}
-    </ul>
+    </div>
+  </section>
+
+  <section class="group panel" aria-labelledby="home-principles">
+    <h2 id="home-principles">{{ text.principles_title }}</h2>
+    <div class="principles">
+      {% for principle in text.principles %}
+        <div class="principle">
+          <h3>{{ principle.title }}</h3>
+          <p>{{ principle.text }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    <p class="related"><a href="{{ repo_url }}">{{ text.code_link }} →</a></p>
+  </section>
+
+  <section class="group panel" aria-labelledby="home-coming">
+    <h2 id="home-coming">{{ text.coming_title }}</h2>
+    <ol class="coming">
+      {% for item in text.coming %}
+        <li>{{ item }}</li>
+      {% endfor %}
+    </ol>
+    <p class="muted">{{ text.contact }} <a href="mailto:contato@brasilfacil.org">contato@brasilfacil.org</a></p>
   </section>
 {% endblock %}

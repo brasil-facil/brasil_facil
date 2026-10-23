@@ -6,9 +6,12 @@
 {% block content %}
   <section class="hero section-hero">
     <div>
-      <p class="eyebrow">{{ text.title }} · {{ s.updated_on.format(date=updated) }}</p>
-      <h1>{{ text.question }}</h1>
+      <p class="eyebrow">{{ s.updated_on.format(date=updated) }}</p>
+      <h1>{{ text.question | accent }}</h1>
       <p class="lede">{{ text.intro }}</p>
+      {% if text.work_in_progress is defined %}
+        <p class="note-wip">{{ text.work_in_progress }}</p>
+      {% endif %}
     </div>
     {# How many tiles are in each state: "2 bom", "1 atenção"... #}
     <div class="status">

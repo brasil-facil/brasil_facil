@@ -27,6 +27,10 @@ DIST = ROOT / "dist"
 LANGS = ["pt", "en"]
 
 SECTIONS_FILE = CONFIG / "sections.yaml"
+REPO_URL = "https://github.com/brasil-facil/brasil_facil"
+# All sections of the site, in menu order. Those not in SECTION_SLUGS yet are
+# shown on the home page as "Em breve" cards (their texts are in home.md).
+ALL_SECTIONS = ["economia", "dinheiro-publico", "saude", "educacao", "seguranca"]
 # Each section's address per language (its folder in config/ and content/ is the key).
 SECTION_SLUGS = {"economia": {"pt": "economia", "en": "economy"}}
 
@@ -335,6 +339,20 @@ def compare_url(
     return None if compare is None else page_url(by_id[compare.indicator], lang)
 
 
+def accent(text: str) -> Markup:
+    """ "Como está a *economia* do Brasil?" -> the word between asterisks in the
+    brand purple. The rest is escaped as usual, so the text cannot break the page."""
+    parts = str(Markup.escape(text)).split("*")
+    if len(parts) % 2 == 0:
+        raise ValueError(f"unpaired * in: {text}")
+    return Markup(
+        "".join(
+            f'<span class="accent">{part}</span>' if i % 2 else part
+            for i, part in enumerate(parts)
+        )
+    )
+
+
 def section_url(section: str, lang: str) -> str:
     return f"/{lang}/{SECTION_SLUGS[section][lang]}/"
 
@@ -465,9 +483,71 @@ def tile_view(indicator: Indicator, data: dict, text: dict, s: dict, lang: str) 
     }
 
 
-def nav_links(lang: str, current: str, section_texts: dict) -> list[dict]:
-    """The tabs in the header: Início, then one per section."""
-    links = [{"url": f"/{lang}/", "key": "home", "current": current == "home"}]
+def load_home_text(lang: str) -> dict:
+    path = CONTENT / lang / "home.md"
+    if not path.exists():
+        raise FileNotFoundError(f"missing translation: {path.relative_to(ROOT)}")
+    _, front, _ = path.read_text(encoding="utf-8").split("---", 2)
+    return yaml.safe_load(front)
+
+
+def home_sections(home: dict, sections: dict, section_texts: dict, lang: str) -> list:
+    """One card per section for the home page: live ones link to their page and
+    say how many numbers they have; the others say "Em breve"."""
+    cards = []
+    for key in ALL_SECTIONS:
+        text = home["sections"][key]
+        if key in sections:
+            count = sum(len(group.indicators) for group in sections[key].groups)
+            cards.append(
+                {
+                    "name": section_texts[key]["title"],
+                    "text": text["text"],
+                    "url": section_url(key, lang),
+                    "count": count,
+                }
+            )
+        else:
+            cards.append({"name": text["name"], "text": text["text"], "url": None})
+    return cards
+
+
+def section_menus(
+    sections: dict, section_texts: dict, by_id: dict, lang: str
+) -> dict[str, list[dict]]:
+    """The dropdown under each section tab: its groups and their indicators,
+    with the short tile names, in the order of config/sections.yaml."""
+    menus = {}
+    for name, section in sections.items():
+        groups = []
+        for group in section.groups:
+            items = []
+            for indicator_id in group.indicators:
+                indicator = by_id[indicator_id]
+                text = load_text(indicator, lang)
+                items.append(
+                    {
+                        "name": text.get("tile_name", getattr(indicator.name, lang)),
+                        "url": page_url(indicator, lang),
+                    }
+                )
+            groups.append(
+                {
+                    "name": section_texts[name]["groups"][group.id]["name"],
+                    "items": items,
+                }
+            )
+        menus[name] = groups
+    return menus
+
+
+def nav_links(
+    lang: str, current: str, section_texts: dict, menus: dict | None = None
+) -> list[dict]:
+    """The tabs in the header: Início, then one per section (with its dropdown)."""
+    links = [
+        {"url": f"/{lang}/", "key": "home", "current": current == "home", "menu": []}
+    ]
     for section in SECTION_SLUGS:
         links.append(
             {
@@ -475,6 +555,7 @@ def nav_links(lang: str, current: str, section_texts: dict) -> list[dict]:
                 "key": section,
                 "name": section_texts[section]["title"],
                 "current": current == section,
+                "menu": (menus or {}).get(section, []),
             }
         )
     return links
@@ -499,6 +580,7 @@ def main(dist: Path = DIST) -> None:
         month_short=month_short,
         month_long=month_long,
         period_short=period_short,
+        accent=accent,
     )
     strings = load_strings()
     indicators = [load_indicator(p) for p in sorted(CONFIG.glob("*/*.yaml"))]
@@ -513,9 +595,9 @@ def main(dist: Path = DIST) -> None:
     for lang in LANGS:
         other = "en" if lang == "pt" else "pt"
         s = strings[lang]
-        metric_pages = []
         tiles = {}
         section_texts = {name: load_section_text(name, lang) for name in sections}
+        menus = section_menus(sections, section_texts, by_id, lang)
 
         for indicator in indicators:
             data = chart_data(indicator, lang, others=by_id)
@@ -552,14 +634,13 @@ def main(dist: Path = DIST) -> None:
                 compare_url=compare_url(indicator, by_id, lang),
                 json_url=json_url,
                 other_url=page_url(indicator, other),
-                nav=nav_links(lang, indicator.section, section_texts),
+                nav=nav_links(lang, indicator.section, section_texts, menus),
                 back={
                     "url": section_url(indicator.section, lang),
                     "name": section_texts[indicator.section]["title"],
                 },
             )
             write(dist / url.strip("/") / "index.html", html, dist)
-            metric_pages.append({"url": url, "title": data["title"]})
             tiles[indicator.id] = tile_view(indicator, data, text, s, lang)
 
         for name, section in sections.items():
@@ -594,16 +675,19 @@ def main(dist: Path = DIST) -> None:
                 counts=counts,
                 updated=date_long(date.today(), lang),
                 other_url=section_url(name, other),
-                nav=nav_links(lang, name, section_texts),
+                nav=nav_links(lang, name, section_texts, menus),
             )
             write(dist / section_url(name, lang).strip("/") / "index.html", page, dist)
 
+        home_text = load_home_text(lang)
         home = env.get_template("home.html").render(
             lang=lang,
             s=s,
-            metric_pages=metric_pages,
+            text=home_text,
+            cards=home_sections(home_text, sections, section_texts, lang),
+            repo_url=REPO_URL,
             other_url=f"/{other}/",
-            nav=nav_links(lang, "home", section_texts),
+            nav=nav_links(lang, "home", section_texts, menus),
         )
         write(dist / lang / "index.html", home, dist)
 
