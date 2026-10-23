@@ -571,6 +571,11 @@ th {
   align-items: start;
 }
 
+/* The chart box and "Entenda" side by side are always the same height. */
+.metric-main {
+  align-items: stretch;
+}
+
 @media (min-width: 980px) {
   .metric-top,
   .metric-main {
