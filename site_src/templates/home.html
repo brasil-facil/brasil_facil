@@ -6,6 +6,9 @@
   <section class="hero home-hero">
     <h1>{{ text.title }}</h1>
     <p class="lede">{{ text.intro }}</p>
+    {% if text.work_in_progress is defined %}
+      <p class="note-wip">{{ text.work_in_progress }}</p>
+    {% endif %}
   </section>
 
   {# One card per section: the live ones link to their page, the others are

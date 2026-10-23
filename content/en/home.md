@@ -5,6 +5,10 @@ intro: >-
   Brasil Fácil shows how the country is doing, with official data and in
   plain words: the economy, public money, health, education and safety. It is
   free, takes no political side and compares Brazil with other countries.
+work_in_progress: >-
+  Brasil Fácil is just getting started. For now only the Economy section is
+  ready, and it does not yet show everything about the country's economy. We
+  are working on the other sections and on new numbers.
 sections_title: The sections
 sections:
   economia:

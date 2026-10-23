@@ -950,3 +950,15 @@ th {
 .accent {
   color: var(--accent);
 }
+
+/* "This is not the whole picture yet": a soft purple note under the intro. */
+.note-wip {
+  max-width: 64ch;
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: var(--brand-soft);
+  color: var(--fg);
+  font-size: 0.95rem;
+}

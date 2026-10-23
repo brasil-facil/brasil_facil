@@ -5,6 +5,10 @@ intro: >-
   O Brasil Fácil mostra como o país está, com dados oficiais e em palavras
   simples: a economia, o dinheiro público, a saúde, a educação e a segurança.
   É grátis, não tem lado político e compara o Brasil com outros países.
+work_in_progress: >-
+  O Brasil Fácil ainda está começando. Por enquanto só a seção de Economia está
+  pronta, e ela ainda não mostra tudo sobre a economia do país. Estamos
+  trabalhando nas outras seções e em novos números.
 sections_title: As seções
 sections:
   economia:

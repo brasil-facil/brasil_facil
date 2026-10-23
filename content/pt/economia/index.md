@@ -5,6 +5,10 @@ intro: >-
   Dez números que mostram o trabalho, o custo de vida, o crédito e a produção
   do país. Cada um vem com a história dos últimos anos e, quando dá, com outros
   países para comparar. Clique em um número para ver o gráfico completo.
+work_in_progress: >-
+  Estes dez números não contam tudo sobre a economia do Brasil. Estamos
+  trabalhando para incluir outros, como o dólar, as contas do governo e a
+  dívida pública.
 groups:
   trabalho:
     name: Trabalho

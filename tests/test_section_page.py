@@ -117,3 +117,9 @@ def test_economia_tab_has_a_dropdown_with_every_indicator(tmp_path):
 def test_accent_marks_one_word_and_still_escapes():
     assert str(build.accent("a *b* c")) == 'a <span class="accent">b</span> c'
     assert str(build.accent("<i>")) == "&lt;i&gt;"
+
+
+def test_home_and_section_pages_say_the_picture_is_not_complete(tmp_path):
+    build.main(tmp_path)
+    for page in ("pt/index.html", "pt/economia/index.html", "en/economy/index.html"):
+        assert 'class="note-wip"' in (tmp_path / page).read_text("utf-8"), page
