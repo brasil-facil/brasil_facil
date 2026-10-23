@@ -47,7 +47,7 @@
   --good-band: rgba(30, 122, 76, 0.14);
   --watch-band: rgba(212, 160, 23, 0.16);
   --watch-bar: #D4A017;   /* yellow bars in charts (--watch is for text) */
-  --accent: #6A3DB8;   /* a word picked out in a title; brighter than --brand */
+  --accent: #4E2590;   /* highlights: the selected tab, live cards, a word in a title */
   --cmp-line: #857F94;   /* comparison lines: quiet grey */
   --cmp-peer: #9A94AA;   /* comparison countries: lighter grey, dashed */
   --radius: 14px;
@@ -299,9 +299,7 @@ a {
   font-size: clamp(1.2rem, 2.6vw, 1.5rem);
   font-weight: 700;
   line-height: 1.25;
-  /* Between the deep brand purple and the brighter accent (light look);
-     in the dark look both are the same light purple. */
-  color: color-mix(in srgb, var(--accent) 60%, var(--brand));
+  color: var(--accent);
   margin-bottom: 8px;
 }
 
