@@ -1,4 +1,5 @@
 ---
+tile_name: "Rising prices"   # the short name on the section page tile
 question: Are prices rising faster than the target?
 summary: In {month}, prices were {value} higher than 12 months earlier.
 related_note: "For lower-income families (INPC, used to adjust the minimum wage): {value}"

@@ -1,3 +1,4 @@
+from itertools import pairwise
 from pathlib import Path
 from typing import Literal
 
@@ -368,4 +369,42 @@ def chart_data(
             "table": indicator.source.table,
             "url": str(indicator.source.url),
         },
+    }
+
+
+TILE_YEARS = 20  # the small chart on a section page tile: the last 20 years
+
+
+def tile_data(data: dict, higher_is_better: bool = False) -> dict:
+    """What a section page tile shows, from the indicator's chart data.
+
+    One value per year: the last period of each year (December for monthly
+    data, the latest month for the current year), with its colour. Plus which
+    way the latest value moved against the same period a year earlier.
+    """
+    year_end: dict[str, tuple[float, str | None]] = {}
+    for (period, value), zone in zip(data["points"], data["point_zones"]):
+        year_end[period[:4]] = (value, zone)  # later periods overwrite earlier ones
+    years = sorted(year_end)[-TILE_YEARS:]
+    values = [year_end[year][0] for year in years]
+
+    by_period = {period: value for period, value in data["points"]}
+    latest_period, latest = data["points"][-1]
+    earlier = by_period.get(year_earlier(latest_period))
+    direction = None
+    if earlier is not None:
+        direction = "up" if latest > earlier else "down" if latest < earlier else "same"
+
+    better = sum(
+        1
+        for before, after in pairwise(values)
+        if (after > before if higher_is_better else after < before)
+    )
+    return {
+        "years": years,
+        "values": values,
+        "zones": [year_end[year][1] for year in years],
+        "direction": direction,
+        "better_years": better,
+        "compared_years": len(values) - 1,
     }

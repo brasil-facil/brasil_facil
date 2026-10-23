@@ -1,0 +1,11 @@
+# Section pages: which indicators go in which glass box, in this order.
+# The reader texts (titles, intros) are in content/<lang>/<section>/index.md.
+# Decided 23 Oct 2026.
+economia:
+  groups:
+    - id: trabalho
+      indicators: [desemprego, salario-minimo, renda]
+    - id: precos-juros
+      indicators: [inflacao, inpc, selic, juro-real]
+    - id: producao
+      indicators: [crescimento, pib-per-capita, conta-corrente]

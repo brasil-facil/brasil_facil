@@ -1,4 +1,5 @@
 ---
+tile_name: "Crescimento da economia"   # the short name on the section page tile
 question: A economia do Brasil está crescendo?
 summary: No ano de {month}, a produção de riquezas do Brasil mudou em {value} em relação ao ano anterior. Um número positivo quer dizer que a economia cresceu; negativo, que encolheu. Este número sai uma vez por ano.
 chart_subtitle: >-

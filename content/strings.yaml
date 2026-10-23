@@ -4,11 +4,6 @@ pt:
   other_lang: en
   other_lang_name: English
   site_tagline: Os números do Brasil, explicados
-  coming_soon: Em breve, o site completo.
-  home_description: >-
-    Aqui você vai ver como o Brasil está: economia, dinheiro público, saúde,
-    educação e segurança. Tudo com dados oficiais e em palavras simples.
-  home_first: "Já disponível:"
   zone_green: Bom
   zone_yellow: Atenção
   zone_red: Preocupante
@@ -43,17 +38,32 @@ pt:
   growth_down: "{value} a menos do que um ano antes ({year})"
   peer_average: "Média de {names} no mesmo ano: {value}"
   forecast: "Previsão do FMI: {items}"
+  nav_home: Início
+  nav_label: Seções
+  back_to: "Voltar para"
+  updated_on: "Atualizado em {date}"
+  trend_up: Melhorando
+  trend_down: Piorando
+  better_years: "Melhorou em {better} dos últimos {years} anos"
+  moved_up: Subiu em relação a um ano antes
+  moved_down: Caiu em relação a um ano antes
+  moved_same: Igual a um ano antes
+  see_chart: Ver gráfico
+  chip_good: bom
+  chip_watch: atenção
+  chip_bad: preocupante
+  chip_trend: melhorando
+  chip_worse: piorando
+  explain_label: Entenda
+  soon: Em breve
+  numbers_count: "{count} números"
+  see_section: Ver a seção
   expected: "Em janeiro de {year}, os economistas esperavam {value} para o ano (pesquisa Focus, do Banco Central)"
 en:
   html_lang: en
   other_lang: pt-BR
   other_lang_name: Português
   site_tagline: Brazil's numbers, explained
-  coming_soon: The full site is coming soon.
-  home_description: >-
-    Here you will see how Brazil is doing: economy, public money, health,
-    education and safety. All with official data, in simple words.
-  home_first: "Available now:"
   zone_green: Good
   zone_yellow: Watch
   zone_red: Worrying
@@ -88,4 +98,24 @@ en:
   growth_down: "{value} less than a year earlier ({year})"
   peer_average: "Average of {names} in the same year: {value}"
   forecast: "IMF forecast: {items}"
+  nav_home: Home
+  nav_label: Sections
+  back_to: "Back to"
+  updated_on: "Updated on {date}"
+  trend_up: Improving
+  trend_down: Worsening
+  better_years: "Improved in {better} of the last {years} years"
+  moved_up: Up on a year earlier
+  moved_down: Down on a year earlier
+  moved_same: The same as a year earlier
+  see_chart: See the chart
+  chip_good: good
+  chip_watch: watch
+  chip_bad: worrying
+  chip_trend: improving
+  chip_worse: worsening
+  explain_label: Understand
+  soon: Coming soon
+  numbers_count: "{count} numbers"
+  see_section: See the section
   expected: "In January {year}, economists expected {value} for the year (Focus survey, Banco Central)"

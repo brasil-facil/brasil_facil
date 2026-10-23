@@ -1,4 +1,5 @@
 ---
+tile_name: "Minimum wage"   # the short name on the section page tile
 question: Does the minimum wage buy more or less than before?
 summary: In {month}, the minimum wage was {value} a month. In the chart, older values are adjusted for inflation, to show what they would be worth today.
 related_note: "Inflation for lower-income families (INPC), used in the adjustment: {value}"

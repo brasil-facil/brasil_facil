@@ -1,4 +1,5 @@
 ---
+tile_name: "Desemprego"   # the short name on the section page tile
 question: Está mais difícil encontrar emprego do que há um ano?
 summary: De {month}, {value} das pessoas que queriam trabalhar não encontraram emprego.
 chart_subtitle: >-

@@ -1,4 +1,5 @@
 ---
+tile_name: "Real interest rate"   # the short name on the section page tile
 question: How much does it cost to borrow money, after rising prices?
 summary: In {month}, the real interest rate was {value} a year. It is the Selic rate minus the inflation expected for the next 12 months.
 chart_subtitle: >-

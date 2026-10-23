@@ -1,4 +1,5 @@
 ---
+tile_name: "Juro real"
 question: Quanto custa pegar dinheiro emprestado, descontado o aumento dos preços?
 summary: Em {month}, o juro real estava em {value} ao ano. É a taxa Selic menos a inflação esperada para os 12 meses seguintes.
 chart_subtitle: >-
@@ -23,7 +24,7 @@ A taxa de juro é a principal ferramenta que o Banco Central tem para controlar 
 
 O Brasil Fácil faz a conta com dois números do Banco Central:
 
-- a Selic no fim do mês;
+- a taxa básica de juros (Selic) no fim do mês;
 - a inflação que os economistas esperam para os 12 meses seguintes, segundo o
   boletim Focus.
 

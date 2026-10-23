@@ -6,6 +6,12 @@
     <title>{% block title %}Brasil Fácil{% endblock %}</title>
     <link rel="alternate" hreflang="{{ s.other_lang }}" href="{{ other_url }}">
     <link rel="icon" href="/static/brand/brasil-facil-simbolo.svg" type="image/svg+xml">
+    {# Fetch the fonts straight away, before the page is drawn, so the text does
+       not first appear in Georgia or Verdana and then jump. "crossorigin" is
+       required for fonts, even from our own site. #}
+    <link rel="preload" href="/static/fonts/bitter.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/static/fonts/inclusive-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/static/fonts/inclusive-sans-700.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/static/style.css">
     <script>
       // Apply the reader's saved look before the page is drawn, so it never flashes.
@@ -22,6 +28,27 @@
           <img class="on-light" src="/static/brand/brasil-facil-logo.svg" alt="Brasil Fácil" width="154" height="36">
           <img class="on-dark" src="/static/brand/brasil-facil-logo-branco.svg" alt="Brasil Fácil" width="154" height="36">
         </a>
+        <nav class="tabs" aria-label="{{ s.nav_label }}">
+          {% for link in nav %}
+            {# A section tab opens a dropdown with its indicators on hover or
+               keyboard focus (computers only; on phones it just opens the page). #}
+            <div class="nav-item">
+              <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ s.nav_home if link.key == "home" else link.name }}</a>
+              {% if link.menu %}
+                <div class="nav-menu">
+                  {% for group in link.menu %}
+                    <div class="nav-menu-group">
+                      <p class="eyebrow">{{ group.name }}</p>
+                      {% for item in group["items"] %}
+                        <a href="{{ item.url }}">{{ item.name }}</a>
+                      {% endfor %}
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </nav>
         <div class="tools">
           <a class="lang-switch" href="{{ other_url }}" hreflang="{{ s.other_lang }}" lang="{{ s.other_lang }}">{{ s.other_lang_name }}</a>
           <div class="seg theme-switch" role="group" aria-label="{{ s.theme_label }}">
