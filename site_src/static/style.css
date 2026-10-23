@@ -159,7 +159,7 @@ body {
 .site-header-inner,
 .page,
 .site-footer {
-  max-width: 1180px;   /* wide enough for two columns; texts keep their own max width */
+  max-width: 1360px;   /* wide enough for two columns; texts keep their own max width */
   margin: 0 auto;
   padding-inline: 16px;
 }
@@ -739,3 +739,10 @@ th {
 .spark-area.good, .spark-dot.good, .spark-year.good { fill: var(--good); }
 .spark-area.watch, .spark-dot.watch, .spark-year.watch { fill: var(--watch-bar); }
 .spark-area.bad, .spark-dot.bad, .spark-year.bad { fill: var(--bad); }
+
+/* The explanation box under the chart: text in a readable width, the lists too. */
+.explain-more p,
+.explain-more ul,
+.explain-more ol {
+  max-width: 80ch;
+}

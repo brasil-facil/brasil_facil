@@ -56,3 +56,26 @@ def test_dates_in_both_languages():
 
     assert build.date_long(date(2026, 10, 23), "pt") == "23 de outubro de 2026"
     assert build.date_long(date(2026, 10, 23), "en") == "23 October 2026"
+
+
+def test_explanation_is_split_by_heading_not_order():
+    body = "\n## Why does it matter?\nBecause.\n\n## What is it?\nA thing.\n" + "".join(
+        f"\n## {h}\nText.\n"
+        for h in (
+            "How is it calculated?",
+            "How to read the chart?",
+            "Where does it come from?",
+        )
+    )
+    sections = build.split_sections(body, "en", build.CONTENT / "x.md")
+    assert sections["what"]["html"] == "<p>A thing.</p>"
+    assert sections["why"]["heading"] == "Why does it matter?"
+
+
+def test_unknown_heading_stops_the_build():
+    import pytest
+
+    with pytest.raises(ValueError, match="unknown heading"):
+        build.split_sections(
+            "\n## O que é isso?\nTexto.\n", "pt", build.CONTENT / "x.md"
+        )

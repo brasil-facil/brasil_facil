@@ -117,11 +117,23 @@
     </p>
   </section>
 
+  {# Next to the chart: what it is and why it matters. #}
   <section class="explain panel">
     <p class="eyebrow">{{ s.explain_label }}</p>
-    {{ text.body_html | safe }}
+    {% for key in ["what", "why"] %}
+      <h2>{{ text.sections[key].heading }}</h2>
+      {{ text.sections[key].html | safe }}
+    {% endfor %}
   </section>
   </div>
+
+  {# Below the chart, full width: how to read it, how it is calculated, the source. #}
+  <section class="explain explain-more panel">
+    {% for key in ["read", "how", "source"] %}
+      <h2>{{ text.sections[key].heading }}</h2>
+      {{ text.sections[key].html | safe }}
+    {% endfor %}
+  </section>
 {% endblock %}
 
 {% block scripts %}

@@ -190,10 +190,56 @@ def load_text(indicator: Indicator, lang: str) -> dict[str, str]:
     text = yaml.safe_load(front)
     # "{yellow_margin}" in the text becomes "1,5", read from the indicator's
     # YAML, so the colour rules on the page never drift from the real ones.
-    text["body_html"] = markdown.markdown(
-        body.format_map(zone_numbers(indicator, lang))
-    )
+    body = body.format_map(zone_numbers(indicator, lang))
+    text["body_html"] = markdown.markdown(body)
+    text["sections"] = split_sections(body, lang, path)
     return text
+
+
+# The five fixed questions of every indicator page, by their heading. The page
+# puts "what" and "why" next to the chart, the other three in a box below it.
+SECTION_HEADINGS = {
+    "pt": {
+        "O que é?": "what",
+        "Por que importa?": "why",
+        "Como é calculado?": "how",
+        "Como ler o gráfico?": "read",
+        "De onde vem?": "source",
+    },
+    "en": {
+        "What is it?": "what",
+        "Why does it matter?": "why",
+        "How is it calculated?": "how",
+        "How to read the chart?": "read",
+        "Where does it come from?": "source",
+    },
+}
+
+
+def split_sections(body: str, lang: str, path: Path) -> dict[str, dict]:
+    """Markdown body -> {"what": {"heading": "O que é?", "html": "<p>..."}, ...}.
+
+    Sections are found by their heading, not their order, so a page that lists
+    them in another order still puts each in the right place. An unknown or
+    missing heading stops the build with the file's name.
+    """
+    known = SECTION_HEADINGS[lang]
+    sections: dict[str, dict] = {}
+    for chunk in body.split("\n## ")[1:]:
+        heading, _, content = chunk.partition("\n")
+        heading = heading.strip()
+        if heading not in known:
+            raise ValueError(f"{path.relative_to(ROOT)}: unknown heading '{heading}'")
+        sections[known[heading]] = {
+            "heading": heading,
+            "html": markdown.markdown(content),
+        }
+    missing = set(known.values()) - set(sections)
+    if missing:
+        raise ValueError(
+            f"{path.relative_to(ROOT)}: missing sections {sorted(missing)}"
+        )
+    return sections
 
 
 def zone_numbers(indicator: Indicator, lang: str) -> dict[str, str]:
