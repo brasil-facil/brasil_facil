@@ -5,7 +5,8 @@ related_note: "Inflação para famílias de menor renda (INPC), usada no reajust
 chart_subtitle: >-
   Salário mínimo por mês, em reais de hoje: cada valor antigo foi corrigido
   pela inflação (INPC) até o mês mais recente. Assim dá para comparar o que
-  ele comprava em cada época.
+  ele comprava em cada época. O zigue-zague é normal: a linha sobe no mês do
+  reajuste e desce aos poucos, porque os preços sobem até o reajuste seguinte.
 ---
 
 ## O que é?
@@ -51,10 +52,29 @@ do governo.
 
 ## Como ler o gráfico?
 
-A linha roxa é o salário mínimo, sempre em reais de hoje. Ela anda em
-degraus: sobe em janeiro, quando o novo valor começa, e desce um pouco ao
-longo do ano, porque os preços sobem e o mesmo valor compra menos. O gráfico
-começa em julho de 1994, quando o real passou a ser a moeda do Brasil.
+A linha roxa é o salário mínimo, sempre em reais de hoje. Ela faz um
+zigue-zague, e isso não é um erro: é como o salário mínimo funciona.
+
+- **O salto**: no mês do reajuste, o novo valor começa e a linha sobe de uma
+  vez.
+- **A descida**: nos 12 meses seguintes, o valor em reais fica parado, mas os
+  preços continuam subindo. Cada mês, o mesmo dinheiro compra um pouco menos,
+  e a linha desce aos poucos até o próximo reajuste.
+
+Quanto maior a inflação, mais funda é a descida. Veja 2002 e 2003, 2015 e
+2021: foram anos de preços subindo rápido, e o salário mínimo perdeu mais
+valor entre um reajuste e outro.
+
+O mês do reajuste também mudou. Até 1999 era em maio; depois, em abril ou
+maio, até 2007; em março em 2008, em fevereiro em 2009 e, desde 2010, em
+janeiro. Por isso os primeiros degraus têm distâncias diferentes. Em alguns
+anos houve dois aumentos: 2011, 2020 e 2023.
+
+Para saber se o salário mínimo compra mais do que antes, compare os picos de
+cada ano (logo depois do reajuste) ou os pontos mais baixos (logo antes):
+se eles sobem ao longo do tempo, o salário mínimo ganhou poder de compra. O
+gráfico começa em julho de 1994, quando o real passou a ser a moeda do
+Brasil.
 
 ## De onde vem?
 
