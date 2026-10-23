@@ -1,4 +1,5 @@
 ---
+tile_name: "Aumento dos preços"   # the short name on the section page tile
 question: Os preços estão subindo mais rápido do que a meta?
 summary: Em {month}, os preços estavam {value} mais altos do que 12 meses antes.
 related_note: "Para famílias de menor renda (INPC, usado no reajuste do salário mínimo): {value}"

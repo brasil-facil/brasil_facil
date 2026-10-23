@@ -31,6 +31,7 @@ source:
 transform: real_value    # yearly amounts: x (INPC of the latest month / INPC average of the year)
 # No zones: there is no official target for income.
 chart:
+  higher_is_better: true   # section page: "Melhorando" / "Piorando" (decided 23 Oct 2026)
   kind: fan
   no_target_pill: false
   compare_with:

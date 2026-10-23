@@ -159,7 +159,7 @@ body {
 .site-header-inner,
 .page,
 .site-footer {
-  max-width: 880px;
+  max-width: 1240px;   /* wide enough for two columns; texts keep their own max width */
   margin: 0 auto;
   padding-inline: 16px;
 }
@@ -515,4 +515,266 @@ th {
 .compare-peers small {
   color: var(--muted);
   font-size: 0.8rem;
+}
+
+/* 10. Header tabs: Início and one per section. */
+.tabs {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs a {
+  flex: none;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 10px;
+}
+
+.tabs a:hover,
+.tabs a[aria-current="page"] {
+  color: var(--fg);
+  background: var(--brand-soft);
+}
+
+.tabs a[aria-current="page"] {
+  box-shadow: inset 0 -2px 0 var(--brand);
+}
+
+@media (max-width: 700px) {
+  .tabs { order: 3; flex-basis: 100%; }
+}
+
+/* 11. Indicator page: "back to the section" link, and two columns on wide screens. */
+.back {
+  justify-self: start;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.back:hover {
+  color: var(--fg);
+}
+
+.metric-top,
+.metric-main {
+  display: grid;
+  gap: 20px;
+  align-items: start;
+}
+
+/* The chart box and "Entenda" side by side are always the same height. */
+.metric-main {
+  align-items: stretch;
+}
+
+@media (min-width: 980px) {
+  .metric-top,
+  .metric-main {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+}
+
+/* 12. Section page: status chips, one glass box per group, tiles side by side. */
+.section-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+
+.section-hero .lede {
+  max-width: 62ch;
+}
+
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.chip b {
+  color: var(--fg);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.dot.good { background: var(--good); }
+.dot.watch { background: var(--watch-bar); }
+.dot.bad { background: var(--bad); }
+.dot.trend { background: var(--brand); }
+/* Piorando: the same purple, hollow; red is kept for "Preocupante". */
+.dot.worse { border: 2px solid var(--brand); }
+
+.group h2 {
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+
+.tiles {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+  /* One column on phones, two on tablets, three on computers. */
+  grid-template-columns: 1fr;
+}
+
+.tile {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+@media (min-width: 640px) {
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 980px) {
+  .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* "Coming next": an empty box with a dashed outline. Only on computers,
+   where it completes a row of three; on smaller screens it would be a gap. */
+.tile-soon {
+  display: none;
+  background: transparent;
+  border: 1.5px dashed color-mix(in srgb, var(--muted) 45%, transparent);
+}
+
+@media (min-width: 980px) {
+  .tile-soon { display: block; }
+}
+
+.tile:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand);
+}
+
+.tile-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.tile-name {
+  font-size: 1.1rem;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.tile-question {
+  margin: 4px 0 0;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.tile-value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 750;
+  font-size: 2.1rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.tile-value small {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.tile-line {
+  margin: 0;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.tile-line.good { color: var(--good); }
+.tile-line.watch { color: var(--watch); }
+.tile-line.bad { color: var(--bad); }
+.tile-line.trend { color: var(--brand); }
+.tile-line.neutral { color: var(--muted); font-weight: 400; }
+
+.tile-foot {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--brand);
+  justify-self: end;
+}
+
+.pill.trend {
+  color: var(--brand);
+  border: 1px solid currentColor;
+}
+
+/* The small chart on a tile: area, line, dot, one square per year. */
+.spark {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.spark text {
+  font-size: 9px;
+  fill: var(--muted);
+}
+
+.spark-line { fill: none; stroke-width: 1.7; stroke-linejoin: round; }
+.spark-area { fill-opacity: 0.12; stroke: none; }
+.spark-line.brand { stroke: var(--brand); }
+.spark-line.good { stroke: var(--good); }
+.spark-line.watch { stroke: var(--watch-bar); }
+.spark-line.bad { stroke: var(--bad); }
+.spark-area.brand, .spark-dot.brand { fill: var(--brand); }
+.spark-area.good, .spark-dot.good, .spark-year.good { fill: var(--good); }
+.spark-area.watch, .spark-dot.watch, .spark-year.watch { fill: var(--watch-bar); }
+.spark-area.bad, .spark-dot.bad, .spark-year.bad { fill: var(--bad); }
+
+/* The explanation box under the chart sits in the chart's column, so it is
+   exactly as wide as the chart; "Entenda" stays alone on the right. */
+@media (min-width: 980px) {
+  .explain-more {
+    grid-column: 1;
+  }
+}
+
+.explain-more p {
+  max-width: none;
 }

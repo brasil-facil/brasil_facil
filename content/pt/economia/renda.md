@@ -1,4 +1,5 @@
 ---
+tile_name: "Renda do trabalho"
 question: Quanto ganha quem trabalha no Brasil?
 summary: No ano de {month}, metade das pessoas que trabalham ganhava menos de {value} por mês, em reais de hoje. Este número sai uma vez por ano.
 chart_subtitle: >-

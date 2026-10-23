@@ -1,4 +1,5 @@
 ---
+tile_name: "Unemployment"   # the short name on the section page tile
 question: Is it harder to find a job than a year ago?
 summary: From {month}, {value} of the people who wanted to work could not find a job.
 chart_subtitle: >-

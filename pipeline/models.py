@@ -160,6 +160,10 @@ class ChartSettings(Strict):
     # "bar": one bar per period, coloured by its zone (yearly growth rates).
     # "fan": the main line inside a shaded band (series.band), e.g. income.
     kind: Literal["line", "bar", "fan"] = "line"
+    # Only where a rise is clearly good for people (the real minimum wage,
+    # income, GDP per person): the section page then says "Melhorando" or
+    # "Piorando". Everywhere else it only says which way the number moved.
+    higher_is_better: bool = False
 
 
 class Indicator(Strict):
@@ -243,3 +247,19 @@ def load_indicator_targets(file_path: Path) -> list[IndicatorTargetRow]:
     if not rows:
         raise ValueError(f"{file_path.name} has no rows")
     return rows
+
+
+class SectionGroup(Strict):
+    """One glass box on a section page, e.g. "Trabalho", with its indicators."""
+
+    id: str  # its texts are in content/<lang>/<section>/index.md, under groups
+    indicators: list[str]
+
+
+class Section(Strict):
+    groups: list[SectionGroup]
+
+
+def load_sections(file_path: Path) -> dict[str, Section]:
+    data = yaml.safe_load(file_path.read_text(encoding="utf-8"))
+    return {name: Section.model_validate(value) for name, value in data.items()}

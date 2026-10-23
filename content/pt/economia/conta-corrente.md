@@ -1,4 +1,5 @@
 ---
+tile_name: "Conta corrente"   # the short name on the section page tile
 question: O Brasil gasta mais com o resto do mundo do que recebe?
 summary: No ano de {month}, o saldo do Brasil com o resto do mundo foi de {value} do PIB. Um número negativo quer dizer que o país pagou mais ao exterior do que recebeu. Este número sai uma vez por ano.
 chart_subtitle: >-

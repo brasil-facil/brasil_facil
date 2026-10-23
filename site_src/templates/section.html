@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% from "_zone.html" import zone_pill %}
+
+{% block title %}{{ text.title }} · Brasil Fácil{% endblock %}
+
+{% block content %}
+  <section class="hero section-hero">
+    <div>
+      <p class="eyebrow">{{ text.title }} · {{ s.updated_on.format(date=updated) }}</p>
+      <h1>{{ text.question }}</h1>
+      <p class="lede">{{ text.intro }}</p>
+    </div>
+    {# How many tiles are in each state: "2 bom", "1 atenção"... #}
+    <div class="status">
+      {% for key in ["good", "watch", "bad", "trend", "worse"] if counts[key] %}
+        <span class="chip glass"><span class="dot {{ key }}"></span><b>{{ counts[key] }}</b> {{ s["chip_" ~ key] }}</span>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% for group in groups %}
+    {# One big glass box per group, with its tiles side by side. #}
+    <section class="group panel" aria-labelledby="group-{{ group.id }}">
+      <h2 id="group-{{ group.id }}">{{ group.name }}</h2>
+      <p class="muted">{{ group.intro }}</p>
+      <div class="tiles">
+        {% for tile in group.tiles %}
+          <a class="tile" href="{{ tile.url }}">
+            <div class="tile-top">
+              <div>
+                <h3 class="tile-name">{{ tile.name }}</h3>
+                <p class="tile-question">{{ tile.question }}</p>
+              </div>
+              {% if tile.zone is not none %}
+                {{ zone_pill(tile.zone, s) }}
+              {% elif tile.pill %}
+                <span class="pill trend">{{ tile.pill.text }}</span>
+              {% endif %}
+            </div>
+            <p class="tile-value">{{ tile.value }} <small>{{ tile.period }}</small></p>
+            <p class="tile-line {{ tile.line.class }}">{{ tile.line.text }}</p>
+            {{ tile.svg }}
+            <p class="tile-foot">{{ s.see_chart }} →</p>
+          </a>
+        {% endfor %}
+        {% for _ in range(group.placeholders) %}
+          <div class="tile tile-soon" aria-hidden="true"></div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endfor %}
+{% endblock %}

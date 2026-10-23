@@ -1,4 +1,5 @@
 ---
+tile_name: "Rising prices for lower-income families"   # the short name on the section page tile
 question: How much did prices rise for people earning up to 5 minimum wages?
 summary: In {month}, the shopping of families earning 1 to 5 minimum wages cost {value} more than 12 months earlier.
 now_note: This is the index used to adjust the minimum wage.

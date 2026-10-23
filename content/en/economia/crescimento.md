@@ -1,4 +1,5 @@
 ---
+tile_name: "Economic growth"   # the short name on the section page tile
 question: Is Brazil's economy growing?
 summary: In the year {month}, the wealth Brazil produced changed by {value} compared with the year before. A positive number means the economy grew; a negative one, that it shrank. This figure comes out once a year.
 chart_subtitle: >-
