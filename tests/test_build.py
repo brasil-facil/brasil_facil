@@ -124,3 +124,10 @@ def test_colour_limits_come_from_the_yaml():
     body = build.load_text(indicators["desemprego"], "pt")["body_html"]
     assert "subiu 0,5 ponto ou mais" in body
     assert build.zone_numbers(indicators["selic"], "pt") == {}
+
+
+def test_every_page_states_the_licences(tmp_path):
+    build.main(tmp_path)
+    for page in ("pt/index.html", "pt/economia/inflacao/index.html", "en/index.html"):
+        html = (tmp_path / page).read_text("utf-8")
+        assert "CC BY-NC-ND 4.0" in html and build.REPO_URL in html, page

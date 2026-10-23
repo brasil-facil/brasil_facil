@@ -582,6 +582,7 @@ def main(dist: Path = DIST) -> None:
         period_short=period_short,
         accent=accent,
     )
+    env.globals["repo_url"] = REPO_URL  # the footer's licence link, on every page
     strings = load_strings()
     indicators = [load_indicator(p) for p in sorted(CONFIG.glob("*/*.yaml"))]
     by_id = {indicator.id: indicator for indicator in indicators}

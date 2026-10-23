@@ -976,3 +976,9 @@ th {
   color: var(--fg);
   font-size: 0.95rem;
 }
+
+/* The licence line at the bottom of every page: small and quiet. */
+.footer-rights {
+  font-size: 0.8rem;
+  max-width: 90ch;
+}

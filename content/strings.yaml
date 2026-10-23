@@ -23,6 +23,8 @@ pt:
   latest_data: Dado mais recente
   methodology_note: Como medimos as cores
   footer_contact: Correções e sugestões
+  footer_rights: "© 2026 Brasil Fácil. Textos: CC BY-NC-ND 4.0 (pode compartilhar com crédito, sem mudar e sem fins comerciais). Nome e logotipo: todos os direitos reservados. Código: MIT. Dados: das fontes oficiais."
+  footer_rights_link: Ver as licenças
   theme_label: Aparência
   theme_dark: Escuro
   theme_light: Claro
@@ -83,6 +85,8 @@ en:
   latest_data: Latest data
   methodology_note: How we choose the colours
   footer_contact: Corrections and suggestions
+  footer_rights: "© 2026 Brasil Fácil. Texts: CC BY-NC-ND 4.0 (share with credit, unchanged and not for commercial use). Name and logo: all rights reserved. Code: MIT. Data: from the official sources."
+  footer_rights_link: See the licences
   theme_label: Appearance
   theme_dark: Dark
   theme_light: Light
