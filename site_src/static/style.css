@@ -832,3 +832,8 @@ th {
 .principles + .related {
   margin-top: 18px;
 }
+
+/* Every row as tall as the tallest one: all section cards the same size. */
+.tiles-even {
+  grid-auto-rows: 1fr;
+}

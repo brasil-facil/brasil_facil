@@ -12,7 +12,7 @@
      dashed "Em breve" cards that say what they will show. #}
   <section class="group panel" aria-labelledby="home-sections">
     <h2 id="home-sections">{{ text.sections_title }}</h2>
-    <div class="tiles">
+    <div class="tiles tiles-even">
       {% for card in cards %}
         {% if card.url %}
           <a class="tile section-card" href="{{ card.url }}">
