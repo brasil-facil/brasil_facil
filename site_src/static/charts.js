@@ -178,11 +178,14 @@
     };
   }
 
-  // The fan chart's line labels: "10% ganham mais de R$ 7.256", or on a phone
-  // "10% acima de 7,3 mil". The words come from the page's text (front matter).
+  // The fan chart's line labels: "10% ganham mais de R$ 7.256" on one line,
+  // or on a phone the short name above the number ("10% acima" / "7,3 mil"),
+  // so the labels take half the width. The words come from the page's text.
+  // side "compare" is the comparison line (the minimum wage).
   function fanText(side, value, data, fmt, narrow) {
-    var labels = narrow ? data.fan_short : data.fan_labels;
-    return labels[side] + " " + (narrow ? fmt.short(value) : fmt.value(value));
+    if (narrow) { return data.fan_short[side] + "\n" + fmt.short(value); }
+    var name = side === "compare" ? data.compare.label : data.fan_labels[side];
+    return name + " " + fmt.value(value);
   }
 
   function fanLabelRoom(data, fmt, narrow) {
@@ -193,9 +196,13 @@
       fanText("upper", last(data.band.upper), data, fmt, narrow)
     ];
     if (data.compare && data.compare.points.length) {
-      labels.push(data.compare.label + " " + fmt.value(last(data.compare.points)));
+      labels.push(fanText("compare", last(data.compare.points), data, fmt, narrow));
     }
-    var longest = Math.max.apply(null, labels.map(function (label) { return label.length; }));
+    // A two-line label is as wide as its longest line.
+    var widths = labels.map(function (label) {
+      return Math.max.apply(null, label.split("\n").map(function (line) { return line.length; }));
+    });
+    var longest = Math.max.apply(null, widths);
     return Math.min(230, Math.max(64, Math.round(longest * 6.5) + 16));
   }
 
@@ -259,9 +266,7 @@
         endLabel: {
           show: true,
           color: colors.muted,
-          formatter: function (p) {
-            return data.compare.label + " " + (narrow ? fmt.short(p.value[1]) : fmt.value(p.value[1]));
-          }
+          formatter: function (p) { return fanText("compare", p.value[1], data, fmt, narrow); }
         },
         labelLayout: { moveOverlap: "shiftY" }
       });
