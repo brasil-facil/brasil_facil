@@ -125,15 +125,16 @@
       {{ text.sections[key].html | safe }}
     {% endfor %}
   </section>
-  </div>
 
-  {# Below the chart, full width: how to read it, how it is calculated, the source. #}
+  {# Below the chart, as wide as the chart: how to read it, how it is
+     calculated, the source. On phones it comes after "Entenda". #}
   <section class="explain explain-more panel">
     {% for key in ["read", "how", "source"] %}
       <h2>{{ text.sections[key].heading }}</h2>
       {{ text.sections[key].html | safe }}
     {% endfor %}
   </section>
+  </div>
 {% endblock %}
 
 {% block scripts %}

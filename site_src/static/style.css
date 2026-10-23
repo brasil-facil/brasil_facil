@@ -159,7 +159,7 @@ body {
 .site-header-inner,
 .page,
 .site-footer {
-  max-width: 1360px;   /* wide enough for two columns; texts keep their own max width */
+  max-width: 1240px;   /* wide enough for two columns; texts keep their own max width */
   margin: 0 auto;
   padding-inline: 16px;
 }
@@ -740,9 +740,14 @@ th {
 .spark-area.watch, .spark-dot.watch, .spark-year.watch { fill: var(--watch-bar); }
 .spark-area.bad, .spark-dot.bad, .spark-year.bad { fill: var(--bad); }
 
-/* The explanation box under the chart: text in a readable width, the lists too. */
-.explain-more p,
-.explain-more ul,
-.explain-more ol {
-  max-width: 80ch;
+/* The explanation box under the chart sits in the chart's column, so it is
+   exactly as wide as the chart; "Entenda" stays alone on the right. */
+@media (min-width: 980px) {
+  .explain-more {
+    grid-column: 1;
+  }
+}
+
+.explain-more p {
+  max-width: none;
 }
