@@ -47,6 +47,7 @@
   --good-band: rgba(30, 122, 76, 0.14);
   --watch-band: rgba(212, 160, 23, 0.16);
   --watch-bar: #D4A017;   /* yellow bars in charts (--watch is for text) */
+  --accent: #6A3DB8;   /* a word picked out in a title; brighter than --brand */
   --cmp-line: #857F94;   /* comparison lines: quiet grey */
   --cmp-peer: #9A94AA;   /* comparison countries: lighter grey, dashed */
   --radius: 14px;
@@ -80,6 +81,7 @@
   --good-band: rgba(82, 196, 141, 0.16);
   --watch-band: rgba(231, 176, 78, 0.12);
   --watch-bar: #E7B04E;
+  --accent: #B9A2F5;
   --cmp-line: #938DA3;
   --cmp-peer: #7E7892;
   color-scheme: dark;
@@ -107,6 +109,7 @@
     --good-band: rgba(82, 196, 141, 0.16);
     --watch-band: rgba(231, 176, 78, 0.12);
     --watch-bar: #E7B04E;
+    --accent: #B9A2F5;
     --cmp-line: #938DA3;
     --cmp-peer: #7E7892;
     color-scheme: dark;
@@ -932,4 +935,9 @@ th {
 .nav-menu-group a:focus-visible {
   background: var(--brand-soft);
   color: var(--brand);
+}
+
+/* A word picked out in a title: "Como está a economia do Brasil?". */
+.accent {
+  color: var(--accent);
 }

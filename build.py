@@ -339,6 +339,20 @@ def compare_url(
     return None if compare is None else page_url(by_id[compare.indicator], lang)
 
 
+def accent(text: str) -> Markup:
+    """ "Como está a *economia* do Brasil?" -> the word between asterisks in the
+    brand purple. The rest is escaped as usual, so the text cannot break the page."""
+    parts = str(Markup.escape(text)).split("*")
+    if len(parts) % 2 == 0:
+        raise ValueError(f"unpaired * in: {text}")
+    return Markup(
+        "".join(
+            f'<span class="accent">{part}</span>' if i % 2 else part
+            for i, part in enumerate(parts)
+        )
+    )
+
+
 def section_url(section: str, lang: str) -> str:
     return f"/{lang}/{SECTION_SLUGS[section][lang]}/"
 
@@ -566,6 +580,7 @@ def main(dist: Path = DIST) -> None:
         month_short=month_short,
         month_long=month_long,
         period_short=period_short,
+        accent=accent,
     )
     strings = load_strings()
     indicators = [load_indicator(p) for p in sorted(CONFIG.glob("*/*.yaml"))]

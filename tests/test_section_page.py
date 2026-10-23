@@ -36,7 +36,7 @@ def test_every_indicator_is_in_one_group_of_the_section_page():
 def test_section_page(tmp_path):
     build.main(tmp_path)
     page = (tmp_path / "pt" / "economia" / "index.html").read_text("utf-8")
-    assert "Como está a economia do Brasil?" in page
+    assert 'Como está a <span class="accent">economia</span> do Brasil?' in page
     for name in ("Trabalho", "Preços e juros", "Produção"):
         assert f">{name}</h2>" in page
     assert 'href="/pt/economia/inflacao/"' in page  # a tile opens its own page
@@ -53,7 +53,10 @@ def test_section_page(tmp_path):
     assert "Subiu em relação a um ano antes" in page or "Caiu em relação" in page
     assert '<a href="/pt/economia/" aria-current="page">Economia</a>' in page
     en = (tmp_path / "en" / "economy" / "index.html").read_text("utf-8")
-    assert "How is Brazil&#39;s economy doing?" in en and ">Work</h2>" in en
+    assert (
+        'How is Brazil&#39;s <span class="accent">economy</span> doing?' in en
+        and ">Work</h2>" in en
+    )
     indicator = (tmp_path / "pt" / "economia" / "inflacao" / "index.html").read_text(
         "utf-8"
     )
@@ -109,3 +112,8 @@ def test_economia_tab_has_a_dropdown_with_every_indicator(tmp_path):
     assert menu.count('<div class="nav-menu-group">') == 3  # the three groups
     assert '<a href="/pt/economia/desemprego/">Desemprego</a>' in menu
     assert menu.count("<a href=") == 10  # every indicator, by its tile name
+
+
+def test_accent_marks_one_word_and_still_escapes():
+    assert str(build.accent("a *b* c")) == 'a <span class="accent">b</span> c'
+    assert str(build.accent("<i>")) == "&lt;i&gt;"

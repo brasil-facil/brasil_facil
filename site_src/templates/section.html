@@ -7,7 +7,7 @@
   <section class="hero section-hero">
     <div>
       <p class="eyebrow">{{ text.title }} · {{ s.updated_on.format(date=updated) }}</p>
-      <h1>{{ text.question }}</h1>
+      <h1>{{ text.question | accent }}</h1>
       <p class="lede">{{ text.intro }}</p>
     </div>
     {# How many tiles are in each state: "2 bom", "1 atenção"... #}

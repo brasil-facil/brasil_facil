@@ -1,6 +1,6 @@
 ---
 title: Economia
-question: Como está a economia do Brasil?
+question: "Como está a *economia* do Brasil?"   # *word*: in purple
 intro: >-
   Dez números que mostram o trabalho, o custo de vida, o crédito e a produção
   do país. Cada um vem com a história dos últimos anos e, quando dá, com outros
