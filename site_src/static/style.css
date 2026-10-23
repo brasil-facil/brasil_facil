@@ -952,8 +952,19 @@ th {
 }
 
 /* "This is not the whole picture yet": a soft purple note under the intro. */
+/* The hero is as wide as its title or intro, whichever is wider... */
+.home-hero,
+.section-hero > div {
+  width: fit-content;
+  max-width: 100%;
+}
+
+/* ...and the note fills exactly that width: "width: 0" keeps it from making
+   the hero wider, "min-width: 100%" stretches it to the hero's width. */
 .note-wip {
-  max-width: 64ch;
+  width: 0;
+  min-width: 100%;
+  box-sizing: border-box;
   margin: 12px 0 0;
   padding: 10px 14px;
   border-left: 3px solid var(--accent);
