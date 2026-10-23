@@ -449,7 +449,8 @@ def tile_view(indicator: Indicator, data: dict, text: dict, s: dict, lang: str) 
         colour = "brand"
     return {
         "url": page_url(indicator, lang),
-        "name": data["title"],
+        # The short name on the tile (front matter tile_name), else the full title.
+        "name": text.get("tile_name", data["title"]),
         "question": text["question"],
         "value": amount(latest["value"], lang, data),
         "period": period_short(latest["period"], lang, kind),

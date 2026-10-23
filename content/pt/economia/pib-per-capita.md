@@ -1,4 +1,5 @@
 ---
+tile_name: "PIB por pessoa"   # the short name on the section page tile
 question: Quanta riqueza o Brasil produz por pessoa, comparado a outros países?
 summary: No ano de {month}, o Brasil produziu o equivalente a {value} por pessoa, em dólares ajustados ao custo de vida de cada país. Este número sai uma vez por ano.
 chart_subtitle: >-

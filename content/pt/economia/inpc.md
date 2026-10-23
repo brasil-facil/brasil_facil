@@ -1,4 +1,5 @@
 ---
+tile_name: "Inflação de menor renda (INPC)"   # the short name on the section page tile
 question: Quanto os preços subiram para produtos essenciais?
 summary: Em {month}, as compras das famílias que ganham de 1 a 5 salários mínimos estavam {value} mais caras do que 12 meses antes.
 now_note: Este é o índice usado no reajuste do salário mínimo.

@@ -1,4 +1,5 @@
 ---
+tile_name: "Income from work"   # the short name on the section page tile
 question: How much do working people earn in Brazil?
 summary: In the year {month}, half of working people earned less than {value} a month, in today's reais. This figure comes out once a year.
 chart_subtitle: >-

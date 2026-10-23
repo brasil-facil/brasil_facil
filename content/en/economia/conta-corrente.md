@@ -1,4 +1,5 @@
 ---
+tile_name: "Current account"   # the short name on the section page tile
 question: Does Brazil spend more with the rest of the world than it receives?
 summary: In the year {month}, Brazil's balance with the rest of the world was {value} of GDP. A negative number means the country paid more abroad than it received. This figure comes out once a year.
 chart_subtitle: >-

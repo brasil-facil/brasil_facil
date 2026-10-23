@@ -1,4 +1,5 @@
 ---
+tile_name: "Taxa Selic"   # the short name on the section page tile
 question: Qual é a taxa básica de juros do Brasil?
 summary: Em {month}, a Selic estava em {value} ao ano.
 now_note: Ela é decidida pelo Copom, um comitê do Banco Central, cerca de 8 vezes por ano.

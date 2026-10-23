@@ -1,4 +1,5 @@
 ---
+tile_name: "Juro real"   # the short name on the section page tile
 question: Quanto custa pegar dinheiro emprestado, descontado o aumento dos preços?
 summary: Em {month}, o juro real estava em {value} ao ano. É a taxa Selic menos a inflação esperada para os 12 meses seguintes.
 chart_subtitle: >-

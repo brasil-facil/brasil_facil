@@ -1,4 +1,5 @@
 ---
+tile_name: "Selic rate"   # the short name on the section page tile
 question: What is Brazil's basic interest rate?
 summary: In {month}, the Selic was {value} a year.
 now_note: It is set by the Copom, a Central Bank committee, about 8 times a year.

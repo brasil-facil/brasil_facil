@@ -1,4 +1,5 @@
 ---
+tile_name: "Salário mínimo"   # the short name on the section page tile
 question: O salário mínimo compra mais ou menos do que antes?
 summary: Em {month}, o salário mínimo era de {value} por mês. No gráfico, os valores antigos estão corrigidos pela inflação, para mostrar quanto eles valeriam hoje.
 related_note: "Inflação para famílias de menor renda (INPC), usada no reajuste: {value}"
