@@ -48,6 +48,8 @@ def test_section_page(tmp_path):
     ).read_text("utf-8")
     assert "Melhorando" in page and "Piorando" in page  # higher_is_better tiles
     assert "</b> piorando</span>" in page  # a worsening tile is counted too
+    # Preços e juros has 4 tiles: two empty "coming next" boxes complete row 2.
+    assert page.count('class="tile tile-soon"') == 2
     assert "Subiu em relação a um ano antes" in page or "Caiu em relação" in page
     assert '<a href="/pt/economia/" aria-current="page">Economia</a>' in page
     en = (tmp_path / "en" / "economy" / "index.html").read_text("utf-8")

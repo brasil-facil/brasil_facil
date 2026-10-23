@@ -641,8 +641,8 @@ th {
   display: grid;
   gap: 14px;
   margin-top: 14px;
-  /* auto-fit: 3 tiles fill the row; 4 fit side by side on a wide screen. */
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  /* One column on phones, two on tablets, three on computers. */
+  grid-template-columns: 1fr;
 }
 
 .tile {
@@ -656,6 +656,26 @@ th {
   color: inherit;
   text-decoration: none;
   transition: transform 0.2s, border-color 0.2s;
+}
+
+@media (min-width: 640px) {
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 980px) {
+  .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* "Coming next": an empty box with a dashed outline. Only on computers,
+   where it completes a row of three; on smaller screens it would be a gap. */
+.tile-soon {
+  display: none;
+  background: transparent;
+  border: 1.5px dashed color-mix(in srgb, var(--muted) 45%, transparent);
+}
+
+@media (min-width: 980px) {
+  .tile-soon { display: block; }
 }
 
 .tile:hover {

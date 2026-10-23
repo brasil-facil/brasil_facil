@@ -356,6 +356,10 @@ def date_long(day: date, lang: str) -> str:
     return f"{day.day} {month} {day.year}"
 
 
+# Tiles per row on a wide screen; a group's last row is completed with empty
+# "coming next" boxes (they are hidden on phones).
+TILES_PER_ROW = 3
+
 # Zones are stored as green / yellow / red; the CSS classes say what they mean.
 ZONE_CLASS = {"green": "good", "yellow": "watch", "red": "bad"}
 
@@ -566,6 +570,8 @@ def main(dist: Path = DIST) -> None:
                     "name": texts["groups"][group.id]["name"],
                     "intro": texts["groups"][group.id]["intro"],
                     "tiles": [tiles[i] for i in group.indicators],
+                    # Empty "coming next" boxes that complete the last row of 3.
+                    "placeholders": -len(group.indicators) % TILES_PER_ROW,
                 }
                 for group in section.groups
             ]

@@ -43,6 +43,9 @@
             <p class="tile-foot">{{ s.see_chart }} →</p>
           </a>
         {% endfor %}
+        {% for _ in range(group.placeholders) %}
+          <div class="tile tile-soon" aria-hidden="true"></div>
+        {% endfor %}
       </div>
     </section>
   {% endfor %}
