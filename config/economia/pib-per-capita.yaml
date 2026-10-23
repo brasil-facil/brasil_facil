@@ -24,6 +24,7 @@ source:
 transform: none
 # No zones: there is no official target for income per person.
 chart:
+  higher_is_better: true   # section page: "Melhorando" / "Piorando" (decided 23 Oct 2026)
   no_target_pill: false
 release:
   expected_day: 15       # the IMF publishes the WEO in April and October

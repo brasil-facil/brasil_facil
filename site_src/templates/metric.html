@@ -4,6 +4,11 @@
 {% block title %}{{ data.title }} · Brasil Fácil{% endblock %}
 
 {% block content %}
+  <a class="back" href="{{ back.url }}">← {{ s.back_to }} {{ back.name }}</a>
+
+  {# Wide screens: question on the left, "Brasil agora" on the right; then the
+     chart on the left and the explanation on the right. Phones: one column. #}
+  <div class="metric-top">
   <section class="hero">
     <p class="indicator-name">{{ data.title }}</p>
     <h1>{{ text.question }}</h1>
@@ -51,7 +56,9 @@
       <p class="muted related"><a href="{{ related.url }}">{{ related.text }} →</a></p>
     {% endif %}
   </section>
+  </div>
 
+  <div class="metric-main">
   <section class="chartbox panel" aria-label="{{ data.title }}">
     <p class="muted">{{ text.chart_subtitle }}</p>
 
@@ -111,8 +118,10 @@
   </section>
 
   <section class="explain panel">
+    <p class="eyebrow">{{ s.explain_label }}</p>
     {{ text.body_html | safe }}
   </section>
+  </div>
 {% endblock %}
 
 {% block scripts %}

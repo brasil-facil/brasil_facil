@@ -43,6 +43,22 @@ pt:
   growth_down: "{value} a menos do que um ano antes ({year})"
   peer_average: "Média de {names} no mesmo ano: {value}"
   forecast: "Previsão do FMI: {items}"
+  nav_home: Início
+  nav_label: Seções
+  back_to: "Voltar para"
+  updated_on: "atualizado em {date}"
+  trend_up: Melhorando
+  trend_down: Piorando
+  better_years: "Melhorou em {better} dos últimos {years} anos"
+  moved_up: Subiu em relação a um ano antes
+  moved_down: Caiu em relação a um ano antes
+  moved_same: Igual a um ano antes
+  see_chart: Ver gráfico
+  chip_good: bom
+  chip_watch: atenção
+  chip_bad: preocupante
+  chip_trend: melhorando
+  explain_label: Entenda
   expected: "Em janeiro de {year}, os economistas esperavam {value} para o ano (pesquisa Focus, do Banco Central)"
 en:
   html_lang: en
@@ -88,4 +104,20 @@ en:
   growth_down: "{value} less than a year earlier ({year})"
   peer_average: "Average of {names} in the same year: {value}"
   forecast: "IMF forecast: {items}"
+  nav_home: Home
+  nav_label: Sections
+  back_to: "Back to"
+  updated_on: "updated on {date}"
+  trend_up: Improving
+  trend_down: Worsening
+  better_years: "Improved in {better} of the last {years} years"
+  moved_up: Up on a year earlier
+  moved_down: Down on a year earlier
+  moved_same: The same as a year earlier
+  see_chart: See the chart
+  chip_good: good
+  chip_watch: watch
+  chip_bad: worrying
+  chip_trend: improving
+  explain_label: Understand
   expected: "In January {year}, economists expected {value} for the year (Focus survey, Banco Central)"

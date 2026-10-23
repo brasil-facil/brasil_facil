@@ -22,6 +22,11 @@
           <img class="on-light" src="/static/brand/brasil-facil-logo.svg" alt="Brasil Fácil" width="154" height="36">
           <img class="on-dark" src="/static/brand/brasil-facil-logo-branco.svg" alt="Brasil Fácil" width="154" height="36">
         </a>
+        <nav class="tabs" aria-label="{{ s.nav_label }}">
+          {% for link in nav %}
+            <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ s.nav_home if link.key == "home" else link.name }}</a>
+          {% endfor %}
+        </nav>
         <div class="tools">
           <a class="lang-switch" href="{{ other_url }}" hreflang="{{ s.other_lang }}" lang="{{ s.other_lang }}">{{ s.other_lang_name }}</a>
           <div class="seg theme-switch" role="group" aria-label="{{ s.theme_label }}">
