@@ -47,6 +47,7 @@
   --good-band: rgba(30, 122, 76, 0.14);
   --watch-band: rgba(212, 160, 23, 0.16);
   --watch-bar: #D4A017;   /* yellow bars in charts (--watch is for text) */
+  --fan-band: rgba(37, 1, 84, 0.13);   /* the shaded band of a fan chart */
   --cmp-line: #857F94;   /* comparison lines: quiet grey */
   --cmp-peer: #9A94AA;   /* comparison countries: lighter grey, dashed */
   --radius: 14px;
@@ -80,6 +81,7 @@
   --good-band: rgba(82, 196, 141, 0.16);
   --watch-band: rgba(231, 176, 78, 0.12);
   --watch-bar: #E7B04E;
+  --fan-band: rgba(185, 162, 245, 0.22);
   --cmp-line: #938DA3;
   --cmp-peer: #7E7892;
   color-scheme: dark;
@@ -107,6 +109,7 @@
     --good-band: rgba(82, 196, 141, 0.16);
     --watch-band: rgba(231, 176, 78, 0.12);
     --watch-bar: #E7B04E;
+    --fan-band: rgba(185, 162, 245, 0.22);
     --cmp-line: #938DA3;
     --cmp-peer: #7E7892;
     color-scheme: dark;

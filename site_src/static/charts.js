@@ -211,11 +211,12 @@
         type: "line",
         data: dated(list),
         showSymbol: false,
-        lineStyle: { width: 1.5, color: colors.brand, opacity: 0.55 },
+        // Same purple as the median, thinner: the three lines are one family.
+        lineStyle: { width: 1.5, color: colors.brand },
         itemStyle: { color: colors.brand },
         endLabel: {
           show: true,
-          color: colors.muted,
+          color: colors.brand,
           formatter: function (p) { return fanText(side, p.value[1], data, fmt, narrow); }
         },
         labelLayout: { moveOverlap: "shiftY" }
@@ -241,7 +242,7 @@
         showSymbol: false,
         silent: true,
         lineStyle: { opacity: 0 },
-        areaStyle: { color: colors.brandSoft, opacity: 1 }
+        areaStyle: { color: colors.fanBand, opacity: 1 }
       },
       edge("lower", data.band.lower),
       edge("upper", data.band.upper)
@@ -537,7 +538,7 @@
             peer: token("--cmp-peer"),
             // Solid colours for bars (the "band" ones above are see-through).
             goodSolid: token("--good"), watchSolid: token("--watch-bar"), bad: token("--bad"),
-            surfaceSolid: token("--surface"), brandSoft: token("--brand-soft")
+            surfaceSolid: token("--surface"), fanBand: token("--fan-band")
           };
           // Measure the chart's own box, not the window: that's the space we have.
           var width = el.clientWidth;
