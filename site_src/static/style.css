@@ -299,7 +299,7 @@ a {
   font-size: clamp(1.2rem, 2.6vw, 1.5rem);
   font-weight: 700;
   line-height: 1.25;
-  color: var(--brand);
+  color: var(--accent);   /* same purple as the selected tab */
   margin-bottom: 8px;
 }
 
@@ -698,7 +698,8 @@ th {
 }
 
 .tile-name {
-  font-size: 1.1rem;
+  font-family: var(--font-display);   /* Bitter, like the page titles */
+  font-size: 1.15rem;
   line-height: 1.2;
   margin: 0;
 }
@@ -864,9 +865,8 @@ th {
   color: var(--accent);
 }
 
-/* Section names in the display font, like the page titles. */
+/* Section names a little larger than indicator names. */
 .section-card .tile-name {
-  font-family: var(--font-display);
   font-size: 1.25rem;
 }
 
