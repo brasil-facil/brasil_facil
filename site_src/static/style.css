@@ -854,8 +854,8 @@ th {
   color: var(--brand);
 }
 
-/* 14. Dropdown under a section tab: its indicators, by group. Only on
-   computers with a mouse; on phones the tab just opens the section page. */
+/* 14. Dropdown under a section tab: its indicators, by group. Not on
+   phones: there the tab just opens the section page. */
 .nav-item {
   position: relative;
   flex: none;
@@ -869,7 +869,9 @@ th {
   display: none;
 }
 
-@media (min-width: 701px) and (hover: hover) {
+/* By width only: some laptops (with a touchscreen) tell the browser they
+   cannot hover, even with a mouse. Phones are narrower, so they never get it. */
+@media (min-width: 701px) {
   .tabs {
     overflow: visible;   /* or the dropdown would be cut off */
   }
