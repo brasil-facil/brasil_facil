@@ -551,7 +551,7 @@ th {
 .tabs a[aria-current="page"],
 .tabs a[aria-current="page"]:hover {
   color: var(--ground);
-  background: var(--brand);
+  background: var(--accent);   /* the same purple as the word in the title */
 }
 
 @media (max-width: 700px) {
