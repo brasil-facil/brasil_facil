@@ -6,7 +6,8 @@ related_note: "Inflation for lower-income families (INPC), used in the adjustmen
 chart_subtitle: >-
   Minimum wage per month, in today's reais: each older value is adjusted for
   inflation (INPC) up to the latest month. That way you can compare what it
-  bought at each time.
+  bought at each time. The zig-zag is normal: the line jumps in the month of
+  the raise and slides down slowly, as prices rise until the next raise.
 ---
 
 ## What is it?
@@ -50,10 +51,28 @@ companies and the government.
 
 ## How to read the chart?
 
-The purple line is the minimum wage, always in today's reais. It moves in
-steps: it rises in January, when the new value starts, and slips a little
-during the year, because prices rise and the same amount buys less. The chart
-starts in July 1994, when the real became Brazil's currency.
+The purple line is the minimum wage, always in today's reais. It zig-zags,
+and that is not a mistake: it is how the minimum wage works.
+
+- **The jump**: in the month of the raise, the new value starts and the line
+  goes up at once.
+- **The slide**: over the next 12 months, the amount in reais stays the same,
+  but prices keep rising. Each month the same money buys a little less, and
+  the line slides down until the next raise.
+
+The higher inflation is, the deeper the slide. Look at 2002 and 2003, 2015
+and 2021: prices rose fast in those years, and the minimum wage lost more
+value between one raise and the next.
+
+The month of the raise has also changed. Until 1999 it was May; then April or
+May until 2007; March in 2008, February in 2009 and, since 2010, January.
+That is why the early steps are spaced unevenly. Some years had two raises:
+2011, 2020 and 2023.
+
+To see whether the minimum wage buys more than before, compare each year's
+peaks (just after the raise) or its lowest points (just before): if they go
+up over time, the minimum wage gained buying power. The chart starts in July
+1994, when the real became Brazil's currency.
 
 ## Where does it come from?
 
