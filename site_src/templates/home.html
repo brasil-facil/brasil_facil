@@ -15,7 +15,7 @@
     <div class="tiles tiles-even">
       {% for card in cards %}
         {% if card.url %}
-          <a class="tile section-card" href="{{ card.url }}">
+          <a class="tile section-card section-card-live" href="{{ card.url }}">
             <h3 class="tile-name">{{ card.name }}</h3>
             <p class="section-card-text">{{ card.text }}</p>
             <p class="tile-line trend">{{ s.numbers_count.format(count=card.count) }}</p>

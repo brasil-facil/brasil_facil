@@ -837,3 +837,19 @@ th {
 .tiles-even {
   grid-auto-rows: 1fr;
 }
+
+/* A section that already exists: tinted purple, so it stands out from the
+   dashed "Em breve" cards. */
+.section-card-live {
+  background: color-mix(in srgb, var(--brand) 16%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--brand) 60%, transparent);
+}
+
+.section-card-live:hover {
+  background: color-mix(in srgb, var(--brand) 24%, transparent);
+  border-color: var(--brand);
+}
+
+.section-card-live .tile-name {
+  color: var(--brand);
+}
