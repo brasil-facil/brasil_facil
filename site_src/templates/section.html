@@ -12,7 +12,7 @@
     </div>
     {# How many tiles are in each state: "2 bom", "1 atenção"... #}
     <div class="status">
-      {% for key in ["good", "watch", "bad", "trend"] if counts[key] %}
+      {% for key in ["good", "watch", "bad", "trend", "worse"] if counts[key] %}
         <span class="chip glass"><span class="dot {{ key }}"></span><b>{{ counts[key] }}</b> {{ s["chip_" ~ key] }}</span>
       {% endfor %}
     </div>

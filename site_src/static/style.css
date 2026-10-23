@@ -629,6 +629,8 @@ th {
 .dot.watch { background: var(--watch-bar); }
 .dot.bad { background: var(--bad); }
 .dot.trend { background: var(--brand); }
+/* Piorando: the same purple, hollow; red is kept for "Preocupante". */
+.dot.worse { border: 2px solid var(--brand); }
 
 .group h2 {
   font-size: 1.6rem;

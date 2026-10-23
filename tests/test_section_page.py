@@ -40,11 +40,14 @@ def test_section_page(tmp_path):
     for name in ("Trabalho", "Preços e juros", "Produção"):
         assert f">{name}</h2>" in page
     assert 'href="/pt/economia/inflacao/"' in page  # a tile opens its own page
-    assert '<h3 class="tile-name">Aumento dos preços</h3>' in page  # the short tile name
+    assert (
+        '<h3 class="tile-name">Aumento dos preços</h3>' in page
+    )  # the short tile name
     assert '<h3 class="tile-name">Economic growth</h3>' in (
         tmp_path / "en" / "economy" / "index.html"
     ).read_text("utf-8")
     assert "Melhorando" in page and "Piorando" in page  # higher_is_better tiles
+    assert "</b> piorando</span>" in page  # a worsening tile is counted too
     assert "Subiu em relação a um ano antes" in page or "Caiu em relação" in page
     assert '<a href="/pt/economia/" aria-current="page">Economia</a>' in page
     en = (tmp_path / "en" / "economy" / "index.html").read_text("utf-8")

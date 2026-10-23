@@ -58,6 +58,7 @@ pt:
   chip_watch: atenção
   chip_bad: preocupante
   chip_trend: melhorando
+  chip_worse: piorando
   explain_label: Entenda
   expected: "Em janeiro de {year}, os economistas esperavam {value} para o ano (pesquisa Focus, do Banco Central)"
 en:
@@ -119,5 +120,6 @@ en:
   chip_watch: watch
   chip_bad: worrying
   chip_trend: improving
+  chip_worse: worsening
   explain_label: Understand
   expected: "In January {year}, economists expected {value} for the year (Focus survey, Banco Central)"

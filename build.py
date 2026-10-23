@@ -574,10 +574,12 @@ def main(dist: Path = DIST) -> None:
                 key: sum(1 for t in listed if (t["pill"] or {}).get("class") == key)
                 for key in ("good", "watch", "bad")
             }
-            # "melhorando" counts only the tiles that improved, not "Piorando".
-            counts["trend"] = sum(
-                1 for t in listed if (t["pill"] or {}).get("improving")
-            )
+            # "melhorando" and "piorando" are counted apart.
+            trends = [
+                t["pill"] for t in listed if (t["pill"] or {}).get("class") == "trend"
+            ]
+            counts["trend"] = sum(1 for pill in trends if pill["improving"])
+            counts["worse"] = sum(1 for pill in trends if not pill["improving"])
             page = env.get_template("section.html").render(
                 lang=lang,
                 s=s,
