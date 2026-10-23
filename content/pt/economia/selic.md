@@ -1,5 +1,5 @@
 ---
-tile_name: "Taxa Selic"   # the short name on the section page tile
+tile_name: "Juro básico (Selic)"
 question: Qual é a taxa básica de juros do Brasil?
 summary: Em {month}, a Selic estava em {value} ao ano.
 now_note: Ela é decidida pelo Copom, um comitê do Banco Central, cerca de 8 vezes por ano.
@@ -25,7 +25,7 @@ manter a inflação dentro da meta.
 ## Como é calculado?
 
 A Selic não é medida: ela é decidida. O Copom, um comitê formado pelo
-presidente e pelos diretores do Banco Central, se reúne cerca de 8 vezes por
+presidente do Banco Central e pelos diretores do Banco Central, se reúne cerca de 8 vezes por
 ano. Ele olha a inflação, as previsões e a situação da economia e vota a nova
 taxa. O gráfico mostra a taxa que valia no último dia de cada mês, em % ao ano.
 

@@ -1,5 +1,5 @@
 ---
-tile_name: "GDP per person"   # the short name on the section page tile
+tile_name: "Wealth produced per person"   # the short name on the section page tile
 question: How much wealth does Brazil produce per person, compared with other countries?
 summary: In the year {month}, Brazil produced the equivalent of {value} per person, in dollars adjusted to the cost of living in each country. This figure comes out once a year.
 chart_subtitle: >-
