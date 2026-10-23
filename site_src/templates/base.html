@@ -30,7 +30,23 @@
         </a>
         <nav class="tabs" aria-label="{{ s.nav_label }}">
           {% for link in nav %}
-            <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ s.nav_home if link.key == "home" else link.name }}</a>
+            {# A section tab opens a dropdown with its indicators on hover or
+               keyboard focus (computers only; on phones it just opens the page). #}
+            <div class="nav-item">
+              <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ s.nav_home if link.key == "home" else link.name }}</a>
+              {% if link.menu %}
+                <div class="nav-menu">
+                  {% for group in link.menu %}
+                    <div class="nav-menu-group">
+                      <p class="eyebrow">{{ group.name }}</p>
+                      {% for item in group["items"] %}
+                        <a href="{{ item.url }}">{{ item.name }}</a>
+                      {% endfor %}
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
           {% endfor %}
         </nav>
         <div class="tools">

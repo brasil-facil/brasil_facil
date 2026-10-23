@@ -498,9 +498,42 @@ def home_sections(home: dict, sections: dict, section_texts: dict, lang: str) ->
     return cards
 
 
-def nav_links(lang: str, current: str, section_texts: dict) -> list[dict]:
-    """The tabs in the header: Início, then one per section."""
-    links = [{"url": f"/{lang}/", "key": "home", "current": current == "home"}]
+def section_menus(
+    sections: dict, section_texts: dict, by_id: dict, lang: str
+) -> dict[str, list[dict]]:
+    """The dropdown under each section tab: its groups and their indicators,
+    with the short tile names, in the order of config/sections.yaml."""
+    menus = {}
+    for name, section in sections.items():
+        groups = []
+        for group in section.groups:
+            items = []
+            for indicator_id in group.indicators:
+                indicator = by_id[indicator_id]
+                text = load_text(indicator, lang)
+                items.append(
+                    {
+                        "name": text.get("tile_name", getattr(indicator.name, lang)),
+                        "url": page_url(indicator, lang),
+                    }
+                )
+            groups.append(
+                {
+                    "name": section_texts[name]["groups"][group.id]["name"],
+                    "items": items,
+                }
+            )
+        menus[name] = groups
+    return menus
+
+
+def nav_links(
+    lang: str, current: str, section_texts: dict, menus: dict | None = None
+) -> list[dict]:
+    """The tabs in the header: Início, then one per section (with its dropdown)."""
+    links = [
+        {"url": f"/{lang}/", "key": "home", "current": current == "home", "menu": []}
+    ]
     for section in SECTION_SLUGS:
         links.append(
             {
@@ -508,6 +541,7 @@ def nav_links(lang: str, current: str, section_texts: dict) -> list[dict]:
                 "key": section,
                 "name": section_texts[section]["title"],
                 "current": current == section,
+                "menu": (menus or {}).get(section, []),
             }
         )
     return links
@@ -548,6 +582,7 @@ def main(dist: Path = DIST) -> None:
         s = strings[lang]
         tiles = {}
         section_texts = {name: load_section_text(name, lang) for name in sections}
+        menus = section_menus(sections, section_texts, by_id, lang)
 
         for indicator in indicators:
             data = chart_data(indicator, lang, others=by_id)
@@ -584,7 +619,7 @@ def main(dist: Path = DIST) -> None:
                 compare_url=compare_url(indicator, by_id, lang),
                 json_url=json_url,
                 other_url=page_url(indicator, other),
-                nav=nav_links(lang, indicator.section, section_texts),
+                nav=nav_links(lang, indicator.section, section_texts, menus),
                 back={
                     "url": section_url(indicator.section, lang),
                     "name": section_texts[indicator.section]["title"],
@@ -625,7 +660,7 @@ def main(dist: Path = DIST) -> None:
                 counts=counts,
                 updated=date_long(date.today(), lang),
                 other_url=section_url(name, other),
-                nav=nav_links(lang, name, section_texts),
+                nav=nav_links(lang, name, section_texts, menus),
             )
             write(dist / section_url(name, lang).strip("/") / "index.html", page, dist)
 
@@ -637,7 +672,7 @@ def main(dist: Path = DIST) -> None:
             cards=home_sections(home_text, sections, section_texts, lang),
             repo_url=REPO_URL,
             other_url=f"/{other}/",
-            nav=nav_links(lang, "home", section_texts),
+            nav=nav_links(lang, "home", section_texts, menus),
         )
         write(dist / lang / "index.html", home, dist)
 

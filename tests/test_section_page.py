@@ -100,3 +100,12 @@ def test_home_page_shows_the_sections_and_how_we_work(tmp_path):
     assert '<a href="/pt/" aria-current="page">Início</a>' in home
     en = (tmp_path / "en" / "index.html").read_text("utf-8")
     assert "How we work" in en and "Coming soon" in en
+
+
+def test_economia_tab_has_a_dropdown_with_every_indicator(tmp_path):
+    build.main(tmp_path)
+    page = (tmp_path / "pt" / "index.html").read_text("utf-8")
+    menu = page.split('<div class="nav-menu">', 1)[1].split("</nav>", 1)[0]
+    assert menu.count('<div class="nav-menu-group">') == 3  # the three groups
+    assert '<a href="/pt/economia/desemprego/">Desemprego</a>' in menu
+    assert menu.count("<a href=") == 10  # every indicator, by its tile name

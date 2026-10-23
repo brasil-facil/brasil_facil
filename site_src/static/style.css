@@ -853,3 +853,77 @@ th {
 .section-card-live .tile-name {
   color: var(--brand);
 }
+
+/* 14. Dropdown under a section tab: its indicators, by group. Only on
+   computers with a mouse; on phones the tab just opens the section page. */
+.nav-item {
+  position: relative;
+  flex: none;
+}
+
+.nav-item > a {
+  display: block;
+}
+
+.nav-menu {
+  display: none;
+}
+
+@media (min-width: 701px) and (hover: hover) {
+  .tabs {
+    overflow: visible;   /* or the dropdown would be cut off */
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 20;
+    margin-top: 6px;
+    padding: 16px 18px;
+    gap: 18px 28px;
+    grid-template-columns: repeat(3, max-content);
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: var(--surface);   /* solid: glass inside the glass header does not blur */
+    box-shadow: var(--shadow);
+  }
+
+  /* An invisible bridge over the gap, so the menu stays open on the way down. */
+  .nav-menu::before {
+    content: "";
+    position: absolute;
+    inset: -8px 0 auto 0;
+    height: 8px;
+  }
+
+  .nav-item:hover .nav-menu,
+  .nav-item:focus-within .nav-menu {
+    display: grid;
+  }
+}
+
+.nav-menu-group {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+}
+
+.nav-menu-group .eyebrow {
+  margin: 0 0 4px;
+}
+
+.nav-menu-group a {
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 0.92rem;
+  padding: 5px 8px;
+  margin: 0 -8px;
+  border-radius: 8px;
+}
+
+.nav-menu-group a:hover,
+.nav-menu-group a:focus-visible {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
