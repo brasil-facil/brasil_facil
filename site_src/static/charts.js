@@ -186,11 +186,14 @@
     };
   }
 
-  // The fan chart's line labels: "10% ganham mais de R$ 7.256", or on a phone
-  // "10% acima de 7,3 mil". The words come from the page's text (front matter).
+  // The fan chart's line labels: "10% ganham mais de R$ 7.256" on one line,
+  // or on a phone the short name above the number ("10% acima" / "7,3 mil"),
+  // so the labels take half the width. The words come from the page's text.
+  // side "compare" is the comparison line (the minimum wage).
   function fanText(side, value, data, fmt, narrow) {
-    var labels = narrow ? data.fan_short : data.fan_labels;
-    return labels[side] + " " + (narrow ? fmt.short(value) : fmt.value(value));
+    if (narrow) { return data.fan_short[side] + "\n" + fmt.short(value); }
+    var name = side === "compare" ? data.compare.label : data.fan_labels[side];
+    return name + " " + fmt.value(value);
   }
 
   function fanLabelRoom(data, fmt, narrow) {
@@ -201,9 +204,13 @@
       fanText("upper", last(data.band.upper), data, fmt, narrow)
     ];
     if (data.compare && data.compare.points.length) {
-      labels.push(data.compare.label + " " + fmt.value(last(data.compare.points)));
+      labels.push(fanText("compare", last(data.compare.points), data, fmt, narrow));
     }
-    var longest = Math.max.apply(null, labels.map(function (label) { return label.length; }));
+    // A two-line label is as wide as its longest line.
+    var widths = labels.map(function (label) {
+      return Math.max.apply(null, label.split("\n").map(function (line) { return line.length; }));
+    });
+    var longest = Math.max.apply(null, widths);
     return Math.min(230, Math.max(64, Math.round(longest * 6.5) + 16));
   }
 
@@ -219,11 +226,12 @@
         type: "line",
         data: dated(list),
         showSymbol: false,
-        lineStyle: { width: 1.5, color: colors.brand, opacity: 0.55 },
+        // Same purple as the median, thinner: the three lines are one family.
+        lineStyle: { width: 1.5, color: colors.brand },
         itemStyle: { color: colors.brand },
         endLabel: {
           show: true,
-          color: colors.muted,
+          color: colors.brand,
           formatter: function (p) { return fanText(side, p.value[1], data, fmt, narrow); }
         },
         labelLayout: { moveOverlap: "shiftY" }
@@ -249,7 +257,7 @@
         showSymbol: false,
         silent: true,
         lineStyle: { opacity: 0 },
-        areaStyle: { color: colors.brandSoft, opacity: 1 }
+        areaStyle: { color: colors.fanBand, opacity: 1 }
       },
       edge("lower", data.band.lower),
       edge("upper", data.band.upper)
@@ -266,9 +274,7 @@
         endLabel: {
           show: true,
           color: colors.muted,
-          formatter: function (p) {
-            return data.compare.label + " " + (narrow ? fmt.short(p.value[1]) : fmt.value(p.value[1]));
-          }
+          formatter: function (p) { return fanText("compare", p.value[1], data, fmt, narrow); }
         },
         labelLayout: { moveOverlap: "shiftY" }
       });
@@ -554,7 +560,7 @@
             peer: token("--cmp-peer"),
             // Solid colours for bars (the "band" ones above are see-through).
             goodSolid: token("--good"), watchSolid: token("--watch-bar"), bad: token("--bad"),
-            surfaceSolid: token("--surface"), brandSoft: token("--brand-soft")
+            surfaceSolid: token("--surface"), fanBand: token("--fan-band")
           };
           // Measure the chart's own box, not the window: that's the space we have.
           var width = el.clientWidth;

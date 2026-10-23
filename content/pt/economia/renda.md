@@ -15,6 +15,7 @@ fan_short:
   upper: "10% acima"
   median: "Metade abaixo"
   lower: "10% abaixo"
+  compare: "Mínimo"
 ---
 
 ## O que é?
