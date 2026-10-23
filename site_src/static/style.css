@@ -837,3 +837,26 @@ th {
 .tiles-even {
   grid-auto-rows: 1fr;
 }
+
+/* 14. Moving between pages: a soft crossfade instead of a cut (Chrome, Edge,
+   Safari; other browsers just show the new page). The header has its own name,
+   so it stays still while the content fades. Off for people who ask their
+   device for less motion. */
+@view-transition {
+  navigation: auto;
+}
+
+.site-header {
+  view-transition-name: site-header;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
