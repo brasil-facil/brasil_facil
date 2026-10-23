@@ -88,3 +88,15 @@ def test_unknown_heading_stops_the_build():
         build.split_sections(
             "\n## O que é isso?\nTexto.\n", "pt", build.CONTENT / "x.md"
         )
+
+
+def test_home_page_shows_the_sections_and_how_we_work(tmp_path):
+    build.main(tmp_path)
+    home = (tmp_path / "pt" / "index.html").read_text("utf-8")
+    assert 'href="/pt/economia/"' in home and "10 números" in home  # live section
+    assert home.count('<span class="pill soon">Em breve</span>') == 4
+    assert "Como trabalhamos" in home and "Sem opinião" in home
+    assert build.REPO_URL in home
+    assert '<a href="/pt/" aria-current="page">Início</a>' in home
+    en = (tmp_path / "en" / "index.html").read_text("utf-8")
+    assert "How we work" in en and "Coming soon" in en

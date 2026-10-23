@@ -45,8 +45,8 @@ def test_build_writes_the_inpc_page_with_ipca_next_to_it(tmp_path):
     )
     assert "Sem meta" in pt
     assert "IPCA no mesmo mês" in pt
-    home = (tmp_path / "pt" / "index.html").read_text(encoding="utf-8")
-    assert "/pt/economia/inpc/" in home and "/pt/economia/inflacao/" in home
+    section = (tmp_path / "pt" / "economia" / "index.html").read_text(encoding="utf-8")
+    assert "/pt/economia/inpc/" in section and "/pt/economia/inflacao/" in section
 
 
 def test_ipca_page_links_to_inpc_with_its_value(tmp_path):

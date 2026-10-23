@@ -1,0 +1,59 @@
+---
+# The home page (Home). Draft texts: rewrite them in your own words.
+title: Brazil's numbers, explained
+intro: >-
+  Brasil Fácil shows how the country is doing, with official data and in
+  plain words: the economy, public money, health, education and safety. It is
+  free, takes no political side and compares Brazil with other countries.
+sections_title: The sections
+sections:
+  economia:
+    text: Jobs, wages, prices, interest rates and what the country produces.
+  dinheiro-publico:
+    name: Public money
+    text: How much the government collects and spends, where each R$ 100 goes and how much the interest on the debt costs.
+  saude:
+    name: Health
+    text: Deaths of babies and mothers, vaccination and how long people live.
+  educacao:
+    name: Education
+    text: Children who can read in 2nd grade, school scores and how many students stop studying.
+  seguranca:
+    name: Safety
+    text: Violent deaths and people in prison.
+principles_title: How we work
+principles:
+  - title: Official data
+    text: >-
+      Every number comes from public and international bodies, such as IBGE,
+      the Central Bank, the Treasury, the IMF and the OECD. Each chart says
+      where the data came from and when it was published.
+  - title: Plain words
+    text: >-
+      Every number is explained for someone who finished primary school. An
+      acronym never appears alone: it always comes with what it means.
+  - title: No opinion
+    text: >-
+      We show what the data says. We do not say whether a government or a
+      policy is good or bad.
+  - title: Clear rules for the colours
+    text: >-
+      Good, Watch and Worrying follow an official target or a rule written on
+      each number's page. Where there is no fair rule, there is no colour.
+  - title: Brazil and the world
+    text: >-
+      We compare Brazil with Mexico, Colombia, South Africa and other
+      countries, to see whether a change happens only here or everywhere.
+  - title: Free and open
+    text: >-
+      No sign-up and nothing to pay. The site's code and data are open for
+      anyone who wants to check them.
+code_link: See the code and the data
+coming_title: What comes next
+coming:
+  - Public money, the next section.
+  - Health, Education and Safety, with yearly data.
+  - News of the week, a summary of what changed in the numbers.
+  - A glossary of economic words and a page explaining how we measure everything.
+contact: Found a mistake or have a suggestion? Write to us.
+---

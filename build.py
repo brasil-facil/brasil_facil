@@ -27,6 +27,10 @@ DIST = ROOT / "dist"
 LANGS = ["pt", "en"]
 
 SECTIONS_FILE = CONFIG / "sections.yaml"
+REPO_URL = "https://github.com/brasil-facil/brasil_facil"
+# All sections of the site, in menu order. Those not in SECTION_SLUGS yet are
+# shown on the home page as "Em breve" cards (their texts are in home.md).
+ALL_SECTIONS = ["economia", "dinheiro-publico", "saude", "educacao", "seguranca"]
 # Each section's address per language (its folder in config/ and content/ is the key).
 SECTION_SLUGS = {"economia": {"pt": "economia", "en": "economy"}}
 
@@ -465,6 +469,35 @@ def tile_view(indicator: Indicator, data: dict, text: dict, s: dict, lang: str) 
     }
 
 
+def load_home_text(lang: str) -> dict:
+    path = CONTENT / lang / "home.md"
+    if not path.exists():
+        raise FileNotFoundError(f"missing translation: {path.relative_to(ROOT)}")
+    _, front, _ = path.read_text(encoding="utf-8").split("---", 2)
+    return yaml.safe_load(front)
+
+
+def home_sections(home: dict, sections: dict, section_texts: dict, lang: str) -> list:
+    """One card per section for the home page: live ones link to their page and
+    say how many numbers they have; the others say "Em breve"."""
+    cards = []
+    for key in ALL_SECTIONS:
+        text = home["sections"][key]
+        if key in sections:
+            count = sum(len(group.indicators) for group in sections[key].groups)
+            cards.append(
+                {
+                    "name": section_texts[key]["title"],
+                    "text": text["text"],
+                    "url": section_url(key, lang),
+                    "count": count,
+                }
+            )
+        else:
+            cards.append({"name": text["name"], "text": text["text"], "url": None})
+    return cards
+
+
 def nav_links(lang: str, current: str, section_texts: dict) -> list[dict]:
     """The tabs in the header: Início, then one per section."""
     links = [{"url": f"/{lang}/", "key": "home", "current": current == "home"}]
@@ -513,7 +546,6 @@ def main(dist: Path = DIST) -> None:
     for lang in LANGS:
         other = "en" if lang == "pt" else "pt"
         s = strings[lang]
-        metric_pages = []
         tiles = {}
         section_texts = {name: load_section_text(name, lang) for name in sections}
 
@@ -559,7 +591,6 @@ def main(dist: Path = DIST) -> None:
                 },
             )
             write(dist / url.strip("/") / "index.html", html, dist)
-            metric_pages.append({"url": url, "title": data["title"]})
             tiles[indicator.id] = tile_view(indicator, data, text, s, lang)
 
         for name, section in sections.items():
@@ -598,10 +629,13 @@ def main(dist: Path = DIST) -> None:
             )
             write(dist / section_url(name, lang).strip("/") / "index.html", page, dist)
 
+        home_text = load_home_text(lang)
         home = env.get_template("home.html").render(
             lang=lang,
             s=s,
-            metric_pages=metric_pages,
+            text=home_text,
+            cards=home_sections(home_text, sections, section_texts, lang),
+            repo_url=REPO_URL,
             other_url=f"/{other}/",
             nav=nav_links(lang, "home", section_texts),
         )
