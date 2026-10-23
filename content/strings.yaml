@@ -41,7 +41,7 @@ pt:
   nav_home: Início
   nav_label: Seções
   back_to: "Voltar para"
-  updated_on: "atualizado em {date}"
+  updated_on: "Atualizado em {date}"
   trend_up: Melhorando
   trend_down: Piorando
   better_years: "Melhorou em {better} dos últimos {years} anos"
@@ -101,7 +101,7 @@ en:
   nav_home: Home
   nav_label: Sections
   back_to: "Back to"
-  updated_on: "updated on {date}"
+  updated_on: "Updated on {date}"
   trend_up: Improving
   trend_down: Worsening
   better_years: "Improved in {better} of the last {years} years"
