@@ -2,8 +2,8 @@ id: juro-real
 section: economia
 group: leading
 name:
-  pt: Custo real de pegar empréstimo - Juro real
-  en: Real cost of borrowing - Real interest rate
+  pt: Juro básico descontada a inflação - Juro real
+  en: Basic interest rate after inflation - Real interest rate
 slug:
   pt: juro-real
   en: real-interest-rate

@@ -1,6 +1,6 @@
 ---
 tile_name: "Aumento dos preços para quem ganha menos"   # the short name on the section page tile
-question: Quanto os preços subiram para produtos essenciais?
+question: Quanto os preços subiram para quem ganha até 5 salários mínimos?
 summary: Em {month}, as compras das famílias que ganham de 1 a 5 salários mínimos estavam {value} mais caras do que 12 meses antes.
 now_note: Este é o índice usado no reajuste do salário mínimo.
 chart_subtitle: >-
@@ -10,14 +10,17 @@ chart_subtitle: >-
 
 ## O que é?
 
-O Índice Nacional de Preços ao Consumidor (INPC) mede o aumento nos preços de produtos essenciais como, por exemplo, itens da cesta básica, transporte, aluguel, móveis e telefonia. Ele olha para famílias que ganham de 1 a 5 salários mínimos. A
-inflação oficial, o IPCA, olha para famílias que ganham de 1 a 40 salários
-mínimos, incluindo mais produtos no cálculo.
+O Índice Nacional de Preços ao Consumidor (INPC) mede quanto subiram os preços
+das coisas que as famílias que ganham de 1 a 5 salários mínimos compram, como
+comida, aluguel, transporte e remédios. A inflação oficial, o IPCA, olha para as
+famílias que ganham de 1 a 40 salários mínimos. Os dois usam os mesmos produtos:
+o que muda é o peso de cada um na conta.
 
 ## Por que importa?
 
-O aumento nos preços de produtos essenciais (INPC) é usado para ajustar o salário mínimo e aposentadorias. Por isso, ele ajuda a explicar quanto o salário mínimo sobe a cada ano. Famílias
-que ganham entra 1 a 5 salários mínimos gastam uma parte maior com comida, aluguel e
+O INPC é usado para ajustar o salário mínimo e aposentadorias. Por isso, ele
+ajuda a explicar quanto o salário mínimo sobe a cada ano. Famílias que ganham
+entre 1 e 5 salários mínimos gastam uma parte maior com comida, aluguel e
 transporte. Quando esses preços sobem mais, o INPC fica acima da inflação geral (IPCA).
 
 ## Como é calculado?
@@ -37,7 +40,8 @@ referência clara para comparar.
 
 ## Como ler o gráfico?
 
-A linha roxa é o aumento nos preços de produtos essenciais. A linha cinza é a inflação oficial. Quando a roxa está acima da
+A linha roxa é o INPC, a inflação para quem ganha menos. A linha cinza é a
+inflação oficial (IPCA). Quando a roxa está acima da
 cinza, os preços subiram mais para as famílias de menor renda. Não há cor de
 alerta: o governo não define uma meta para o INPC.
 

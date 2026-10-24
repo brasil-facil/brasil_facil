@@ -19,6 +19,21 @@ Um PIB por pessoa maior costuma vir junto com salários maiores e mais
 dinheiro para escolas, saúde e estradas. Mas é uma média: ele não mostra como
 a renda está dividida entre as pessoas.
 
+## Como é calculado?
+
+1. O PIB soma o valor de tudo o que o país produziu no ano. No Brasil, quem
+   calcula é o IBGE.
+2. O FMI passa os valores para dólares sem usar o câmbio do dia. Ele compara
+   quanto custa a mesma cesta de produtos em cada país (a paridade do poder de
+   compra, PPC).
+3. Tira o efeito da inflação, levando tudo para preços de 2021.
+4. Divide pelo número de habitantes.
+
+O FMI calcula um número por ano, por isso o gráfico tem um ponto por ano.
+
+Esta página não mostra as cores Bom, Atenção ou Preocupante: não há uma meta
+oficial para o PIB por pessoa.
+
 ## Como ler o gráfico?
 
 A linha roxa é o Brasil. As linhas cinza são outros países, e a linha cinza
@@ -27,8 +42,6 @@ estão em dólares ajustados ao custo de vida de cada país (o que os
 economistas chamam de PPC). Assim, US$ 100 compram mais ou menos a mesma
 quantidade de coisas em todos os países. E estão em dólares de 2021, sem o efeito da
 inflação: se a linha sobe, a produção por pessoa cresceu de verdade.
-
-## Como é calculado?
 
 ## De onde vem?
 

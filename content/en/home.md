@@ -32,7 +32,7 @@ principles:
       Every number comes from public and international bodies, such as IBGE,
       the Central Bank, the Treasury, the IMF (International Monetary Fund) and
       the OECD (a group of almost 40 countries, mostly rich ones). Each chart says
-      where the data came from and when it was published.
+      where the data came from and which period it covers.
   - title: Plain words
     text: >-
       Every number is explained for someone who finished primary school. An

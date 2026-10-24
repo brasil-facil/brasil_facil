@@ -1,6 +1,6 @@
 ---
 tile_name: "Juro real"
-question: Quanto custa pegar dinheiro emprestado, descontado o aumento dos preços?
+question: Quanto rendem os juros básicos, descontado o aumento dos preços?
 summary: Em {month}, o juro real estava em {value} ao ano. É a taxa Selic menos a inflação esperada para os 12 meses seguintes.
 chart_subtitle: >-
   Juro real, em % ao ano, no fim de cada mês. Linha roxa: juro real. Linha
@@ -12,6 +12,10 @@ chart_subtitle: >-
 O juro real é a taxa Selic menos o aumento de preços (inflação) esperado. Se a Selic é 14% e a
 inflação esperada é 5%, o juro real é perto de 9%. Ele mostra quanto o
 dinheiro rende ou custa de verdade, depois que os preços sobem.
+
+Não é o juro que os bancos cobram das pessoas: empréstimos, cheque especial e
+cartão de crédito custam bem mais. O juro real é a base sobre a qual esses
+juros são calculados. Quando ele sobe, os outros costumam subir junto.
 
 ## Por que importa?
 Imagina comprar um celular novo parcelado, se a taxa para esse parcelamento está baixa, o celular se torna mais acessível e mais pessoas compram. Com um juro alto, o celular se torna menos acessível e menos pessoas compram. Num geral, um juro (real) alto

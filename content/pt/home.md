@@ -32,7 +32,7 @@ principles:
       Todos os números vêm de órgãos públicos e internacionais, como o IBGE, o
       Banco Central, o Tesouro, o FMI (Fundo Monetário Internacional) e a OCDE
       (um grupo de quase 40 países, a maioria ricos). Cada gráfico diz de onde veio o
-      dado e quando ele foi publicado.
+      dado e a que período ele se refere.
   - title: Palavras simples
     text: >-
       Cada número é explicado para quem terminou o ensino fundamental. Uma

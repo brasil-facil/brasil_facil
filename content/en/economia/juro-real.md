@@ -1,6 +1,6 @@
 ---
 tile_name: "Real interest rate"   # the short name on the section page tile
-question: How much does it cost to borrow money, after rising prices?
+question: How much does the basic interest rate pay, after rising prices?
 summary: In {month}, the real interest rate was {value} a year. It is the Selic rate minus the inflation expected for the next 12 months.
 chart_subtitle: >-
   Real interest rate, in % a year, at the end of each month. Purple line: real
@@ -13,6 +13,10 @@ The real interest rate is the Selic rate minus the expected rise in prices
 (inflation). If the Selic is 14% and expected inflation is 5%, the real rate
 is close to 9%. It shows how much money really earns or costs once prices go
 up.
+
+It is not the rate banks charge people: loans, overdrafts and credit cards
+cost much more. The real interest rate is the base those rates are built on.
+When it goes up, the others usually go up too.
 
 ## Why does it matter?
 
