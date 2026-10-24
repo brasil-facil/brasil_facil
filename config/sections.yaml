@@ -6,6 +6,6 @@ economia:
     - id: trabalho
       indicators: [desemprego, salario-minimo, renda]
     - id: precos-juros
-      indicators: [inflacao, inpc, selic, juro-real]
+      indicators: [inflacao, inpc, selic, juro-real, nivel-de-precos]
     - id: producao
       indicators: [crescimento, pib-per-capita, conta-corrente]

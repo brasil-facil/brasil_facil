@@ -18,7 +18,7 @@
   <section class="now panel" aria-label="{{ s.now }}">
     {% set is_yearly = data.period_kind == "year" %}
     <p class="eyebrow">{{ s.now }} · {{ s.year_of.format(year=latest_period) if is_yearly else latest_period }}</p>
-    <p class="big-number">{% if data.unit_prefix %}<small class="prefix">{{ data.unit_prefix }}</small>{% endif %}{{ data.latest.value | number(lang) }}<small>{{ data.unit }}</small></p>
+    <p class="big-number">{% if data.unit_prefix %}<small class="prefix">{{ data.unit_prefix }}</small>{% endif %}{{ data.latest.value | number(lang, data.unit_prefix != "") }}<small>{{ data.unit }}</small></p>
     <div class="now-zone">
       {% if data.latest.zone is not none or data.chart.no_target_pill %}
         {{ zone_pill(data.latest.zone, s) }}

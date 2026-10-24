@@ -19,7 +19,12 @@ ROOT = Path(__file__).resolve().parents[1]
 TARGETS_DIR = ROOT / "data" / "targets"
 COUNTRIES_FILE = ROOT / "config" / "countries.yaml"
 # Unit shown (before, after) the number: "4,58%" or "US$ 19.968".
-UNITS = {"percent": ("", "%"), "usd_ppp": ("US$ ", ""), "brl": ("R$ ", "")}
+UNITS = {
+    "percent": ("", "%"),
+    "usd_ppp": ("US$ ", ""),
+    "brl": ("R$ ", ""),
+    "usd": ("US$ ", ""),
+}
 DEFAULT_YEARS = 30
 WINDOWS_YEARS = [8, 15, 30]
 # The IMF forecasts five years ahead, but only the next two are real forecasts
@@ -363,6 +368,14 @@ def chart_data(
             "windows": WINDOWS_YEARS,
             "no_target_pill": indicator.chart.no_target_pill,
             "kind": indicator.chart.kind,
+            "reference_line": (
+                None
+                if indicator.chart.reference_line is None
+                else {
+                    "value": indicator.chart.reference_line.value,
+                    "label": getattr(indicator.chart.reference_line.label, lang),
+                }
+            ),
         },
         "source": {
             "name": indicator.source.name,

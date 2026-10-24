@@ -24,7 +24,7 @@ class LangText(Strict):
 
 
 class SeriesRef(Strict):
-    source: Literal["sidra", "sgs", "focus", "imf", "oecd", "bis"]
+    source: Literal["sidra", "sgs", "focus", "imf", "oecd", "bis", "worldbank"]
     code: str
     geo: str
 
@@ -84,7 +84,7 @@ class Release(Strict):
 class PeerGroup(Strict):
     """Comparison countries that come from one source, e.g. IMF inflation."""
 
-    source: Literal["imf", "oecd", "bis"]
+    source: Literal["imf", "oecd", "bis", "worldbank"]
     code: str
     geo: list[str]  # country codes from config/countries.yaml
     source_name: str  # shown under the chart, e.g. "FMI"
@@ -151,6 +151,13 @@ class CompareWith(Strict):
     label: LangText  # its short name at the end of the line, e.g. "IPCA"
 
 
+class ReferenceLine(Strict):
+    """A dashed horizontal line with a name, e.g. "EUA = 100" on the price level."""
+
+    value: float
+    label: LangText
+
+
 class ChartSettings(Strict):
     show_from: str | None = Field(default=None, pattern=r"^\d{4}-\d{2}$")
     compare_with: CompareWith | None = None
@@ -164,6 +171,7 @@ class ChartSettings(Strict):
     # income, GDP per person): the section page then says "Melhorando" or
     # "Piorando". Everywhere else it only says which way the number moved.
     higher_is_better: bool = False
+    reference_line: ReferenceLine | None = None
 
 
 class Indicator(Strict):
@@ -173,7 +181,7 @@ class Indicator(Strict):
     name: LangText
     slug: LangText
     technical_name: str
-    unit: Literal["percent", "usd_ppp", "brl"]
+    unit: Literal["percent", "usd_ppp", "brl", "usd"]
     # "rolling_quarter": each value covers 3 months ending in its period (PNAD)
     period_kind: Literal["month", "rolling_quarter", "year"] = "month"
     series: IndicatorSeries
