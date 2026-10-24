@@ -39,8 +39,7 @@ a clear reference to compare with.
 ## How to read the chart?
 
 The purple line is the INPC. The grey line is the IPCA. When the purple line
-is above the grey one, prices rose more for lower-income families. There is no
-warning colour: the government sets no target for the INPC.
+is above the grey one, prices rose more for lower-income families. 
 
 ## Where does it come from?
 

@@ -33,7 +33,7 @@ extremos.
 
 ## Como é calculado?
 
-O IBGE pergunta a dezenas de milhares de famílias quanto cada pessoa costuma
+O IBGE visita cerca de 200 mil casas em todo o país e pergunta quanto cada pessoa costuma
 receber por mês. Depois, coloca todas as rendas em fila, da menor para a
 maior, e anota alguns pontos da fila:
 
@@ -59,7 +59,8 @@ que ele, o que é comum entre quem trabalha sem carteira ou poucas horas. Em
 "Ver os números" estão os valores de cada ano.
 
 O 1% que mais ganha não cabe no gráfico: em 2025, essas pessoas ganhavam mais
-de R$ 24.839 por mês, em reais daquele ano.
+de R$ 24.839 por mês, em reais daquele ano (os outros valores da página
+estão em reais de hoje).
 
 ## De onde vem?
 

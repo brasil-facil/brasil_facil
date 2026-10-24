@@ -30,11 +30,11 @@ production, it removes the effect of rising prices: if the country produced
 the same things, only more expensive, growth is zero. The IMF gathers this
 number together with other countries' numbers, calculated the same way.
 
-The colours compare Brazil with the average of {peers} in the same year. These
-are the countries we use to compare Brazil across the site.
+The colours compare Brazil with the average of {peers} in the same year. These are the countries we use most to compare Brazil on the site.
 
 - **Good** (green): the economy grew more than those countries' average.
-- **Watch** (yellow): it grew, but less than the average (or the same).
+- **Watch** (yellow): it did not shrink, but grew less than the average (or
+  the same).
 - **Worrying** (red): the economy shrank, whatever happened in the other
   countries.
 
@@ -51,7 +51,7 @@ the IMF's forecast for the next years; they have no colour, because they have
 not happened yet.
 
 The circle on each year shows what economists expected in January of that
-year, according to the Banco Central's Focus survey. If the bar goes past the
+year, according to the Central Bank's Focus survey. If the bar goes past the
 circle, the economy grew more than expected; if it stays below, it grew less.
 Forecasts are often wrong: in January 2020, before the pandemic, growth of
 2.3% was expected.
@@ -65,6 +65,5 @@ countries.
 From the IMF, the International Monetary Fund, which gathers each country's
 official figures twice a year. For Brazil, the number comes from IBGE. The forecast
 for the next two years is also from the IMF, from its latest edition (April
-or October). What economists expected in January comes from the Banco
-Central's Focus survey, which asks more than 100 banks and companies every
+or October). What economists expected in January comes from the Central Bank's Focus survey, which asks more than 100 banks and companies every
 week.

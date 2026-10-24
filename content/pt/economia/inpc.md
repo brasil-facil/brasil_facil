@@ -42,8 +42,7 @@ referência clara para comparar.
 
 A linha roxa é o INPC, a inflação para quem ganha menos. A linha cinza é a
 inflação oficial (IPCA). Quando a roxa está acima da
-cinza, os preços subiram mais para as famílias de menor renda. Não há cor de
-alerta: o governo não define uma meta para o INPC.
+cinza, os preços subiram mais para as famílias de menor renda. 
 
 ## De onde vem?
 

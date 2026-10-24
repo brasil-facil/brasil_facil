@@ -53,6 +53,10 @@ O número muda muito com o dólar. Em 2011, com o real forte, o Brasil era quase
 tão caro quanto os Estados Unidos; depois que o dólar subiu, ficou bem mais
 barato em dólares, mesmo com os preços subindo aqui dentro.
 
+Aqui os dólares são os do câmbio. A página [Riqueza produzida por
+pessoa](/pt/economia/pib-per-capita/) usa outro tipo de dólar, já ajustado ao
+custo de vida de cada país.
+
 ## De onde vem?
 
 Do Banco Mundial, que publica a paridade do poder de compra e o câmbio de cada

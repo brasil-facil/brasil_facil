@@ -41,8 +41,10 @@ The purple line is Brazil. The grey lines are other countries, and the solid
 grey line is the average of advanced economies, the richest countries. The
 values are in dollars adjusted to the cost of living in each country (what
 economists call PPP). So US$ 100 buys about the same amount of things in every
-country. And they are in 2021 dollars, without the effect of inflation: if the
-line goes up, production per person really grew.
+country. And they are in 2021 dollars, without the effect of inflation: if the line goes up, production per person really grew.
+
+These are not market-rate dollars. To see how expensive Brazil is in
+market-rate dollars, see the [Price level](/en/economy/price-level/) page.
 
 ## Where does it come from?
 

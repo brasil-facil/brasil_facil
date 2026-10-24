@@ -53,6 +53,10 @@ The number moves a lot with the dollar. In 2011, with a strong real, Brazil
 was almost as expensive as the United States; after the dollar rose, it
 became much cheaper in dollars, even with prices rising at home.
 
+Here the dollars are market-rate dollars. The [Wealth produced per
+person](/en/economy/gdp-per-capita/) page uses another kind of dollar,
+already adjusted to each country's cost of living.
+
 ## Where does it come from?
 
 From the World Bank, which publishes each country's purchasing power parity

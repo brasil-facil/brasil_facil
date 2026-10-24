@@ -33,7 +33,7 @@ two ends.
 
 ## How is it calculated?
 
-IBGE asks tens of thousands of families how much each person usually
+IBGE visits about 200,000 homes across the country and asks how much each person usually
 receives per month. Then it lines up all the incomes, from lowest to highest,
 and notes a few points in the line:
 
@@ -59,7 +59,8 @@ it, which is common among people who work informally or few hours. "See the
 numbers" has the values for each year.
 
 The top 1% does not fit in the chart: in 2025, those people earned more than
-R$ 24,839 a month, in that year's reais.
+R$ 24,839 a month, in that year's reais (the other values on this page are
+in today's reais).
 
 ## Where does it come from?
 

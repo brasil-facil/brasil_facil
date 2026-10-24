@@ -29,9 +29,8 @@ economy.
 
 The interest rate is the main tool the Central Bank has to control rising
 prices. If prices rise faster than planned, the Central Bank raises the
-interest rate to hold that rise back. When people are
-not spending money, as during COVID, for example, interest rates go down to
-encourage spending and trade.
+interest rate to hold that rise back. When people are spending little, as during the covid-19 pandemic, the
+Central Bank lowers interest rates to encourage spending and trade.
 
 ## How is it calculated?
 

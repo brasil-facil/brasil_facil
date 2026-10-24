@@ -43,6 +43,9 @@ economistas chamam de PPC). Assim, US$ 100 compram mais ou menos a mesma
 quantidade de coisas em todos os países. E estão em dólares de 2021, sem o efeito da
 inflação: se a linha sobe, a produção por pessoa cresceu de verdade.
 
+Esses dólares não são os do câmbio. Para saber quanto o Brasil custa em
+dólares do câmbio, veja a página [Nível de preços](/pt/economia/nivel-de-precos/).
+
 ## De onde vem?
 
 Do FMI, o Fundo Monetário Internacional, que reúne os números oficiais de cada

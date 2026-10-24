@@ -13,13 +13,14 @@ chart_subtitle: >-
 ## O que é?
 
 O salário mínimo é o menor valor que um trabalhador com carteira assinada
-pode receber por mês. Ele é definido por lei e muda uma vez por ano, em
-janeiro.
+pode receber por mês. Ele é definido por lei e hoje muda uma vez por ano, em janeiro.
 
 ## Por que importa?
 
 Muita gente recebe exatamente o salário mínimo. Ele também é o menor valor
-das aposentadorias do INSS e de benefícios como o BPC. Por isso, quando o
+das aposentadorias do INSS (a Previdência Social) e de benefícios como o BPC
+(o Benefício de Prestação Continuada, pago a idosos e a pessoas com deficiência
+de baixa renda). Por isso, quando o
 salário mínimo sobe, a renda de milhões de famílias sobe junto, e os gastos
 do governo também.
 

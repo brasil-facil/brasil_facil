@@ -1,5 +1,5 @@
 ---
-# The home page (Home). Draft texts: rewrite them in your own words.
+# The home page (Home).
 title: Brazil's numbers, explained
 intro: >-
   Brasil Fácil shows how the country is doing, with official data and in
@@ -35,8 +35,7 @@ principles:
       where the data came from and which period it covers.
   - title: Plain words
     text: >-
-      Every number is explained for someone who finished primary school. An
-      acronym never appears alone: it always comes with what it means.
+      Every number is explained for someone who finished primary school. When we use an acronym, we explain what it means.
   - title: No opinion
     text: >-
       We show what the data says. We do not say whether a government or a
