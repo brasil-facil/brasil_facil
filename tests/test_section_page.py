@@ -48,8 +48,8 @@ def test_section_page(tmp_path):
     ).read_text("utf-8")
     assert "Melhorando" in page and "Piorando" in page  # higher_is_better tiles
     assert "</b> piorando</span>" in page  # a worsening tile is counted too
-    # Preços e juros has 4 tiles: two empty "coming next" boxes complete row 2.
-    assert page.count('class="tile tile-soon"') == 2
+    # Preços e juros has 5 tiles: one empty "coming next" box completes row 2.
+    assert page.count('class="tile tile-soon"') == 1
     assert "Subiu em relação a um ano antes" in page or "Caiu em relação" in page
     assert '<a href="/pt/economia/" aria-current="page">Economia</a>' in page
     en = (tmp_path / "en" / "economy" / "index.html").read_text("utf-8")
@@ -96,7 +96,7 @@ def test_unknown_heading_stops_the_build():
 def test_home_page_shows_the_sections_and_how_we_work(tmp_path):
     build.main(tmp_path)
     home = (tmp_path / "pt" / "index.html").read_text("utf-8")
-    assert 'href="/pt/economia/"' in home and "10 números" in home  # live section
+    assert 'href="/pt/economia/"' in home and "11 números" in home  # live section
     assert home.count('<span class="pill soon">Em breve</span>') == 4
     assert "Como trabalhamos" in home and "Sem opinião" in home
     assert build.REPO_URL in home
@@ -111,7 +111,7 @@ def test_economia_tab_has_a_dropdown_with_every_indicator(tmp_path):
     menu = page.split('<div class="nav-menu">', 1)[1].split("</nav>", 1)[0]
     assert menu.count('<div class="nav-menu-group">') == 3  # the three groups
     assert '<a href="/pt/economia/desemprego/">Desemprego</a>' in menu
-    assert menu.count("<a href=") == 10  # every indicator, by its tile name
+    assert menu.count("<a href=") == 11  # every indicator, by its tile name
 
 
 def test_accent_marks_one_word_and_still_escapes():

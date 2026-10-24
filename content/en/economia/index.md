@@ -2,11 +2,11 @@
 title: Economy
 question: "How is Brazil's *economy* doing?"   # *word*: in purple
 intro: >-
-  Ten numbers that show work, the cost of living, credit and what the country
-  produces. Each one comes with its history and, where possible, with other
+  Eleven numbers that show work, the cost of living, credit and what the country
+  produces. Each one comes with its history and, where available, with other
   countries to compare. Click a number to see the full chart.
 work_in_progress: >-
-  These ten numbers do not tell the whole story of Brazil's economy. We are
+  These eleven numbers do not tell the whole story of Brazil's economy. We are
   working to add others, such as the dollar, the government's accounts and
   the public debt.
 groups:

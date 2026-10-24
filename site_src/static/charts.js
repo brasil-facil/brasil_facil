@@ -426,6 +426,14 @@
       lineStyle: { width: 3, color: colors.brand },
       itemStyle: { color: colors.brand },
       markArea: { silent: true, data: bandAreas(data, colors) },
+      // A fixed reference, e.g. "EUA = 100" on the price level page.
+      markLine: data.chart.reference_line ? {
+        silent: true,
+        symbol: "none",
+        lineStyle: { color: colors.muted, type: [6, 4], width: 1.5 },
+        label: { formatter: data.chart.reference_line.label, color: colors.muted, position: "insideStartTop" },
+        data: [{ yAxis: data.chart.reference_line.value }]
+      } : undefined,
       endLabel: {
         show: true,
         color: colors.brand,

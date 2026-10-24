@@ -1,0 +1,39 @@
+id: nivel-de-precos
+section: economia
+group: lagging
+name:
+  pt: Quanto custa o Brasil comparado a outros países - Nível de preços
+  en: How expensive Brazil is compared with other countries - Price level
+slug:
+  pt: nivel-de-precos
+  en: price-level
+technical_name: >-
+  Nível de preços do consumo das famílias: paridade do poder de compra (PPC) dividida
+  pela taxa de câmbio de mercado, EUA = 100 (Banco Mundial, PA.NUS.PRVT.PP e PA.NUS.FCRF)
+unit: usd   # shown as "US$ 46": what US$ 100 of goods in the US costs here
+period_kind: year
+series:
+  # Decided 24 Oct 2026: World Bank, household consumption basket, so every
+  # country comes from one source. Germany and France stand in for the rich
+  # countries: the OECD publishes its own average only from 2022, and the World
+  # Bank publishes no averages for this measure.
+  brazil: {source: worldbank, code: price-level, geo: BRA}
+  peers:
+    - {source: worldbank, code: price-level, geo: [DEU, FRA, MEX, COL, ZAF], source_name: Banco Mundial}
+source:
+  name: Banco Mundial
+  table: Paridade do poder de compra (consumo das famílias) e taxa de câmbio
+  url: https://data.worldbank.org/indicator/PA.NUS.PRVT.PP
+transform: none
+# No zones: being cheaper or more expensive than other countries is not, on its
+# own, good or bad (decided 24 Oct 2026).
+chart:
+  no_target_pill: false
+  show_from: "1994-07"   # after the real began (July 1994): yearly data start in 1995
+  reference_line:
+    value: 100
+    label: {pt: "EUA = 100", en: "USA = 100"}
+release:
+  expected_day: 15       # the World Bank updates the PPP figures once a year
+  stale_after_days: 400
+content: nivel-de-precos

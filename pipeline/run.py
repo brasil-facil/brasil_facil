@@ -8,7 +8,7 @@ import pandas as pd
 from pipeline import store
 from pipeline.export import TARGETS_DIR, zone_table
 from pipeline.models import Indicator, SeriesRef, load_indicator
-from pipeline.sources import bis, focus, imf, oecd, sgs, sidra
+from pipeline.sources import bis, focus, imf, oecd, sgs, sidra, worldbank
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = ROOT / "config"
@@ -19,6 +19,7 @@ SOURCES = {
     "imf": imf,
     "oecd": oecd,
     "bis": bis,
+    "worldbank": worldbank,
 }
 
 
