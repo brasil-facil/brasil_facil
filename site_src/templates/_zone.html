@@ -10,3 +10,10 @@
     <span class="pill none">{{ s.zone_none }}</span>
   {% endif %}
 {% endmacro %}
+
+{# Melhorando / Piorando: an arrow AND a word; filled for better, outlined for worse. #}
+{% macro trend_icon(improving) %}{% if improving %}<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11 L11 3 M5 3 H11 V9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>{% else %}<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3 L11 11 M11 5 V11 H5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>{% endif %}{% endmacro %}
+
+{% macro trend_pill(pill) %}
+  <span class="pill trend {{ 'up' if pill.improving else 'down' }}">{{ trend_icon(pill.improving) }}{{ pill.text }}</span>
+{% endmacro %}

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_zone.html" import zone_pill %}
+{% from "_zone.html" import zone_pill, trend_pill, trend_icon %}
 
 {% block title %}{{ text.title }} · Brasil Fácil{% endblock %}
 
@@ -16,7 +16,7 @@
     {# How many tiles are in each state: "2 bom", "1 atenção"... #}
     <div class="status">
       {% for key in ["good", "watch", "bad", "trend", "worse"] if counts[key] %}
-        <span class="chip glass"><span class="dot {{ key }}"></span><b>{{ counts[key] }}</b> {{ s["chip_" ~ key] }}</span>
+        <span class="chip glass">{% if key in ["trend", "worse"] %}<span class="chip-arrow {{ key }}">{{ trend_icon(key == "trend") }}</span>{% else %}<span class="dot {{ key }}"></span>{% endif %}<b>{{ counts[key] }}</b> {{ s["chip_" ~ key] }}</span>
       {% endfor %}
     </div>
   </section>
@@ -37,7 +37,7 @@
               {% if tile.zone is not none %}
                 {{ zone_pill(tile.zone, s) }}
               {% elif tile.pill %}
-                <span class="pill trend">{{ tile.pill.text }}</span>
+                {{ trend_pill(tile.pill) }}
               {% endif %}
             </div>
             <p class="tile-value">{{ tile.value }} <small>{{ tile.period }}</small></p>
