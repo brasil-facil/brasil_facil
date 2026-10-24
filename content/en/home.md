@@ -30,7 +30,8 @@ principles:
   - title: Official data
     text: >-
       Every number comes from public and international bodies, such as IBGE,
-      the Central Bank, the Treasury, the IMF and the OECD. Each chart says
+      the Central Bank, the Treasury, the IMF (International Monetary Fund) and
+      the OECD (a group of almost 40 countries, mostly rich ones). Each chart says
       where the data came from and when it was published.
   - title: Plain words
     text: >-

@@ -5,7 +5,7 @@ summary: In {month}, prices were {value} higher than 12 months earlier.
 related_note: "For lower-income families (INPC, used to adjust the minimum wage): {value}"
 chart_subtitle: >-
   How much prices rose over 12 months, in %. Green band: the government's
-  target, which has changed over time. Yellow band: up to 1.5 points outside it. Grey lines: other countries and the OECD average.
+  target, which has changed over time. Yellow band: up to 1.5 points outside it. Grey lines: other countries and the OECD average, a group of almost 40 countries, mostly rich ones.
 ---
 
 ## What is it?
@@ -48,7 +48,9 @@ pace. The target started in 1999. Before that, there was no target to compare
 with.
 
 The grey lines show other countries. The solid grey line is the average of
-the OECD countries, mostly rich countries. Use the buttons under the chart to
+the countries in the OECD (Organisation for Economic Co-operation and Development), a group of
+almost 40 countries, mostly rich ones such as the United States, Germany and
+Japan, but also Mexico and Colombia. Brazil is not a member. Use the buttons under the chart to
 choose the countries. Each country has its own target, so the green band is
 for Brazil only.
 
