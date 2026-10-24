@@ -1,5 +1,5 @@
 ---
-tile_name: "Cost of Brazil compared with the US"   # the short name on the section page tile
+tile_name: "Cost of Brazil compared with the world"   # the short name on the section page tile
 question: Are things in Brazil expensive or cheap compared with other countries?
 summary: In the year {month}, shopping that cost US$ 100 in the United States cost the equivalent of {value} in Brazil, changing reais into dollars at the year's average exchange rate. This figure comes out once a year.
 chart_subtitle: >-

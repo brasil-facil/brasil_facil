@@ -1,5 +1,5 @@
 ---
-tile_name: "Custo do Brasil comparado aos EUA"   # the short name on the section page tile
+tile_name: "Custo do Brasil comparado ao mundo"   # the short name on the section page tile
 question: As coisas no Brasil são caras ou baratas comparadas a outros países?
 summary: No ano de {month}, as compras que custavam US$ 100 nos Estados Unidos custavam o equivalente a {value} no Brasil, trocando reais por dólares pelo câmbio médio do ano. Este número sai uma vez por ano.
 chart_subtitle: >-
