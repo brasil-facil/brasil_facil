@@ -18,8 +18,9 @@ students and retirees, are not counted.
 ## Why does it matter?
 
 When unemployment rises, more families lose income, and people with jobs tend
-to get smaller pay rises. A fast rise often shows up when the economy is
-slowing down.
+to get smaller pay rises. A fast rise often shows up when the economy is slowing down. When the rate
+goes up a lot compared with the same month a year earlier (for example,
+January 2026 against January 2025), it is a sign of an economic crisis ahead.
 
 ## How is it calculated?
 

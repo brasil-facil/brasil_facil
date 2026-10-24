@@ -29,11 +29,11 @@ produção, ele tira o efeito do aumento dos preços: se o país produziu a mesm
 coisa, mas mais cara, o crescimento é zero. O FMI reúne esse número com o dos
 outros países, calculado da mesma forma.
 
-As cores comparam o Brasil com a média de {peers} no mesmo ano. Esses são os
-países que usamos para comparar o Brasil em todo o site.
+As cores comparam o Brasil com a média de {peers} no mesmo ano. Esses são os países que mais usamos para comparar o Brasil no site.
 
 - **Bom** (verde): a economia cresceu mais do que a média desses países.
-- **Atenção** (amarelo): cresceu, mas menos do que a média (ou igual).
+- **Atenção** (amarelo): não encolheu, mas cresceu menos do que a média (ou
+  igual a ela).
 - **Preocupante** (vermelho): a economia encolheu, não importa o que
   aconteceu nos outros países.
 

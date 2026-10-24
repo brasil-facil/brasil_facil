@@ -1,6 +1,6 @@
 ---
 tile_name: "Current account"   # the short name on the section page tile
-question: Does Brazil spend more with the rest of the world than it receives?
+question: Does Brazil pay more abroad than it receives?
 summary: In the year {month}, Brazil's balance with the rest of the world was {value} of GDP. A negative number means the country paid more abroad than it received. This figure comes out once a year.
 chart_subtitle: >-
   Current account balance, in % of GDP, per year. Purple bars: Brazil. Dashed
@@ -37,7 +37,7 @@ the country buys less from abroad.
 
 ## How is it calculated?
 
-The Banco Central records payments between Brazil and the rest of the world
+The Central Bank records payments between Brazil and the rest of the world
 and adds up the four parts of the account. The IMF gathers this number
 together with other countries' numbers, calculated the same way, and divides
 it by the size of each economy (its GDP). That way years and countries of
@@ -59,5 +59,5 @@ countries.
 ## Where does it come from?
 
 From the IMF, the International Monetary Fund, which gathers each country's
-official figures twice a year. For Brazil, the number comes from the Banco
-Central. The forecast for the next two years is also from the IMF.
+official figures twice a year. For Brazil, the number comes from the Central
+Bank. The forecast for the next two years is also from the IMF.

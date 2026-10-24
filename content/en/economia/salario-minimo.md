@@ -13,12 +13,13 @@ chart_subtitle: >-
 ## What is it?
 
 The minimum wage is the lowest amount a worker with a formal job can be paid
-per month. It is set by law and changes once a year, in January.
+per month. It is set by law and today changes once a year, in January.
 
 ## Why does it matter?
 
 Many people earn exactly the minimum wage. It is also the lowest amount of
-INSS pensions and of benefits such as the BPC. So when the minimum wage goes
+INSS (Brazil's social security) pensions and of benefits such as the BPC (a
+monthly benefit for low-income older people and people with disabilities). So when the minimum wage goes
 up, the income of millions of families goes up too, and so does government
 spending.
 
@@ -76,5 +77,5 @@ up over time, the minimum wage gained buying power. The chart starts in July
 
 ## Where does it come from?
 
-Each month's value comes from the Banco Central (series 1619). The inflation
+Each month's value comes from the Central Bank (series 1619). The inflation
 used to adjust the values is the INPC, from IBGE.

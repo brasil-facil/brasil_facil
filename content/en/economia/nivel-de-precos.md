@@ -1,7 +1,7 @@
 ---
-tile_name: "Cost of Brazil compared with the US"   # the short name on the section page tile
+tile_name: "Cost of Brazil compared with the world"   # the short name on the section page tile
 question: Are things in Brazil expensive or cheap compared with other countries?
-summary: In the year {month}, shopping that cost US$ 100 in the United States cost the equivalent of {value} in Brazil, changing reais into dollars at the market rate. This figure comes out once a year.
+summary: In the year {month}, shopping that cost US$ 100 in the United States cost the equivalent of {value} in Brazil, changing reais into dollars at the year's average exchange rate. This figure comes out once a year.
 chart_subtitle: >-
   What a basket of shopping that costs US$ 100 in the United States costs in
   each country, in dollars. Dashed line: the United States (100). Purple line:
@@ -52,6 +52,10 @@ others with the buttons under the chart.
 The number moves a lot with the dollar. In 2011, with a strong real, Brazil
 was almost as expensive as the United States; after the dollar rose, it
 became much cheaper in dollars, even with prices rising at home.
+
+Here the dollars are market-rate dollars. The [Wealth produced per
+person](/en/economy/gdp-per-capita/) page uses another kind of dollar,
+already adjusted to each country's cost of living.
 
 ## Where does it come from?
 

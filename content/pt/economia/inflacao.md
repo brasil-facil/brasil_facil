@@ -45,7 +45,7 @@ de {yellow_margin} ponto é uma regra do Brasil Fácil, não do governo. Antes d
 
 A linha roxa é o Brasil. A faixa verde é a meta que o governo definiu para
 cada ano. Se a linha está dentro da faixa verde, os preços subiram no ritmo
-planejado. A meta começou em 1999. Antes disso, não havia meta para comparar.
+planejado.
 
 As linhas cinza mostram outros países. A linha cinza contínua é a média dos
 países da OCDE (Organização para a Cooperação e Desenvolvimento Econômico), um

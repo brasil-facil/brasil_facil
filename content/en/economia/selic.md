@@ -5,8 +5,7 @@ summary: In {month}, the Selic was {value} a year.
 now_note: It is set by the Copom, a Central Bank committee, about 8 times a year.
 related_note: "After expected inflation (real interest rate): {value}"
 chart_subtitle: >-
-  Selic target rate, in % a year, at the end of each month. Each step is a
-  Copom decision. Grey lines: the basic interest rate of other countries.
+  Selic target rate, in % a year, at the end of each month. Each step is a Copom decision to raise or lower the rate. Grey lines: the basic interest rate of other countries.
 ---
 
 ## What is it?
@@ -34,8 +33,8 @@ decision, not a result: a high or low rate is not, on its own, good or bad.
 
 ## How to read the chart?
 
-The purple line is the Selic. It moves in steps: each step is a Copom meeting
-that raised, lowered or kept the rate. To see the cost of money after
+The purple line is the Selic. It moves in steps: each step is a Copom meeting that raised or lowered the rate. When the Copom
+keeps the rate, the line stays flat. To see the cost of money after
 inflation, see the real interest rate page.
 
 The grey lines are the basic interest rate of other countries, set by each

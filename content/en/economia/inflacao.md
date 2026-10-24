@@ -44,8 +44,7 @@ was no target before 1999, so those years have no colour.
 
 The purple line is Brazil. The green band is the target the government set for
 each year. If the line is inside the green band, prices rose at the planned
-pace. The target started in 1999. Before that, there was no target to compare
-with.
+pace.
 
 The grey lines show other countries. The solid grey line is the average of
 the countries in the OECD (Organisation for Economic Co-operation and Development), a group of

@@ -1,7 +1,7 @@
 ---
-tile_name: "Custo do Brasil comparado aos EUA"   # the short name on the section page tile
+tile_name: "Custo do Brasil comparado ao mundo"   # the short name on the section page tile
 question: As coisas no Brasil são caras ou baratas comparadas a outros países?
-summary: No ano de {month}, as compras que custavam US$ 100 nos Estados Unidos custavam o equivalente a {value} no Brasil, trocando reais por dólares no câmbio do dia. Este número sai uma vez por ano.
+summary: No ano de {month}, as compras que custavam US$ 100 nos Estados Unidos custavam o equivalente a {value} no Brasil, trocando reais por dólares pelo câmbio médio do ano. Este número sai uma vez por ano.
 chart_subtitle: >-
   Quanto custa no país, em dólares, uma cesta de compras que custa US$ 100 nos
   Estados Unidos. Linha tracejada: os Estados Unidos (100). Linha roxa:
@@ -30,8 +30,8 @@ preços de centenas de produtos e serviços iguais em quase todos os países do
 mundo. Com isso, calculam a paridade do poder de compra (PPC): quantos reais
 compram no Brasil o mesmo que US$ 1 compra nos Estados Unidos.
 
-O Brasil Fácil divide esse número pelo dólar do dia (a taxa de câmbio média do
-ano) e multiplica por 100. Por exemplo, se R$ 2,58 compram aqui o mesmo que
+O Brasil Fácil divide esse número pelo preço médio do dólar no ano (a taxa de
+câmbio média) e multiplica por 100. Por exemplo, se R$ 2,58 compram aqui o mesmo que
 US$ 1 lá, e o dólar custa R$ 5,58, a cesta de US$ 100 custa aqui o equivalente
 a 2,58 ÷ 5,58 × 100 = US$ 46.
 
@@ -52,6 +52,10 @@ você escolhe nos botões embaixo do gráfico.
 O número muda muito com o dólar. Em 2011, com o real forte, o Brasil era quase
 tão caro quanto os Estados Unidos; depois que o dólar subiu, ficou bem mais
 barato em dólares, mesmo com os preços subindo aqui dentro.
+
+Aqui os dólares são os do câmbio. A página [Riqueza produzida por
+pessoa](/pt/economia/pib-per-capita/) usa outro tipo de dólar, já ajustado ao
+custo de vida de cada país.
 
 ## De onde vem?
 

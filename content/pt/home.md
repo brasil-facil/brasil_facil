@@ -1,5 +1,5 @@
 ---
-# The home page (Início). Draft texts: rewrite them in your own words.
+# The home page (Início).
 title: Os números do Brasil, explicados
 intro: >-
   O Brasil Fácil mostra como o país está, com dados oficiais e em palavras
@@ -32,11 +32,10 @@ principles:
       Todos os números vêm de órgãos públicos e internacionais, como o IBGE, o
       Banco Central, o Tesouro, o FMI (Fundo Monetário Internacional) e a OCDE
       (um grupo de quase 40 países, a maioria ricos). Cada gráfico diz de onde veio o
-      dado e quando ele foi publicado.
+      dado e a que período ele se refere.
   - title: Palavras simples
     text: >-
-      Cada número é explicado para quem terminou o ensino fundamental. Uma
-      sigla nunca aparece sozinha: sempre vem junto com o que ela quer dizer.
+      Cada número é explicado para quem terminou o ensino fundamental. Quando usamos uma sigla, explicamos o que ela quer dizer.
   - title: Sem opinião
     text: >-
       Mostramos o que os dados dizem. Não dizemos se um governo ou uma política

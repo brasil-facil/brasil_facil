@@ -1,6 +1,6 @@
 ---
 tile_name: "Juro real"
-question: Quanto custa pegar dinheiro emprestado, descontado o aumento dos preços?
+question: Quanto rendem os juros básicos, descontado o aumento dos preços?
 summary: Em {month}, o juro real estava em {value} ao ano. É a taxa Selic menos a inflação esperada para os 12 meses seguintes.
 chart_subtitle: >-
   Juro real, em % ao ano, no fim de cada mês. Linha roxa: juro real. Linha
@@ -13,12 +13,22 @@ O juro real é a taxa Selic menos o aumento de preços (inflação) esperado. Se
 inflação esperada é 5%, o juro real é perto de 9%. Ele mostra quanto o
 dinheiro rende ou custa de verdade, depois que os preços sobem.
 
-## Por que importa?
-Imagina comprar um celular novo parcelado, se a taxa para esse parcelamento está baixa, o celular se torna mais acessível e mais pessoas compram. Com um juro alto, o celular se torna menos acessível e menos pessoas compram. Num geral, um juro (real) alto
-freia as compras e os investimentos e ajuda a segurar o aumento dos preços. Um juro real
-baixo estimula a economia. 
+Não é o juro que os bancos cobram das pessoas: empréstimos, cheque especial e
+cartão de crédito custam bem mais. O juro real é a base sobre a qual esses
+juros são calculados. Quando ele sobe, os outros costumam subir junto.
 
-A taxa de juro é a principal ferramenta que o Banco Central tem para controlar o aumento dos preços, se os preços aumentam mais rápido do que o planejado, o Banco Central aumenta a taxa de juro para conter esse aumento. Quando as pessoas não estão gastando dinheiro, durante o COVID, por exemplo, o juro abaixa para incentivar as compras e o comércio.
+## Por que importa?
+Imagine comprar um celular novo parcelado. Se os juros do parcelamento estão
+baixos, o celular fica mais acessível e mais pessoas compram. Com juros altos,
+fica menos acessível e menos pessoas compram. Em geral, um juro real alto freia
+as compras e os investimentos e ajuda a segurar o aumento dos preços. Um juro
+real baixo estimula a economia. 
+
+A taxa de juros é a principal ferramenta que o Banco Central tem para
+controlar o aumento dos preços. Se os preços sobem mais rápido do que o
+planejado, o Banco Central sobe os juros para segurar esse aumento. Quando as
+pessoas estão gastando pouco, como na pandemia de covid-19, o Banco Central
+baixa os juros para incentivar as compras e o comércio.
 
 ## Como é calculado?
 
