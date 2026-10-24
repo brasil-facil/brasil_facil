@@ -30,7 +30,8 @@ principles:
   - title: Dados oficiais
     text: >-
       Todos os números vêm de órgãos públicos e internacionais, como o IBGE, o
-      Banco Central, o Tesouro, o FMI e a OCDE. Cada gráfico diz de onde veio o
+      Banco Central, o Tesouro, o FMI (Fundo Monetário Internacional) e a OCDE
+      (um grupo de quase 40 países, a maioria ricos). Cada gráfico diz de onde veio o
       dado e quando ele foi publicado.
   - title: Palavras simples
     text: >-
