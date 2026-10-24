@@ -750,8 +750,24 @@ th {
 }
 
 .pill.trend {
-  color: var(--brand);
+  color: var(--accent);
   border: 1px solid currentColor;
+}
+
+/* Melhorando: filled with soft purple. Piorando: outline only. Each also has
+   its own arrow, so they differ without relying on colour. */
+.pill.trend.up {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  border-color: transparent;
+}
+
+.pill.trend.down {
+  background: transparent;
+}
+
+.chip-arrow {
+  display: inline-flex;
+  color: var(--accent);
 }
 
 /* The small chart on a tile: area, line, dot, one square per year. */
