@@ -9,3 +9,9 @@ economia:
       indicators: [inflacao, inpc, selic, juro-real, nivel-de-precos]
     - id: producao
       indicators: [crescimento, pib-per-capita, conta-corrente]
+# Plan "Dinheiro público" (9 Nov 2026). First step: debt, primary balance and
+# interest; the other groups get their indicators in the next steps.
+dinheiro-publico:
+  groups:
+    - id: divida-juros
+      indicators: [divida, resultado-primario, juros-da-divida]

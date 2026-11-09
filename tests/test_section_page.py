@@ -97,7 +97,8 @@ def test_home_page_shows_the_sections_and_how_we_work(tmp_path):
     build.main(tmp_path)
     home = (tmp_path / "pt" / "index.html").read_text("utf-8")
     assert 'href="/pt/economia/"' in home and "11 números" in home  # live section
-    assert home.count('<span class="pill soon">Em breve</span>') == 4
+    assert home.count('<span class="pill soon">Em breve</span>') == 3
+    assert 'href="/pt/dinheiro-publico/"' in home  # the second live section
     assert "Como trabalhamos" in home and "Sem opinião" in home
     assert build.REPO_URL in home
     assert '<a href="/pt/" aria-current="page">Início</a>' in home
@@ -108,7 +109,10 @@ def test_home_page_shows_the_sections_and_how_we_work(tmp_path):
 def test_economia_tab_has_a_dropdown_with_every_indicator(tmp_path):
     build.main(tmp_path)
     page = (tmp_path / "pt" / "index.html").read_text("utf-8")
-    menu = page.split('<div class="nav-menu">', 1)[1].split("</nav>", 1)[0]
+    # The Economia menu only: up to the next tab (Dinheiro público has its own).
+    menu = page.split('<div class="nav-menu">', 1)[1].split(
+        '<div class="nav-item">', 1
+    )[0]
     assert menu.count('<div class="nav-menu-group">') == 3  # the three groups
     assert '<a href="/pt/economia/desemprego/">Desemprego</a>' in menu
     assert menu.count("<a href=") == 11  # every indicator, by its tile name
@@ -123,3 +127,25 @@ def test_home_and_section_pages_say_the_picture_is_not_complete(tmp_path):
     build.main(tmp_path)
     for page in ("pt/index.html", "pt/economia/index.html", "en/economy/index.html"):
         assert 'class="note-wip"' in (tmp_path / page).read_text("utf-8"), page
+
+
+def test_public_money_section(tmp_path):
+    from pipeline.export import current_table
+    from pipeline.models import load_indicator
+
+    primary = load_indicator(
+        build.CONFIG / "dinheiro-publico" / "resultado-primario.yaml"
+    )
+    interest = load_indicator(
+        build.CONFIG / "dinheiro-publico" / "juros-da-divida.yaml"
+    )
+    p = current_table(primary).set_index("period")["value"]
+    i = current_table(interest).set_index("period")["value"]
+    assert p["2002-12"] > 0  # 2002: a surplus, shown above zero (sign flipped)
+    assert p["2020-12"] < 0  # 2020: the pandemic deficit, below zero
+    assert abs(i["2020-12"] - 4.10) < 0.01  # nominal 13.34 - primary 9.24
+    build.main(tmp_path)
+    page = (tmp_path / "pt" / "dinheiro-publico" / "index.html").read_text("utf-8")
+    assert "Dívida e juros" in page and page.count('class="tile"') >= 3
+    en = tmp_path / "en" / "public-money" / "debt" / "index.html"
+    assert en.exists()

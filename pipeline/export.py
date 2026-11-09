@@ -12,7 +12,7 @@ from pipeline.models import (
     load_countries,
     load_indicator_targets,
 )
-from pipeline.transforms import real_rate, real_value
+from pipeline.transforms import difference, negate, real_rate, real_value
 from pipeline.zones import compute_zones
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -123,6 +123,14 @@ def current_table(
         )
     if indicator.transform == "real_value":
         return transformed(indicator, indicator.series.inputs["nominal"], series_dir)
+    if indicator.transform == "difference":
+        inputs = indicator.series.inputs
+        return difference(
+            stored_values(inputs["total"], series_dir),
+            stored_values(inputs["part"], series_dir),
+        )
+    if indicator.transform == "negate":
+        return negate(stored_values(indicator.series.brazil, series_dir))
     return stored_values(indicator.series.brazil, series_dir)
 
 

@@ -1,0 +1,32 @@
+id: juros-da-divida
+section: dinheiro-publico
+group: lagging
+name:
+  pt: Juros da dívida
+  en: Interest on the debt
+slug:
+  pt: juros-da-divida
+  en: debt-interest
+technical_name: >-
+  Juros nominais do setor público consolidado, acumulados em 12 meses, % do PIB:
+  resultado nominal (SGS 5727) menos resultado primário (SGS 5793)
+unit: percent
+series:
+  # Plan "Dinheiro público" (9 Nov 2026), indicator 3. Checked 9 Nov 2026: SGS
+  # 5727 is the NOMINAL deficit (primary + interest), not interest (2020: 13.34
+  # = 9.24 primary + 4.10 interest). Interest = 5727 - 5793, the Banco Central's
+  # own definition. Positive = what the government pays.
+  inputs:
+    total: {source: sgs, code: "5727", geo: BRA}   # nominal deficit, % GDP
+    part: {source: sgs, code: "5793", geo: BRA}    # primary deficit, % GDP
+source:
+  name: Banco Central
+  table: Necessidades de financiamento do setor público, resultado nominal (SGS 5727) menos primário (SGS 5793), 12 meses, % do PIB
+  url: https://www3.bcb.gov.br/sgspub/
+transform: difference   # nominal deficit - primary deficit = interest
+chart:
+  no_target_pill: false
+release:
+  expected_day: 30
+  stale_after_days: 60
+content: juros-da-divida

@@ -32,7 +32,10 @@ REPO_URL = "https://github.com/brasil-facil/brasil_facil"
 # shown on the home page as "Em breve" cards (their texts are in home.md).
 ALL_SECTIONS = ["economia", "dinheiro-publico", "saude", "educacao", "seguranca"]
 # Each section's address per language (its folder in config/ and content/ is the key).
-SECTION_SLUGS = {"economia": {"pt": "economia", "en": "economy"}}
+SECTION_SLUGS = {
+    "economia": {"pt": "economia", "en": "economy"},
+    "dinheiro-publico": {"pt": "dinheiro-publico", "en": "public-money"},
+}
 
 MONTHS_SHORT = {
     "pt": [

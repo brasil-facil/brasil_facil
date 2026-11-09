@@ -6,8 +6,8 @@ intro: >-
   simples: a economia, o dinheiro público, a saúde, a educação e a segurança.
   É grátis, não tem lado político e compara o Brasil com outros países.
 work_in_progress: >-
-  O Brasil Fácil ainda está começando. Por enquanto só a seção de Economia está
-  pronta, e ela ainda não mostra tudo sobre a economia do país. Estamos
+  O Brasil Fácil ainda está começando. Por enquanto só as seções de Economia e
+  Dinheiro público estão no ar, e elas ainda não mostram tudo. Estamos
   trabalhando nas outras seções e em novos números.
 sections_title: As seções
 sections:
@@ -55,7 +55,8 @@ principles:
 code_link: Ver o código e os dados
 coming_title: O que vem por aí
 coming:
-  - Dinheiro público, a próxima seção.
+  - Mais números em Dinheiro público, como quanto entra e sai, para onde vai o
+    dinheiro e a comparação com outros países.
   - Saúde, Educação e Segurança, com dados anuais.
   - Novidades da semana, um resumo do que mudou nos números.
   - Um glossário com as palavras da economia e uma página explicando como medimos tudo.

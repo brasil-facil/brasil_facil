@@ -15,6 +15,23 @@ def real_rate(selic: pd.DataFrame, expected_inflation: pd.DataFrame) -> pd.DataF
     return pd.DataFrame({"period": both["period"], "value": value.round(2)})
 
 
+def difference(total: pd.DataFrame, part: pd.DataFrame) -> pd.DataFrame:
+    """total - part, month by month, only where both exist.
+
+    E.g. interest on the public debt = nominal deficit - primary deficit, the
+    Banco Central's own definition (NFSP nominal = primário + juros nominais).
+    """
+    both = total.merge(part, on="period", suffixes=("_total", "_part"))
+    value = (both["value_total"] - both["value_part"]).round(2)
+    return pd.DataFrame({"period": both["period"], "value": value})
+
+
+def negate(values: pd.DataFrame) -> pd.DataFrame:
+    """Flip the sign. The Banco Central's public sector tables (NFSP) count a
+    deficit as positive; readers expect a deficit below zero, a surplus above."""
+    return values.assign(value=-values["value"])
+
+
 def real_value(nominal: pd.DataFrame, price_index: pd.DataFrame) -> pd.DataFrame:
     """An amount in money of the latest month: today's purchasing power.
 

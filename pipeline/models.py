@@ -186,7 +186,9 @@ class Indicator(Strict):
     period_kind: Literal["month", "rolling_quarter", "year"] = "month"
     series: IndicatorSeries
     source: SourceInfo
-    transform: Literal["none", "real_rate", "real_value"]
+    # negate: flip the sign (deficits shown below zero), see transforms.negate
+    # difference: inputs total minus part (e.g. interest = nominal - primary deficit)
+    transform: Literal["none", "real_rate", "real_value", "negate", "difference"]
     zones: Zones | None = None  # None: no official target, so no colour
     chart: ChartSettings = ChartSettings()
     # id of an indicator mentioned, with a link, under the number
@@ -199,6 +201,7 @@ class Indicator(Strict):
         needed = {
             "real_rate": {"selic", "expected_inflation"},
             "real_value": {"nominal", "price_index"},
+            "difference": {"total", "part"},
         }.get(self.transform)
         if needed is None and self.series.brazil is None:
             raise ValueError("transform 'none' needs series.brazil")

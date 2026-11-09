@@ -131,3 +131,15 @@ def test_every_page_states_the_licences(tmp_path):
     for page in ("pt/index.html", "pt/economia/inflacao/index.html", "en/index.html"):
         html = (tmp_path / page).read_text("utf-8")
         assert "CC BY-NC-ND 4.0" in html and build.REPO_URL in html, page
+
+
+def test_difference_and_negate_transforms():
+    import pandas as pd
+
+    from pipeline.transforms import difference, negate
+
+    total = pd.DataFrame({"period": ["2020-12", "2021-01"], "value": [13.34, 12.0]})
+    part = pd.DataFrame({"period": ["2020-12"], "value": [9.24]})
+    out = difference(total, part)
+    assert list(out["period"]) == ["2020-12"] and out["value"].iloc[0] == 4.10
+    assert negate(part)["value"].iloc[0] == -9.24
