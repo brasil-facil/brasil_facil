@@ -1,0 +1,111 @@
+name: weekly data
+
+# Every Monday: download the latest data and, if anything changed, open a pull
+# request with the new CSV files. Nothing reaches the site until it is merged.
+on:
+  schedule:
+    - cron: "0 9 * * 1"   # Mondays 09:00 UTC = 06:00 in Brasília
+  workflow_dispatch:       # the "Run workflow" button, to run it by hand
+
+# The token GitHub gives every run: enough to push a branch and open a pull
+# request. No secret is stored anywhere.
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: weekly-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install Python and the packages from uv.lock
+        run: uv sync --frozen
+
+      # One failing source (a blocked API) does not stop the others: the run
+      # goes on, and the report says what failed.
+      - name: Download the latest data
+        id: pipeline
+        run: |
+          set +e
+          uv run python -m pipeline.run > report.txt 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          cat report.txt
+
+      - name: Did any data change?
+        id: changes
+        run: |
+          if [ -n "$(git status --porcelain data/)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No new data this week."
+          fi
+
+      # Pull requests opened by this workflow do not start checks.yml (a
+      # GitHub rule), so the same checks run here, on the new data.
+      - name: Tests and build with the new data
+        id: checks
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          set +e
+          uv run pytest -q > checks.txt 2>&1 && uv run python build.py >> checks.txt 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          tail -n 5 checks.txt
+
+      - name: Open a pull request with the new data
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PIPELINE_STATUS: ${{ steps.pipeline.outputs.status }}
+          CHECKS_STATUS: ${{ steps.checks.outputs.status }}
+        run: |
+          day=$(date -u +%Y-%m-%d)
+          branch="dados/$day"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add data/
+          git commit -m "Dados da semana: $day"
+          git push --force origin "$branch"
+
+          if [ "$PIPELINE_STATUS" = "0" ]; then
+            sources="Todas as fontes responderam."
+          else
+            sources="**Atenção: alguma fonte falhou.** As outras foram atualizadas; veja o relatório."
+          fi
+          if [ "$CHECKS_STATUS" = "0" ]; then
+            checks="Testes e build passaram com os dados novos."
+          else
+            checks="**Os testes ou o build falharam com os dados novos. Não junte antes de olhar.**"
+          fi
+          {
+            echo "Atualização automática dos dados ($day)."
+            echo
+            echo "- $sources"
+            echo "- $checks"
+            echo
+            echo "Revise o que mudou na aba *Files changed* e na prévia do Cloudflare, e junte para publicar."
+            echo
+            echo "<details><summary>Relatório do pipeline</summary>"
+            echo
+            echo '```'
+            cat report.txt
+            echo '```'
+            echo "</details>"
+          } > body.md
+
+          if gh pr view "$branch" --json state --jq .state 2>/dev/null | grep -q OPEN; then
+            gh pr edit "$branch" --body-file body.md
+          else
+            gh pr create --base main --head "$branch" --title "Dados da semana: $day" --body-file body.md
+          fi
