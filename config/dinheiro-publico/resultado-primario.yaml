@@ -1,0 +1,33 @@
+id: resultado-primario
+section: dinheiro-publico
+group: lagging
+name:
+  pt: Resultado primário do governo
+  en: Government primary balance
+slug:
+  pt: resultado-primario
+  en: primary-balance
+technical_name: >-
+  Resultado primário do setor público consolidado, acumulado em 12 meses, % do PIB
+  (NFSP sem desvalorização cambial, SGS 5793, com o sinal invertido)
+unit: percent
+series:
+  # Plan "Dinheiro público" (9 Nov 2026), indicator 2. In the Banco Central's
+  # tables a deficit is positive; transform: negate shows it below zero.
+  brazil: {source: sgs, code: "5793", geo: BRA}
+source:
+  name: Banco Central
+  table: Necessidades de financiamento do setor público, resultado primário, 12 meses, % do PIB (SGS 5793)
+  url: https://www3.bcb.gov.br/sgspub/
+transform: negate
+# No colours yet: the plan uses a trend label and a yearly "meta cumprida" mark,
+# still to be built (data/targets/meta-primario.csv).
+chart:
+  no_target_pill: false
+  reference_line:
+    value: 0
+    label: {pt: "Zero: gastou o mesmo que arrecadou", en: "Zero: spent as much as it collected"}
+release:
+  expected_day: 30
+  stale_after_days: 60
+content: resultado-primario

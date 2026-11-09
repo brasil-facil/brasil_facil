@@ -6,9 +6,9 @@ intro: >-
   plain words: the economy, public money, health, education and safety. It is
   free, takes no political side and compares Brazil with other countries.
 work_in_progress: >-
-  Brasil Fácil is just getting started. For now only the Economy section is
-  ready, and it does not yet show everything about the country's economy. We
-  are working on the other sections and on new numbers.
+  Brasil Fácil is just getting started. For now only the Economy and Public
+  money sections are live, and they do not show everything yet. We are working
+  on the other sections and on new numbers.
 sections_title: The sections
 sections:
   economia:
@@ -55,7 +55,8 @@ principles:
 code_link: See the code and the data
 coming_title: What comes next
 coming:
-  - Public money, the next section.
+  - More numbers in Public money, such as what comes in and goes out, where the
+    money goes and the comparison with other countries.
   - Health, Education and Safety, with yearly data.
   - News of the week, a summary of what changed in the numbers.
   - A glossary of economic words and a page explaining how we measure everything.

@@ -1,0 +1,27 @@
+id: divida
+section: dinheiro-publico
+group: lagging
+name:
+  pt: Dívida do governo
+  en: Government debt
+slug:
+  pt: divida
+  en: debt
+technical_name: Dívida bruta do governo geral (DBGG), % do PIB, metodologia do Banco Central
+unit: percent
+series:
+  # Plan "Dinheiro público" (9 Nov 2026), indicator 1. The IMF comparison and
+  # the IMF debt-risk box come in a later step.
+  brazil: {source: sgs, code: "13762", geo: BRA}
+source:
+  name: Banco Central
+  table: Dívida bruta do governo geral, % do PIB (SGS 13762)
+  url: https://www3.bcb.gov.br/sgspub/
+transform: none
+# No colours yet: the plan uses a trend label, still to be built.
+chart:
+  no_target_pill: false
+release:
+  expected_day: 30       # the Banco Central publishes fiscal statistics at the end of each month
+  stale_after_days: 60
+content: divida
